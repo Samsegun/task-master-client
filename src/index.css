@@ -42,7 +42,7 @@
 
     /* custom colors */
     --color-brand-bg: var(--brand-primary-bg);
-    --color-brand-text: var(--brand-primary-text);
+    --color-brand-primary: var(--brand-primary-text);
     --color-brand-gray: var(--brand-gray-text);
     --color-brand-link: var(--brand-link);
     --color-brand-button: var(--brand-button);
@@ -180,8 +180,8 @@
 }
 
 @layer base {
-    :root {
-        --radius: 0.5rem;
+    body {
+        @apply bg-brand-bg text-brand-primary;
     }
 }
 

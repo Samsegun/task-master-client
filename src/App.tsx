@@ -2,6 +2,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "react-hot-toast";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 import "./App.css";
+import AuthRoutes from "./components/layout/AuthRoutes";
+import ProtectedRoutes from "./components/layout/ProtectedRoutes";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import Dashboard from "./pages/dashboard/Dashboard";
@@ -13,27 +15,16 @@ function App() {
         <QueryClientProvider client={queryClient}>
             <BrowserRouter>
                 <Routes>
-                    {/* <Route element={<ProtectedRoute />}>
-                  <Route index element={<Navigate to='home' />} />
+                    <Route element={<ProtectedRoutes />}>
+                        <Route index element={<Navigate to='dashboard' />} />
 
-                  <Route path='home' element={<Home />} />
-                  <Route path='dashboard' element={<Dashboard />} />
-              </Route>
+                        <Route path='dashboard' element={<Dashboard />} />
+                    </Route>
 
-              <Route element={<AuthLayout />}>
-                  <Route path='login' element={<Login />} />
-                  <Route path='signup' element={<Signup />} />
-              </Route>
-          </Routes> */}
-
-                    <Route index element={<Navigate to='dashboard' />} />
-
-                    <Route path='dashboard' element={<Dashboard />} />
-
-                    {/* <Route element={<AuthLayout />}> */}
-                    <Route path='login' element={<Login />} />
-                    <Route path='register' element={<Register />} />
-                    {/* </Route> */}
+                    <Route element={<AuthRoutes />}>
+                        <Route path='login' element={<Login />} />
+                        <Route path='register' element={<Register />} />
+                    </Route>
                 </Routes>
             </BrowserRouter>
 
