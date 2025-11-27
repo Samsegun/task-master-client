@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -40,7 +42,9 @@
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-ring: var(--sidebar-ring);
 
-    /* custom colors */
+    /* custom */
+    --font-roboto: "Roboto", sans-serif;
+
     --color-brand-bg: var(--brand-primary-bg);
     --color-brand-primary: var(--brand-primary-text);
     --color-brand-gray: var(--brand-gray-text);
@@ -181,12 +185,21 @@
 
 @layer base {
     body {
-        @apply bg-brand-bg text-brand-primary;
+        @apply bg-brand-bg font-roboto text-brand-primary;
     }
 }
 
 @layer utilities {
     .flex-between {
         @apply flex justify-between items-center;
+    }
+    .flex-around {
+        @apply flex justify-around items-center;
+    }
+    .flex-center {
+        @apply flex justify-center items-center;
+    }
+    .flex-end {
+        @apply flex justify-end items-center;
     }
 }

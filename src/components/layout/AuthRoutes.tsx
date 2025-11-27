@@ -1,5 +1,7 @@
 // import { useAuthStatus } from "@/hooks/useAuth";
 import { Outlet } from "react-router";
+import Header from "../common/Header";
+import Logo from "../common/Logo";
 // import LoadingIcon from "./LoadingIcon";
 
 function AuthRoutes() {
@@ -18,18 +20,17 @@ function AuthRoutes() {
 
     return (
         <div>
-            <header
-                className='container mx-auto px-4 sm:px-6 lg:px-8 py-4 
-            border-b border-nav-border'>
+            <Header>
                 <div className='flex items-center'>
-                    <img src='/logo.png' alt='App Logo' className='h-8 w-8' />
+                    <Logo />
+
                     <span className='text-xl font-bold'>TaskMaster</span>
                 </div>
-            </header>
+            </Header>
 
             <main
-                className='min-h-screen flex items-center justify-center
-          '>
+                className='min-h-screen flex items-center
+                 justify-center'>
                 <section className='min-w-72 xl:min-w-sm'>
                     <Outlet />
                 </section>

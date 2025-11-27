@@ -1,5 +1,6 @@
 // import { useAuthStatus } from "@/hooks/useAuth";
-import { Link, Outlet } from "react-router";
+import { Outlet } from "react-router";
+import Navbar from "./Navbar";
 // import LoadingIcon from "./LoadingIcon";
 
 function ProtectedRoutes() {
@@ -17,25 +18,10 @@ function ProtectedRoutes() {
     // }
 
     return (
-        <div>
-            <header
-                className='container mx-auto px-4 sm:px-6 lg:px-8 py-4 
-            border-b border-nav-border'>
-                <div>
-                    <Link to={"/"} className='flex items-center'>
-                        <img
-                            src='/logo.png'
-                            alt='App Logo'
-                            className='h-8 w-8'
-                        />
-                        <span className='text-xl font-bold'>TaskMaster</span>
-                    </Link>
-                </div>
-            </header>
+        <div className=''>
+            <Navbar />
 
-            <main
-                className='min-h-screen
-          '>
+            <main className='min-h-screen p-4 mt-18 md:ml-60 md:mt-0 md:pt-8 xl:ml-80'>
                 <Outlet />
             </main>
         </div>
