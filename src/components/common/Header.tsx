@@ -14,7 +14,11 @@ function Header({ children, className }: HeaderProps) {
             border-b border-nav-border`,
                 className
             )}>
-            <div className='container mx-auto flex-between'>{children}</div>
+            <div
+                className='container mx-auto flex justify-between 
+            items-center md:justify-center xl:justify-between'>
+                {children}
+            </div>
         </header>
     );
 }

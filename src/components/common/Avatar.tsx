@@ -14,7 +14,7 @@ function Avatar({ src, name, occupation }: AvatarProps) {
 
             <div className='flex flex-col leading-tight capitalize'>
                 <span className='text-sm font-medium '>{name}</span>
-                <span className='text-xs text-gray-500'>{occupation}</span>
+                <span className='text-xs text-brand-gray'>{occupation}</span>
             </div>
         </div>
     );

@@ -7,6 +7,8 @@ import ProtectedRoutes from "./components/layout/ProtectedRoutes";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import Dashboard from "./pages/dashboard/Dashboard";
+import Projects from "./pages/projects/Projects";
+import Tasks from "./pages/tasks/Tasks";
 
 const queryClient = new QueryClient();
 
@@ -19,6 +21,8 @@ function App() {
                         <Route index element={<Navigate to='dashboard' />} />
 
                         <Route path='dashboard' element={<Dashboard />} />
+                        <Route path='projects' element={<Projects />} />
+                        <Route path='tasks' element={<Tasks />} />
                     </Route>
 
                     <Route element={<AuthRoutes />}>

@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import { FolderDot, Home, SquareCheck } from "lucide-react";
+import { CheckSquare, FolderKanban, LayoutDashboard } from "lucide-react";
 
 interface NavLinkConfig {
     to: string;
@@ -11,17 +11,17 @@ export const navLinks: NavLinkConfig[] = [
     {
         to: "/dashboard",
         label: "Home",
-        Icon: Home,
+        Icon: LayoutDashboard,
     },
     {
         to: "/tasks",
         label: "My Tasks",
-        Icon: SquareCheck,
+        Icon: CheckSquare,
     },
     {
         to: "/projects",
         label: "Projects",
-        Icon: FolderDot,
+        Icon: FolderKanban,
     },
     //   {
     //     to: "/settings",
@@ -31,4 +31,4 @@ export const navLinks: NavLinkConfig[] = [
 ];
 
 export const navLinksBaseClasses =
-    "flex items-center gap-4 p-2 rounded-lg hover:bg-brand-link/70";
+    "flex items-center gap-4 p-2 rounded-lg hover:bg-brand-link/70 transition-colors duration-200";

@@ -1,14 +1,22 @@
 import Sidebar from "./Sidebar";
 import TopBar from "./TopBar";
 
-function Navbar() {
+interface SidebarProps {
+    isCollapsed: boolean;
+    setIsCollapsed: (value: boolean) => void;
+}
+
+function Navbar({ isCollapsed, setIsCollapsed }: SidebarProps) {
     return (
         <>
             {/* mobile topbar */}
             <TopBar />
 
             {/* tablet/desktop sidebar */}
-            <Sidebar />
+            <Sidebar
+                isCollapsed={isCollapsed}
+                setIsCollapsed={setIsCollapsed}
+            />
         </>
     );
 }
