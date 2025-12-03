@@ -1,13 +1,9 @@
-import React, { type ReactNode } from "react";
+import React from "react";
 import { MenuContent, type MenuContentProps } from "./MenuContent";
-import { MenuProvider } from "./MenuContext";
+import { MenuProvider, type MenuProviderProps } from "./MenuContext";
 import { MenuTrigger, type MenuTriggerProps } from "./MenuTrigger";
 
-interface MenuProps {
-    children: ReactNode;
-}
-
-export const Menu: React.FC<MenuProps> & {
+const Menu: React.FC<MenuProviderProps> & {
     Trigger: React.FC<MenuTriggerProps>;
     Content: React.FC<MenuContentProps>;
 } = ({ children }) => {
@@ -15,5 +11,6 @@ export const Menu: React.FC<MenuProps> & {
 };
 
 Menu.Trigger = MenuTrigger;
-
 Menu.Content = MenuContent;
+
+export { Menu };

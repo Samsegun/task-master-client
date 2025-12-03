@@ -14,7 +14,7 @@ interface MenuContextProps {
     toggle: () => void;
 }
 
-interface MenuProviderProps {
+export interface MenuProviderProps {
     children: ReactNode;
     initialOpen?: boolean;
 }

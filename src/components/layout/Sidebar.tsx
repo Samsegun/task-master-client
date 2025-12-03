@@ -1,7 +1,6 @@
 import { navLinks, navLinksBaseClasses } from "@/lib/navLinks";
 import { PanelLeft, PanelRight, Plus } from "lucide-react";
 import { Link, NavLink } from "react-router";
-import Avatar from "../common/Avatar";
 import Button from "../common/Button";
 import Logo from "../common/Logo";
 
@@ -16,7 +15,7 @@ function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
             className={`hidden md:flex flex-col bg-brand-sidebar 
         fixed left-0 top-0 h-screen border-r border-nav-border 
         transition-all duration-300 ease-in-out
-        ${isCollapsed ? "w-20" : "w-60 xl:w-80"}
+        ${isCollapsed ? "w-20" : "w-60 xl:w-64"}
         `}>
             {/* header */}
             <header
@@ -52,7 +51,7 @@ function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
                 className='flex-1 overflow-y-hidden p-4 md:pt-6 
              flex flex-col justify-between'>
                 <div className='space-y-4'>
-                    {!isCollapsed && (
+                    {/* {!isCollapsed && (
                         <div>
                             <Avatar
                                 name='Sophia willson'
@@ -60,7 +59,7 @@ function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
                                 src='xxxxx'
                             />
                         </div>
-                    )}
+                    )} */}
 
                     <nav className='space-y-7'>
                         {navLinks.map(({ Icon, label, to }) => (
@@ -87,7 +86,9 @@ function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
                 <Button
                     type='button'
                     variant={"primary"}
-                    className='w-full flex items-center gap-2'>
+                    className={`w-full flex items-center gap-2 ${
+                        isCollapsed ? "" : "justify-center"
+                    }`}>
                     <Plus size={30} />
 
                     {!isCollapsed && <span>New Project</span>}
