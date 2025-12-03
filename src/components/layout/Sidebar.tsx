@@ -28,17 +28,13 @@ function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
                 isCollapsed ? "justify-center" : "justify-between"
             }`}>
                     {!isCollapsed && (
-                        <div>
-                            <Link
-                                to={"/dashboard"}
-                                className='flex items-center'>
-                                <Logo />
+                        <Link to={"/dashboard"} className='flex items-center'>
+                            <Logo />
 
-                                <span className='text-lg xl:text-xl font-bold'>
-                                    TaskMaster
-                                </span>
-                            </Link>
-                        </div>
+                            <span className='text-lg xl:text-xl font-bold'>
+                                TaskMaster
+                            </span>
+                        </Link>
                     )}
 
                     <Button
