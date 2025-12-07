@@ -49,7 +49,7 @@ function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
             {/* avatar, nav and create-project button */}
             <div
                 className='flex-1 overflow-y-hidden p-4 md:pt-6 
-             flex flex-col justify-between'>
+             flex flex-col justify-between lg:py-8'>
                 <div className='space-y-4'>
                     {/* {!isCollapsed && (
                         <div>

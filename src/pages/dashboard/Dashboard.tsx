@@ -1,6 +1,53 @@
 import Avatar from "@/components/common/Avatar";
 import PageTitle from "@/components/common/PageTitle";
 import { Menu } from "@/components/Menu/Menu";
+import ProjectsTable from "@/components/table/ProjectsTable";
+import TasksTable from "@/components/table/TasksTable";
+
+const taskHeaders = ["task", "project", "due date", "status"];
+const projectHeaders = ["project", "status", "due date", "progress"];
+
+const tasks = [
+    {
+        name: "Design landing page",
+        project: "Marketing Campaign",
+        dueDate: "Jul 15, 2024",
+        status: "IN_PROGRESS",
+    },
+    {
+        name: "Develop user onboarding flow",
+        project: "Product Launch",
+        dueDate: "Jul 20, 2024",
+        status: "DONE",
+    },
+    {
+        name: "Write blog post",
+        project: "Content Strategy",
+        dueDate: "Jul 25, 2024",
+        status: "TODO",
+    },
+];
+
+const projects = [
+    {
+        name: "marketing campaign",
+        progress: 75,
+        dueDate: "Jul 15, 2024",
+        status: "ACTIVE",
+    },
+    {
+        name: "product launch",
+        progress: 100,
+        dueDate: "Oct 20, 2024",
+        status: "COMPLETED",
+    },
+    {
+        name: "content strategy",
+        progress: 50,
+        dueDate: "Sep 25, 2024",
+        status: "ARCHIVED",
+    },
+];
 
 function Dashboard() {
     return (
@@ -42,10 +89,10 @@ function Dashboard() {
 
                 <section className='space-y-2 md:space-y-3'>
                     <h2 className='text-lg font-bold tracking-wide'>
-                        My Tasks
+                        Latest Tasks
                     </h2>
 
-                    <div className='w-full h-64 bg-brand-card rounded-lg'></div>
+                    <TasksTable headers={taskHeaders} tasks={tasks} />
                 </section>
 
                 <section className='space-y-2 md:space-y-3'>
@@ -53,7 +100,10 @@ function Dashboard() {
                         Projects
                     </h2>
 
-                    <div className='w-full h-64 bg-brand-card rounded-lg'></div>
+                    <ProjectsTable
+                        headers={projectHeaders}
+                        projects={projects}
+                    />
                 </section>
             </Menu>
         </div>

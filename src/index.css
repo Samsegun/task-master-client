@@ -59,6 +59,7 @@
     --color-brand-modal: var(--brand-modal-bg);
     --color-brand-card: var(--brand-card-bg);
     --color-brand-card-header: var(--brand-card-header);
+    --color-brand-table-header: var(--brand-table-header);
 
     --color-project-active-bg: var(--brand-project-active-bg);
     --color-project-active: var(--brand-project-active);
@@ -128,6 +129,7 @@
     --brand-modal-bg: hsl(210, 27%, 14%);
     --brand-card-bg: hsl(211, 30%, 14%);
     --brand-card-header: hsl(0, 0%, 86%);
+    --brand-table-header: hsl(210, 44%, 17%);
     --brand-project-active-bg: hsl(162, 41%, 18%);
     --brand-project-active: hsl(142, 62%, 55%);
     --brand-project-completed-bg: hsl(210, 54%, 21%);
