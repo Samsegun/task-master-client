@@ -1,7 +1,7 @@
 import type { Project } from "@/lib/types";
-import { Progress } from "@radix-ui/react-progress";
 import { Calendar, CheckCircle, FolderKanban, Users } from "lucide-react";
 import { memo } from "react";
+import { Progress } from "../ui/progress";
 import Button from "./Button";
 import StatusBadge from "./StatusBadge";
 
@@ -37,8 +37,7 @@ function ProjectCard({ project }: { project: Project }) {
 
                 <Progress
                     value={project.progress}
-                    className='bg-brand-button/30
-                                            [&>div]:bg-brand-button transition-all'
+                    className='bg-brand-button/30 [&>div]:bg-brand-button transition-all'
                 />
             </div>
 
@@ -68,7 +67,7 @@ function ProjectCard({ project }: { project: Project }) {
                 </div>
             </div>
 
-            <Button type='button' variant={"primary"} className='w-full'>
+            <Button type='button' variant={"details"} className='w-full'>
                 View Details
             </Button>
         </article>
