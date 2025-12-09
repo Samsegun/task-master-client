@@ -51,7 +51,7 @@ const projects = [
 
 function Dashboard() {
     return (
-        <div className='space-y-6 md:space-y-8 xl:space-y-10'>
+        <div className='space-y-10 xl:space-y-12'>
             <Menu initialOpen={false}>
                 <div className='flex justify-between items-center'>
                     <PageTitle>Good morning, Sophia</PageTitle>
@@ -65,9 +65,9 @@ function Dashboard() {
                     </div>
                 </div>
 
-                <Menu.Trigger>
+                {/* <Menu.Trigger>
                     <span>Modal</span>
-                </Menu.Trigger>
+                </Menu.Trigger> */}
 
                 <Menu.Content direction='center'>
                     <section className=''>

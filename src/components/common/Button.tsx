@@ -18,6 +18,7 @@ const buttonVariants = cva(
                 link: "text-primary underline-offset-4 hover:underline",
                 primary:
                     "text-brand-primary bg-brand-button hover:bg-brand-button/90",
+                inactive: "bg-nav-border hover:bg-nav-border/50",
             },
             size: {
                 default: "h-10 px-4 py-2",

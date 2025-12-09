@@ -42,19 +42,19 @@ function ProjectsTable({ headers, projects }: ProjectsTableProps) {
                                 {project.name}
                             </TableCell>
 
-                            <TableCell className='text-brand-primary/70 w-48'>
+                            <TableCell className='text-brand-primary/70 '>
                                 <StatusBadge status={project.status} />
                             </TableCell>
 
-                            <TableCell className='text-brand-primary/70 w-48'>
+                            <TableCell className='text-brand-primary/70 '>
                                 {project.dueDate}
                             </TableCell>
 
-                            <TableCell className='flex justify-between items-center gap-2'>
+                            <TableCell className='w-52 flex flex-col lg:flex-row justify-between items-center gap-2'>
                                 <Progress
                                     value={project.progress}
                                     className='bg-brand-button/30
-                                     [&>div]:bg-brand-button basis-3/4'
+                                     [&>div]:bg-brand-button lg:basis-3/4'
                                 />
                                 <span>{project.progress}%</span>
                             </TableCell>

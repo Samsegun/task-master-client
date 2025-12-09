@@ -26,7 +26,7 @@ function ProtectedRoutes() {
 
             <div
                 className={`min-h-screen p-6 mt-18 
-            md:mt-0 md:pt-8 xl:px-10 transition-all duration-300 ease-in-out ${
+            md:mt-0 xl:px-10 transition-all duration-300 ease-in-out ${
                 isCollapsed ? "ml-20" : "md:ml-60 xl:ml-64"
             }`}>
                 <main className='max-w-7xl mx-auto lg:p-4'>
