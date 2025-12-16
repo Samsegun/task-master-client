@@ -2,7 +2,7 @@ import Button from "@/components/common/Button";
 import PageTitle from "@/components/common/PageTitle";
 import ProjectCard from "@/components/common/ProjectCard";
 import Tabs from "@/components/common/Tabs";
-import type { Project, ProjectStatus } from "@/lib/types";
+import type { Project, Statuses } from "@/lib/types";
 import { FolderKanban, Plus } from "lucide-react";
 import { useState } from "react";
 
@@ -17,6 +17,10 @@ const projects: Project[] = [
         memberCount: 5,
         completedTasks: 12,
         totalTasks: 16,
+        owner: {
+            name: "sophia wilson",
+            email: "sophia@mail.com",
+        },
     },
     {
         id: "2",
@@ -27,6 +31,10 @@ const projects: Project[] = [
         memberCount: 3,
         completedTasks: 8,
         totalTasks: 8,
+        owner: {
+            name: "sophia wilson",
+            email: "sophia@mail.com",
+        },
     },
     {
         id: "3",
@@ -37,6 +45,10 @@ const projects: Project[] = [
         memberCount: 2,
         completedTasks: 4,
         totalTasks: 8,
+        owner: {
+            name: "sophia wilson",
+            email: "sophia@mail.com",
+        },
     },
     {
         id: "4",
@@ -47,6 +59,10 @@ const projects: Project[] = [
         memberCount: 4,
         completedTasks: 3,
         totalTasks: 10,
+        owner: {
+            name: "sophia wilson",
+            email: "sophia@mail.com",
+        },
     },
     {
         id: "5",
@@ -57,11 +73,17 @@ const projects: Project[] = [
         memberCount: 6,
         completedTasks: 6,
         totalTasks: 10,
+        owner: {
+            name: "sophia wilson",
+            email: "sophia@mail.com",
+        },
     },
 ];
 
+const projectStatus: Statuses[] = ["all", "ACTIVE", "COMPLETED", "ARCHIVED"];
+
 function Projects() {
-    const [activeTab, setActiveTab] = useState<"all" | ProjectStatus>("all");
+    const [activeTab, setActiveTab] = useState<Statuses>("all");
 
     const filteredProjects =
         activeTab === "all"
@@ -82,10 +104,14 @@ function Projects() {
                 </Button>
             </div>
 
-            <Tabs activeTab={activeTab} setActiveTab={setActiveTab} />
+            <Tabs
+                activeTab={activeTab}
+                setActiveTab={setActiveTab}
+                statusList={projectStatus}
+            />
 
             {/* projects */}
-            <section className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-6'>
+            <section className='mt-6 md:mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-6'>
                 {filteredProjects.map(project => (
                     <ProjectCard key={project.id} project={project} />
                 ))}

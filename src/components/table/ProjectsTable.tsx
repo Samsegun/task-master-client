@@ -37,7 +37,7 @@ function ProjectsTable({ headers, projects }: ProjectsTableProps) {
                     {projects.map(project => (
                         <TableRow
                             key={project.name}
-                            className='border-b border-brand-primary/10 hover:bg-brand-link/70'>
+                            className='border-b border-brand-primary/10 hover:bg-[#2d3f54]'>
                             <TableCell className='font-medium capitalize'>
                                 {project.name}
                             </TableCell>

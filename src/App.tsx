@@ -7,6 +7,7 @@ import ProtectedRoutes from "./components/layout/ProtectedRoutes";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
 import Dashboard from "./pages/dashboard/Dashboard";
+import ProjectDetails from "./pages/projects/ProjectDetails";
 import Projects from "./pages/projects/Projects";
 import Tasks from "./pages/tasks/Tasks";
 
@@ -22,6 +23,10 @@ function App() {
 
                         <Route path='dashboard' element={<Dashboard />} />
                         <Route path='projects' element={<Projects />} />
+                        <Route
+                            path='projects/:projectId'
+                            element={<ProjectDetails />}
+                        />
                         <Route path='tasks' element={<Tasks />} />
                     </Route>
 

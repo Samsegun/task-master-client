@@ -8,9 +8,9 @@ function StatusBadge({ status }: { status: string }) {
         Done: "bg-task-completed-bg text-completed",
 
         // task priority
-        LOW: "bg-task-low-bg text-task-low",
-        MEDIUM: "bg-task-medium-bg text-task-medium",
-        HIGH: "bg-task-high-bg text-task-high",
+        LOW: "bg-gray-500/10 text-gray-400",
+        MEDIUM: "bg-orange-500/10 text-orange-500",
+        HIGH: "bg-red-500/10 text-red-500",
 
         // project status
         ACTIVE: "bg-project-active-bg text-project-active",
@@ -20,7 +20,7 @@ function StatusBadge({ status }: { status: string }) {
 
     return (
         <Badge
-            className={`border-none rounded-full px-4 py-1 font-bold ${variants[status]}`}>
+            className={`border-none rounded-full px-4 py-1 font-bold text-sm ${variants[status]}`}>
             {status.replaceAll("_", " ")}
         </Badge>
     );

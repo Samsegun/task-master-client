@@ -36,7 +36,7 @@ function TasksTable({ headers, tasks }: TasksTableProps) {
                     {tasks.map(t => (
                         <TableRow
                             key={t.name}
-                            className='border-b border-brand-primary/10 hover:bg-brand-link/70'>
+                            className='border-b border-brand-primary/10 hover:bg-[#2d3f54]'>
                             <TableCell className='font-medium capitalize'>
                                 {t.name}
                             </TableCell>

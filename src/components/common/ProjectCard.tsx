@@ -1,8 +1,8 @@
 import type { Project } from "@/lib/types";
 import { Calendar, CheckCircle, FolderKanban, Users } from "lucide-react";
 import { memo } from "react";
+import { Link } from "react-router";
 import { Progress } from "../ui/progress";
-import Button from "./Button";
 import StatusBadge from "./StatusBadge";
 
 function ProjectCard({ project }: { project: Project }) {
@@ -67,9 +67,13 @@ function ProjectCard({ project }: { project: Project }) {
                 </div>
             </div>
 
-            <Button type='button' variant={"details"} className='w-full'>
+            <Link
+                to={`/projects/${project.id}`}
+                className='h-10 px-4 py-2 inline-flex items-center justify-center rounded-md text-sm
+                 font-medium w-full text-navlink bg-brand-button/70 
+            hover:text-brand-primary hover:bg-brand-button'>
                 View Details
-            </Button>
+            </Link>
         </article>
     );
 }
