@@ -123,7 +123,7 @@ function Register() {
                         </button>
 
                         {showPasswordReqs && (
-                            <div className='bg-brand-gray/80 font-semibold mt-2 p-4'>
+                            <div className='bg-brand-modal font-semibold mt-2 p-4'>
                                 <div className='text-right'>
                                     <button
                                         type='button'

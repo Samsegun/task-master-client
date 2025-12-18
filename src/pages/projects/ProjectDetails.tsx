@@ -10,7 +10,7 @@ import { ArrowLeft, Settings } from "lucide-react";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
 
-const members: Member[] = [
+export const members: Member[] = [
     {
         id: "1",
         name: "Sophia Willson",

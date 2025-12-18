@@ -1,9 +1,10 @@
 import type { Statuses, Task, TaskStatus } from "@/lib/types";
 import { CheckCircle, Circle, Clock, MoreVertical, Plus } from "lucide-react";
 import { useState } from "react";
-import Button from "../common/Button";
 import StatusBadge from "../common/StatusBadge";
 import Tabs from "../common/Tabs";
+import { Menu } from "../Menu/Menu";
+import CreateTaskModal from "../modal/CreateTaskModal";
 import { Table, TableBody, TableHeader, TableRow } from "../ui/table";
 import { TableCell, TableHead } from "./TableUI";
 
@@ -83,13 +84,18 @@ function TasksTabTable() {
                     statusList={taskStatus}
                 />
 
-                <Button
-                    type='button'
-                    variant={"primary"}
-                    className={`flex items-center gap-2`}>
-                    <Plus size={30} />
-                    New Task
-                </Button>
+                <Menu initialOpen={false}>
+                    <Menu.Trigger
+                        variant={"primary"}
+                        className='flex items-center gap-2'>
+                        <Plus size={30} />
+                        New Task
+                    </Menu.Trigger>
+
+                    <Menu.Content direction='center'>
+                        <CreateTaskModal />
+                    </Menu.Content>
+                </Menu>
             </div>
 
             {/* tasks table */}

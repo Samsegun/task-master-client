@@ -1,5 +1,10 @@
 import * as z from "zod";
 
+// enums
+const TaskPrioritySchema = z.enum(["LOW", "MEDIUM", "HIGH"]);
+// const TaskStatusSchema = z.enum(["TODO", "IN_PROGRESS", "DONE"]);
+
+// auth
 const registerUserForm = z.object({
     email: z.email("Invalid email format"),
     password: z
@@ -29,7 +34,17 @@ const resetPasswordForm = z.object({
     password: registerUserForm.shape.password,
 });
 
+// task
+const createTaskForm = z.object({
+    title: z.string().min(5).max(200),
+    description: z.string().max(1000).optional(),
+    dueDate: z.coerce.date().optional(),
+    priority: TaskPrioritySchema.optional().default("MEDIUM"),
+    assigneeId: z.string().optional(),
+});
+
 export {
+    createTaskForm,
     forgotPasswordForm,
     loginUserForm,
     registerUserForm,

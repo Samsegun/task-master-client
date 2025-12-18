@@ -65,9 +65,9 @@ function Dashboard() {
                     </div>
                 </div>
 
-                {/* <Menu.Trigger>
+                <Menu.Trigger>
                     <span>Modal</span>
-                </Menu.Trigger> */}
+                </Menu.Trigger>
 
                 <Menu.Content direction='center'>
                     <section className=''>
