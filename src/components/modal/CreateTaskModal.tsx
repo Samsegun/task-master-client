@@ -40,19 +40,27 @@ function CreateTaskModal() {
         },
     });
 
+    function closeModal() {
+        form.reset();
+        onClose();
+    }
+
     function onSubmit(data: CreateTaskFormData) {
         console.log(data);
+
+        form.reset();
+        onClose();
     }
 
     return (
-        <div className=' rounded-lg border border-nav-border'>
+        <div className='rounded-lg border border-nav-border'>
             {/* header */}
             <div className='flex justify-between items-center p-4 border-b border-brand-primary/10'>
                 <h2 className='text-xl font-bold text-brand-primary'>
                     Create New Task
                 </h2>
 
-                <Button onClick={onClose} variant={"transparent"}>
+                <Button onClick={closeModal} variant={"transparent"}>
                     <X size={24} />
                 </Button>
             </div>
@@ -222,7 +230,7 @@ function CreateTaskModal() {
                                     <SelectContent
                                         position='item-aligned'
                                         className='bg-[#263447]'>
-                                        <SelectItem value='Unassigned'>
+                                        <SelectItem value='null'>
                                             Unassigned
                                         </SelectItem>
 
@@ -243,7 +251,7 @@ function CreateTaskModal() {
                 <div className='flex gap-3'>
                     <button
                         type='button'
-                        onClick={onClose}
+                        onClick={closeModal}
                         className='flex-1 bg-[#1a2332] hover:bg-[#0f1729] text-brand-primary py-2 rounded-lg
                          transition-colors border border-brand-gray'>
                         Cancel

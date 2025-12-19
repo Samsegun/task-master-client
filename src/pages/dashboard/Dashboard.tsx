@@ -1,6 +1,5 @@
 import Avatar from "@/components/common/Avatar";
 import PageTitle from "@/components/common/PageTitle";
-import { Menu } from "@/components/Menu/Menu";
 import ProjectsTable from "@/components/table/ProjectsTable";
 import TasksTable from "@/components/table/TasksTable";
 
@@ -52,20 +51,20 @@ const projects = [
 function Dashboard() {
     return (
         <div className='space-y-10 xl:space-y-12'>
-            <Menu initialOpen={false}>
-                <div className='flex justify-between items-center'>
-                    <PageTitle>Good morning, Sophia</PageTitle>
+            {/* <Menu initialOpen={false}> */}
+            <div className='flex justify-between items-center'>
+                <PageTitle>Good morning, Sophia</PageTitle>
 
-                    <div className='hidden md:block'>
-                        <Avatar
-                            name='Sophia willson'
-                            occupation='product manager'
-                            src='xxxxx'
-                        />
-                    </div>
+                <div className='hidden md:block'>
+                    <Avatar
+                        name='Sophia willson'
+                        occupation='product manager'
+                        src='xxxxx'
+                    />
                 </div>
+            </div>
 
-                <Menu.Trigger>
+            {/* <Menu.Trigger>
                     <span>Modal</span>
                 </Menu.Trigger>
 
@@ -85,27 +84,22 @@ function Dashboard() {
                             Labore, sunt?
                         </p>
                     </section>
-                </Menu.Content>
+                </Menu.Content> */}
 
-                <section className='space-y-2 md:space-y-3'>
-                    <h2 className='text-lg font-bold tracking-wide'>
-                        Latest Tasks
-                    </h2>
+            <section className='space-y-2 md:space-y-3'>
+                <h2 className='text-lg font-bold tracking-wide'>
+                    Latest Tasks
+                </h2>
 
-                    <TasksTable headers={taskHeaders} tasks={tasks} />
-                </section>
+                <TasksTable headers={taskHeaders} tasks={tasks} />
+            </section>
 
-                <section className='space-y-2 md:space-y-3'>
-                    <h2 className='text-lg font-bold tracking-wide'>
-                        Projects
-                    </h2>
+            <section className='space-y-2 md:space-y-3'>
+                <h2 className='text-lg font-bold tracking-wide'>Projects</h2>
 
-                    <ProjectsTable
-                        headers={projectHeaders}
-                        projects={projects}
-                    />
-                </section>
-            </Menu>
+                <ProjectsTable headers={projectHeaders} projects={projects} />
+            </section>
+            {/* </Menu> */}
         </div>
     );
 }

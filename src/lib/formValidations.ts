@@ -3,6 +3,7 @@ import * as z from "zod";
 // enums
 const TaskPrioritySchema = z.enum(["LOW", "MEDIUM", "HIGH"]);
 // const TaskStatusSchema = z.enum(["TODO", "IN_PROGRESS", "DONE"]);
+const AddMemberSchema = z.enum(["OWNER", "MEMBER"]);
 
 // auth
 const registerUserForm = z.object({
@@ -43,7 +44,14 @@ const createTaskForm = z.object({
     assigneeId: z.string().optional(),
 });
 
+// project
+const addProjectMember = z.object({
+    email: z.email("Invalid email format"),
+    role: AddMemberSchema.default("MEMBER"),
+});
+
 export {
+    addProjectMember,
     createTaskForm,
     forgotPasswordForm,
     loginUserForm,
