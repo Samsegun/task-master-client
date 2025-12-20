@@ -21,7 +21,7 @@ function MembersTabTable({ members }: { members: Member[] }) {
                         Add Member
                     </Menu.Trigger>
 
-                    <Menu.Content direction='center'>
+                    <Menu.Content direction='center' height='auto'>
                         <AddMemberModal projectId='23' />
                     </Menu.Content>
                 </Menu>

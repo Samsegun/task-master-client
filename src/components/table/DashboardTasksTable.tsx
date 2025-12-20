@@ -12,7 +12,7 @@ interface TasksTableProps {
     }[];
 }
 
-function TasksTable({ headers, tasks }: TasksTableProps) {
+function DashboardTasksTable({ headers, tasks }: TasksTableProps) {
     return (
         <div
             className='rounded-xl rounded-t-none lg:rounded-t-xl
@@ -60,4 +60,4 @@ function TasksTable({ headers, tasks }: TasksTableProps) {
     );
 }
 
-export default TasksTable;
+export default DashboardTasksTable;

@@ -1,7 +1,8 @@
-import type { Statuses, Task, TaskStatus } from "@/lib/types";
-import { CheckCircle, Circle, Clock, MoreVertical, Plus } from "lucide-react";
+import type { Statuses, Task } from "@/lib/types";
+import { CheckCircle, MoreVertical, Plus } from "lucide-react";
 import { useState } from "react";
 import StatusBadge from "../common/StatusBadge";
+import StatusIcon from "../common/StatusIcon";
 import Tabs from "../common/Tabs";
 import { Menu } from "../Menu/Menu";
 import CreateTaskModal from "../modal/CreateTaskModal";
@@ -62,19 +63,6 @@ function TasksTabTable() {
             ? tasks
             : tasks.filter(t => t.status === filterStatus);
 
-    const getStatusIcon = (status: TaskStatus) => {
-        switch (status) {
-            case "DONE":
-                return (
-                    <CheckCircle className='text-task-completed' size={20} />
-                );
-            case "IN_PROGRESS":
-                return <Clock className='text-task-progress' size={20} />;
-            case "TODO":
-                return <Circle className='text-task-todo' size={20} />;
-        }
-    };
-
     return (
         <section>
             <div className='flex justify-between items-start'>
@@ -129,7 +117,7 @@ function TasksTabTable() {
                                 className='border-b border-brand-primary/10 hover:bg-[#2d3f54]'>
                                 <TableCell>
                                     <div className='flex items-center gap-3'>
-                                        {getStatusIcon(task.status)}
+                                        {StatusIcon(task.status)}
 
                                         <span className='font-medium'>
                                             {task.title}

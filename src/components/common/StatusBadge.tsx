@@ -5,7 +5,7 @@ function StatusBadge({ status }: { status: string }) {
         // task status
         IN_PROGRESS: "bg-task-progress-bg text-task-progress",
         TODO: "bg-task-todo-bg text-task-todo",
-        Done: "bg-task-completed-bg text-completed",
+        DONE: "bg-green-500/10 text-green-500",
 
         // task priority
         LOW: "bg-gray-500/10 text-gray-400",
@@ -20,7 +20,7 @@ function StatusBadge({ status }: { status: string }) {
 
     return (
         <Badge
-            className={`border-none rounded-full px-4 py-1 font-bold text-sm ${variants[status]}`}>
+            className={`border-none rounded-full px-3 py-1 font-medium text-xs ${variants[status]}`}>
             {status.replaceAll("_", " ")}
         </Badge>
     );

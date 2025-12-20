@@ -16,6 +16,25 @@ export interface Project {
     };
 }
 
+export interface MyTask {
+    id: string;
+    title: string;
+    description?: string;
+    status: TaskStatus;
+    priority: TaskPriority;
+    dueDate: string;
+    project: {
+        id: string;
+        name: string;
+    };
+    assignee: {
+        name: string;
+    };
+    creator: {
+        name: string;
+    };
+}
+
 export type TaskStatus = "TODO" | "IN_PROGRESS" | "DONE";
 export type TaskPriority = "LOW" | "MEDIUM" | "HIGH";
 

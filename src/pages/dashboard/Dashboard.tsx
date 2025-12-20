@@ -1,7 +1,7 @@
 import Avatar from "@/components/common/Avatar";
 import PageTitle from "@/components/common/PageTitle";
-import ProjectsTable from "@/components/table/ProjectsTable";
-import TasksTable from "@/components/table/TasksTable";
+import DashboardProjectsTable from "@/components/table/DashboardProjectsTable";
+import DashboardTasksTable from "@/components/table/DashboardTasksTable";
 
 const taskHeaders = ["task", "project", "due date", "status"];
 const projectHeaders = ["project", "status", "due date", "progress"];
@@ -91,13 +91,16 @@ function Dashboard() {
                     Latest Tasks
                 </h2>
 
-                <TasksTable headers={taskHeaders} tasks={tasks} />
+                <DashboardTasksTable headers={taskHeaders} tasks={tasks} />
             </section>
 
             <section className='space-y-2 md:space-y-3'>
                 <h2 className='text-lg font-bold tracking-wide'>Projects</h2>
 
-                <ProjectsTable headers={projectHeaders} projects={projects} />
+                <DashboardProjectsTable
+                    headers={projectHeaders}
+                    projects={projects}
+                />
             </section>
             {/* </Menu> */}
         </div>

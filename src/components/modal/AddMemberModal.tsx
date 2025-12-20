@@ -53,7 +53,7 @@ function AddMemberModal({ projectId }: AddMemberModalProps) {
     const { onClose } = useMenu();
 
     return (
-        <div className='rounded-lg border border-nav-border'>
+        <div className='rounded-lg border border-nav-border h-full'>
             {/* header */}
             <div className='flex justify-between items-center p-4 border-b border-brand-primary/10'>
                 <h2 className='text-xl font-bold text-brand-primary'>

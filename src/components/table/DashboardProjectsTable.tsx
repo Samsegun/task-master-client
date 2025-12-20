@@ -13,7 +13,7 @@ interface ProjectsTableProps {
     }[];
 }
 
-function ProjectsTable({ headers, projects }: ProjectsTableProps) {
+function DashboardProjectsTable({ headers, projects }: ProjectsTableProps) {
     return (
         <div
             className='rounded-xl rounded-t-none lg:rounded-t-xl
@@ -66,4 +66,4 @@ function ProjectsTable({ headers, projects }: ProjectsTableProps) {
     );
 }
 
-export default ProjectsTable;
+export default DashboardProjectsTable;
