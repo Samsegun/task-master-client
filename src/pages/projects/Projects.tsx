@@ -1,7 +1,8 @@
-import Button from "@/components/common/Button";
 import PageTitle from "@/components/common/PageTitle";
 import ProjectCard from "@/components/common/ProjectCard";
 import Tabs from "@/components/common/Tabs";
+import { Menu } from "@/components/Menu/Menu";
+import CreateProjectModal from "@/components/modal/CreateProjectModal";
 import type { Project, Statuses } from "@/lib/types";
 import { FolderKanban, Plus } from "lucide-react";
 import { useState } from "react";
@@ -95,13 +96,18 @@ function Projects() {
             <div className='flex justify-between items-center mb-8'>
                 <PageTitle>Projects</PageTitle>
 
-                <Button
-                    type='button'
-                    variant={"primary"}
-                    className={`invisible md:visible flex items-center gap-2`}>
-                    <Plus size={30} />
-                    New Project
-                </Button>
+                <Menu initialOpen={false}>
+                    <Menu.Trigger
+                        variant={"primary"}
+                        className=' flex items-center gap-2'>
+                        <Plus size={30} />
+                        New Project
+                    </Menu.Trigger>
+
+                    <Menu.Content direction='center' height='auto'>
+                        <CreateProjectModal />
+                    </Menu.Content>
+                </Menu>
             </div>
 
             <Tabs
@@ -111,7 +117,9 @@ function Projects() {
             />
 
             {/* projects */}
-            <section className='mt-6 md:mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-6'>
+            <section
+                className='mt-6 md:mt-10 grid grid-cols-1 md:grid-cols-2
+             lg:grid-cols-3 gap-8 md:gap-6'>
                 {filteredProjects.map(project => (
                     <ProjectCard key={project.id} project={project} />
                 ))}

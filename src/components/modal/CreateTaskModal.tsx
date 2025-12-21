@@ -252,6 +252,7 @@ function CreateTaskModal() {
                     <button
                         type='button'
                         onClick={closeModal}
+                        // disabled={isSubmitting}
                         className='flex-1 bg-[#1a2332] hover:bg-[#0f1729] text-brand-primary py-2 rounded-lg
                          transition-colors border border-brand-gray'>
                         Cancel
