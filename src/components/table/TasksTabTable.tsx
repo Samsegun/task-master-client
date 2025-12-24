@@ -4,7 +4,7 @@ import { useState } from "react";
 import StatusBadge from "../common/StatusBadge";
 import StatusIcon from "../common/StatusIcon";
 import Tabs from "../common/Tabs";
-import { Menu } from "../Menu/Menu";
+import { Dialog } from "../Dialog/Dialog";
 import CreateTaskModal from "../modal/CreateTaskModal";
 import { Table, TableBody, TableHeader, TableRow } from "../ui/table";
 import { TableCell, TableHead } from "./TableUI";
@@ -72,18 +72,19 @@ function TasksTabTable() {
                     statusList={taskStatus}
                 />
 
-                <Menu initialOpen={false}>
-                    <Menu.Trigger
+                <Dialog>
+                    <Dialog.Trigger
                         variant={"primary"}
-                        className='flex items-center gap-2'>
+                        className={`flex items-center gap-2`}>
                         <Plus size={30} />
-                        New Task
-                    </Menu.Trigger>
 
-                    <Menu.Content direction='center'>
+                        <span>New Task</span>
+                    </Dialog.Trigger>
+
+                    <Dialog.Content height='auto'>
                         <CreateTaskModal />
-                    </Menu.Content>
-                </Menu>
+                    </Dialog.Content>
+                </Dialog>
             </div>
 
             {/* tasks table */}

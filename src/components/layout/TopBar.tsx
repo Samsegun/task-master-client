@@ -67,15 +67,6 @@ function TopBar() {
                                         ))}
                                     </nav>
                                 </div>
-
-                                {/* <Button
-                                    type='button'
-                                    variant={"primary"}
-                                    className='w-full flex items-center gap-2'>
-                                    <Plus size={30} />
-
-                                    <span>New Project</span>
-                                </Button> */}
                             </div>
                         </div>
                     </Menu.Content>

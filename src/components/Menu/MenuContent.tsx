@@ -51,7 +51,8 @@ export const MenuContent: React.FC<MenuContentProps> = ({
             />
 
             <div
-                className={`${contentClasses} ${transitionClass} flex flex-col`}>
+                className={`${contentClasses} ${transitionClass} flex flex-col`}
+                onClick={e => e.stopPropagation()}>
                 {children}
             </div>
         </>,

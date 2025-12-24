@@ -7,7 +7,7 @@ import React, {
 } from "react";
 import { useLocation } from "react-router";
 
-interface MenuContextProps {
+interface MenuContextType {
     isOpen: boolean;
     onOpen: () => void;
     onClose: () => void;
@@ -19,7 +19,7 @@ export interface MenuProviderProps {
     initialOpen?: boolean;
 }
 
-const MenuContext = createContext<MenuContextProps | undefined>(undefined);
+const MenuContext = createContext<MenuContextType | undefined>(undefined);
 
 export const MenuProvider: React.FC<MenuProviderProps> = ({
     children,

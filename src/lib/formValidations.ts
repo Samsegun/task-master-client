@@ -45,6 +45,10 @@ const createTaskForm = z.object({
 });
 
 // project
+const createProject = z.object({
+    name: z.string().min(3).max(100),
+    description: z.string().max(500).optional(),
+});
 const addProjectMember = z.object({
     email: z.email("Invalid email format"),
     role: AddMemberSchema.default("MEMBER"),
@@ -52,6 +56,7 @@ const addProjectMember = z.object({
 
 export {
     addProjectMember,
+    createProject,
     createTaskForm,
     forgotPasswordForm,
     loginUserForm,

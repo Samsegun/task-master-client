@@ -3,7 +3,7 @@ import { PanelLeft, PanelRight, Plus } from "lucide-react";
 import { Link, NavLink } from "react-router";
 import Button from "../common/Button";
 import Logo from "../common/Logo";
-import { Menu } from "../Menu/Menu";
+import { Dialog } from "../Dialog/Dialog";
 import CreateProjectModal from "../modal/CreateProjectModal";
 
 interface SidebarProps {
@@ -85,8 +85,8 @@ function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
                     </nav>
                 </div>
 
-                <Menu initialOpen={false}>
-                    <Menu.Trigger
+                <Dialog>
+                    <Dialog.Trigger
                         variant={"primary"}
                         className={`w-full flex items-center gap-2 ${
                             isCollapsed ? "" : "justify-center"
@@ -94,12 +94,12 @@ function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
                         <Plus size={30} />
 
                         {!isCollapsed && <span>New Project</span>}
-                    </Menu.Trigger>
+                    </Dialog.Trigger>
 
-                    <Menu.Content direction='center' height='auto'>
+                    <Dialog.Content height='auto'>
                         <CreateProjectModal />
-                    </Menu.Content>
-                </Menu>
+                    </Dialog.Content>
+                </Dialog>
             </div>
         </aside>
     );

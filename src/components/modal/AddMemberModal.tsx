@@ -3,7 +3,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleAlert, X } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
-import { useMenu } from "../Menu/MenuContext";
+import { useDialog } from "../Dialog/DialogContext";
 import Button from "../common/Button";
 import {
     Field,
@@ -35,22 +35,21 @@ function AddMemberModal({ projectId }: AddMemberModalProps) {
             role: "MEMBER",
         },
     });
+    const { closeDialog } = useDialog();
 
     const role = form.watch("role");
 
     function closeModal() {
         form.reset();
-        onClose();
+        closeDialog();
     }
 
     function onSubmit(data: AddMemberFormData) {
         console.log(data, projectId);
 
         form.reset();
-        onClose();
+        closeDialog();
     }
-
-    const { onClose } = useMenu();
 
     return (
         <div className='rounded-lg border border-nav-border h-full'>

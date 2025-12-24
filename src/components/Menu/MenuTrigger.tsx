@@ -2,7 +2,7 @@ import React, { type ReactNode } from "react";
 import Button, { type ButtonProps } from "../common/Button";
 import { useMenu } from "./MenuContext";
 
-export interface MenuTriggerProps {
+interface MenuTriggerProps {
     children: ReactNode;
     className?: string;
     variant?: ButtonProps["variant"];

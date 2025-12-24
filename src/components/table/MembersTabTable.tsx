@@ -1,6 +1,6 @@
 import type { Member } from "@/lib/types";
 import { MoreVertical, Plus } from "lucide-react";
-import { Menu } from "../Menu/Menu";
+import { Dialog } from "../Dialog/Dialog";
 import AddMemberModal from "../modal/AddMemberModal";
 import { Table, TableBody, TableHeader, TableRow } from "../ui/table";
 import { TableCell, TableHead } from "./TableUI";
@@ -13,18 +13,19 @@ function MembersTabTable({ members }: { members: Member[] }) {
             <div className='flex justify-between items-center mb-4'>
                 <h2 className='text-xl font-semibold'>Team Members</h2>
 
-                <Menu initialOpen={false}>
-                    <Menu.Trigger
+                <Dialog>
+                    <Dialog.Trigger
                         variant={"primary"}
-                        className='flex items-center gap-2'>
+                        className={`flex items-center gap-2`}>
                         <Plus size={30} />
-                        Add Member
-                    </Menu.Trigger>
 
-                    <Menu.Content direction='center' height='auto'>
+                        <span>Add Member</span>
+                    </Dialog.Trigger>
+
+                    <Dialog.Content height='auto'>
                         <AddMemberModal projectId='23' />
-                    </Menu.Content>
-                </Menu>
+                    </Dialog.Content>
+                </Dialog>
             </div>
 
             {/* members table */}

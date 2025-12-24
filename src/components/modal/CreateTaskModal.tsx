@@ -6,7 +6,7 @@ import { format } from "date-fns";
 import { X } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
-import { useMenu } from "../Menu/MenuContext";
+import { useDialog } from "../Dialog/DialogContext";
 import Button from "../common/Button";
 import { Calendar } from "../ui/calendar";
 import {
@@ -29,7 +29,7 @@ import {
 type CreateTaskFormData = z.input<typeof createTaskForm>;
 
 function CreateTaskModal() {
-    const { onClose } = useMenu();
+    const { closeDialog } = useDialog();
     const form = useForm<CreateTaskFormData>({
         resolver: zodResolver(createTaskForm),
         defaultValues: {
@@ -42,14 +42,14 @@ function CreateTaskModal() {
 
     function closeModal() {
         form.reset();
-        onClose();
+        closeDialog();
     }
 
     function onSubmit(data: CreateTaskFormData) {
         console.log(data);
 
         form.reset();
-        onClose();
+        closeDialog();
     }
 
     return (
@@ -253,7 +253,7 @@ function CreateTaskModal() {
                         type='button'
                         onClick={closeModal}
                         // disabled={isSubmitting}
-                        className='flex-1 bg-[#1a2332] hover:bg-[#0f1729] text-brand-primary py-2 rounded-lg
+                        className='flex-1 bg-[#1a2332] hover:bg-[#0f1729] disabled:opacity-50 text-brand-primary py-2 rounded-lg
                          transition-colors border border-brand-gray'>
                         Cancel
                     </button>

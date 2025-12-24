@@ -1,7 +1,7 @@
 import PageTitle from "@/components/common/PageTitle";
 import ProjectCard from "@/components/common/ProjectCard";
 import Tabs from "@/components/common/Tabs";
-import { Menu } from "@/components/Menu/Menu";
+import { Dialog } from "@/components/Dialog/Dialog";
 import CreateProjectModal from "@/components/modal/CreateProjectModal";
 import type { Project, Statuses } from "@/lib/types";
 import { FolderKanban, Plus } from "lucide-react";
@@ -96,18 +96,18 @@ function Projects() {
             <div className='flex justify-between items-center mb-8'>
                 <PageTitle>Projects</PageTitle>
 
-                <Menu initialOpen={false}>
-                    <Menu.Trigger
+                <Dialog>
+                    <Dialog.Trigger
                         variant={"primary"}
                         className=' flex items-center gap-2'>
                         <Plus size={30} />
                         New Project
-                    </Menu.Trigger>
+                    </Dialog.Trigger>
 
-                    <Menu.Content direction='center' height='auto'>
+                    <Dialog.Content height='auto'>
                         <CreateProjectModal />
-                    </Menu.Content>
-                </Menu>
+                    </Dialog.Content>
+                </Dialog>
             </div>
 
             <Tabs
