@@ -44,6 +44,12 @@ export type UserCredentials = {
     password: string;
 };
 
+export type ResetPasswordCredentials = {
+    token: string;
+    password: string;
+    email: string;
+};
+
 // type ResetPasswordDetails = {
 //     token: string;
 //     password: string;

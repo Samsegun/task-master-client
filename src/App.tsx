@@ -4,8 +4,12 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 import "./App.css";
 import AuthRoutes from "./components/layout/AuthRoutes";
 import ProtectedRoutes from "./components/layout/ProtectedRoutes";
+import ForgotPassword from "./pages/auth/ForgotPassword";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
+import ResetPassword from "./pages/auth/ResetPassword";
+import VerificationEmailSent from "./pages/auth/VerificationEmailSent";
+import VerifyEmail from "./pages/auth/VerifyEmail";
 import Dashboard from "./pages/dashboard/Dashboard";
 import ProjectDetails from "./pages/projects/ProjectDetails";
 import Projects from "./pages/projects/Projects";
@@ -33,6 +37,19 @@ function App() {
                     <Route element={<AuthRoutes />}>
                         <Route path='login' element={<Login />} />
                         <Route path='register' element={<Register />} />
+                        <Route
+                            path='forgot-password'
+                            element={<ForgotPassword />}
+                        />
+                        <Route
+                            path='reset-password'
+                            element={<ResetPassword />}
+                        />
+                        <Route path='verify-email' element={<VerifyEmail />} />
+                        <Route
+                            path='email-verification-sent'
+                            element={<VerificationEmailSent />}
+                        />
                     </Route>
                 </Routes>
             </BrowserRouter>

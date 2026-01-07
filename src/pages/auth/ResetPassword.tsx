@@ -6,79 +6,53 @@ import {
     FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { useRegisterUser } from "@/hooks/useAuth";
-import { registerUserForm } from "@/lib/formValidations";
+import { useResetPassword } from "@/hooks/useAuth";
+import { resetPasswordForm } from "@/lib/formValidations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff, Info, X } from "lucide-react";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Link } from "react-router";
+import toast from "react-hot-toast";
+import { useSearchParams } from "react-router";
 import * as z from "zod";
 
-function Register() {
+function ResetPassword() {
     const [showPassword, setShowPassword] = useState(false);
     const [showPasswordReqs, setShowPasswordReqs] = useState(false);
-    const signupMutation = useRegisterUser();
-
-    const form = useForm<z.infer<typeof registerUserForm>>({
-        resolver: zodResolver(registerUserForm),
+    const [searchParams] = useSearchParams();
+    const resetPasswordMutation = useResetPassword();
+    const form = useForm<z.infer<typeof resetPasswordForm>>({
+        resolver: zodResolver(resetPasswordForm),
         defaultValues: {
-            email: "",
             password: "",
         },
     });
 
-    function onSubmit(data: z.infer<typeof registerUserForm>) {
-        console.log(data);
-        const { email, password } = data;
+    const token = searchParams.get("token");
+    const email = searchParams.get("email");
 
-        signupMutation.mutate({ email, password });
+    async function onSubmit(values: z.infer<typeof resetPasswordForm>) {
+        const { password } = values;
+
+        if (!token || !email) {
+            toast.error("Invalid or missing reset link parameters");
+            return;
+        }
+
+        resetPasswordMutation.mutate({ token, password, email });
     }
 
     return (
         <>
             <div className='text-center'>
-                <h1 className='text-3xl font-extrabold'>Create your account</h1>
-
-                <p>
-                    or{" "}
-                    <span
-                        className='font-medium text-brand-link text-sm
-                         hover:text-brand-link/90'>
-                        <Link to={"/login"}>
-                            log in if you already have an account{" "}
-                        </Link>
-                    </span>
-                </p>
+                <h1 className='text-3xl font-extrabold'>Reset Password</h1>
             </div>
 
             <form
-                id='register-user'
+                id='forgot-password'
                 onSubmit={form.handleSubmit(onSubmit)}
                 className='mt-8 space-y-6'>
                 <FieldGroup>
-                    {" "}
-                    <Controller
-                        name='email'
-                        control={form.control}
-                        render={({ field, fieldState }) => (
-                            <Field data-invalid={fieldState.invalid}>
-                                <FieldLabel htmlFor='register-user-email'>
-                                    Email
-                                </FieldLabel>
-                                <Input
-                                    {...field}
-                                    id='register-user-email'
-                                    aria-invalid={fieldState.invalid}
-                                    placeholder='user@mail.com'
-                                    autoComplete='off'
-                                />
-                                {fieldState.invalid && (
-                                    <FieldError errors={[fieldState.error]} />
-                                )}
-                            </Field>
-                        )}
-                    />
                     <Controller
                         name='password'
                         control={form.control}
@@ -117,6 +91,7 @@ function Register() {
                             </Field>
                         )}
                     />
+
                     <div>
                         <button
                             type='button'
@@ -159,17 +134,14 @@ function Register() {
 
                 <Button
                     type='submit'
-                    disabled={signupMutation.isPending}
-                    form='register-user'
                     variant={"primary"}
-                    className='w-full mt-4'>
-                    {signupMutation.isPending
-                        ? "Creating account"
-                        : "Create account"}
+                    disabled={resetPasswordMutation.isPending}
+                    className='w-full'>
+                    {resetPasswordMutation.isPending ? "Resetting..." : "Reset"}
                 </Button>
             </form>
         </>
     );
 }
 
-export default Register;
+export default ResetPassword;
