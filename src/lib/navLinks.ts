@@ -1,5 +1,10 @@
 import type { LucideIcon } from "lucide-react";
-import { CheckSquare, FolderKanban, LayoutDashboard } from "lucide-react";
+import {
+    CheckSquare,
+    CircleUserRound,
+    FolderKanban,
+    LayoutDashboard,
+} from "lucide-react";
 
 interface NavLinkConfig {
     to: string;
@@ -23,11 +28,11 @@ export const navLinks: NavLinkConfig[] = [
         label: "Projects",
         Icon: FolderKanban,
     },
-    //   {
-    //     to: "/settings",
-    //     label: "Settings",
-    //     Icon: Settings,
-    //   },
+    {
+        to: "/profile",
+        label: "Profile",
+        Icon: CircleUserRound,
+    },
 ];
 
 export const navLinksBaseClasses =

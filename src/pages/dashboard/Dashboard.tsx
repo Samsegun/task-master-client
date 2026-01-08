@@ -1,7 +1,18 @@
 import Avatar from "@/components/common/Avatar";
+import Button from "@/components/common/Button";
 import PageTitle from "@/components/common/PageTitle";
 import DashboardProjectsTable from "@/components/table/DashboardProjectsTable";
 import DashboardTasksTable from "@/components/table/DashboardTasksTable";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { LogOutIcon } from "lucide-react";
+import { Link } from "react-router";
 
 const taskHeaders = ["task", "project", "due date", "status"];
 const projectHeaders = ["project", "status", "due date", "progress"];
@@ -51,40 +62,43 @@ const projects = [
 function Dashboard() {
     return (
         <div className='space-y-10 xl:space-y-12'>
-            {/* <Menu initialOpen={false}> */}
             <div className='flex justify-between items-center'>
                 <PageTitle>Good morning, Sophia</PageTitle>
 
                 <div className='hidden md:block'>
-                    <Avatar
-                        name='Sophia willson'
-                        occupation='product manager'
-                        src='xxxxx'
-                    />
+                    <DropdownMenu>
+                        <DropdownMenuTrigger className='cursor-pointer'>
+                            <div>
+                                <Avatar
+                                    name='Sophia willson'
+                                    occupation='product manager'
+                                    src='xxxxx'
+                                />
+                            </div>
+                        </DropdownMenuTrigger>
+
+                        <DropdownMenuContent>
+                            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem>
+                                <Link
+                                    to={"/profile"}
+                                    className='flex basis-full'>
+                                    Profile
+                                </Link>
+                            </DropdownMenuItem>
+
+                            <DropdownMenuItem>
+                                <Button
+                                    variant={"transparent"}
+                                    className='hover:text-red-500 flex gap-2'>
+                                    <span>Logout</span> <LogOutIcon />
+                                </Button>
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                 </div>
             </div>
-
-            {/* <Menu.Trigger>
-                    <span>Modal</span>
-                </Menu.Trigger>
-
-                <Menu.Content direction='center'>
-                    <section className=''>
-                        <h2>Modal</h2>
-                        <p>
-                            Lorem ipsum dolor sit amet consectetur adipisicing
-                            elit. Fuga labore, voluptatibus maiores maxime
-                            numquam deserunt autem voluptate placeat voluptas
-                            officia. Lorem ipsum dolor sit amet consectetur
-                            adipisicing elit. Ab nisi sunt blanditiis dicta
-                            omnis Lorem ipsum dolor sit amet consectetur,
-                            adipisicing elit. Quas dicta molestiae eaque magnam,
-                            porro, quae possimus ad minus, voluptate nulla quis
-                            id iure nisi deleniti quibusdam accusamus provident.
-                            Labore, sunt?
-                        </p>
-                    </section>
-                </Menu.Content> */}
 
             <section className='space-y-2 md:space-y-3'>
                 <h2 className='text-lg font-bold tracking-wide'>

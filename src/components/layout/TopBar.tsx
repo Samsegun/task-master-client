@@ -1,7 +1,7 @@
 import { navLinks, navLinksBaseClasses } from "@/lib/navLinks";
-import { Menu as MenuIcon, X } from "lucide-react";
+import { LogOutIcon, Menu as MenuIcon, X } from "lucide-react";
 import { Link, NavLink } from "react-router";
-import Avatar from "../common/Avatar";
+import Button from "../common/Button";
 import Header from "../common/Header";
 import Logo from "../common/Logo";
 import { Menu } from "../Menu/Menu";
@@ -35,11 +35,11 @@ function TopBar() {
                                 className='flex-1 overflow-y-hidden p-4 md:pt-6 
              flex flex-col justify-between'>
                                 <div className='space-y-10'>
-                                    <Avatar
+                                    {/* <Avatar
                                         name='Sophia willson'
                                         occupation='product manager'
                                         src='xxxxx'
-                                    />
+                                    /> */}
 
                                     <nav className='space-y-7'>
                                         {navLinks.map(({ Icon, label, to }) => (
@@ -65,6 +65,12 @@ function TopBar() {
                                                 <span>{label}</span>
                                             </NavLink>
                                         ))}
+
+                                        <Button
+                                            variant={"transparent"}
+                                            className='text-red-500 flex gap-2'>
+                                            <span>Logout</span> <LogOutIcon />
+                                        </Button>
                                     </nav>
                                 </div>
                             </div>

@@ -11,6 +11,7 @@ import ResetPassword from "./pages/auth/ResetPassword";
 import VerificationEmailSent from "./pages/auth/VerificationEmailSent";
 import VerifyEmail from "./pages/auth/VerifyEmail";
 import Dashboard from "./pages/dashboard/Dashboard";
+import Profile from "./pages/profile/Profile";
 import ProjectDetails from "./pages/projects/ProjectDetails";
 import Projects from "./pages/projects/Projects";
 import Tasks from "./pages/tasks/Tasks";
@@ -32,6 +33,7 @@ function App() {
                             element={<ProjectDetails />}
                         />
                         <Route path='tasks' element={<Tasks />} />
+                        <Route path='profile' element={<Profile />} />
                     </Route>
 
                     <Route element={<AuthRoutes />}>
