@@ -1,22 +1,26 @@
 // import { useAuthStatus } from "@/hooks/useAuth";
-import { Outlet } from "react-router";
+import { useAuthStatus } from "@/hooks/useAuth";
+import { Navigate, Outlet, useLocation } from "react-router";
 import Header from "../common/Header";
 import Logo from "../common/Logo";
 // import LoadingIcon from "./LoadingIcon";
 
 function AuthRoutes() {
-    // const location = useLocation();
-    // const { isLoading, isError, userRole } = useAuthStatus();
+    const { isAuthenticated, isLoading } = useAuthStatus();
+    const location = useLocation();
 
-    // const from = location.state?.from?.pathname || "/";
+    if (isLoading) {
+        return (
+            <div className='flex h-screen items-center justify-center'>
+                <p>Verifying Session...</p>
+            </div>
+        );
+    }
 
-    // if (isLoading) {
-    //     return <LoadingIcon />;
-    // }
-
-    // if (!isError && userRole) {
-    //     return <Navigate to={from} replace />;
-    // }
+    // if the query finishes and no user is found, redirect
+    if (!isAuthenticated) {
+        return <Navigate to='/login' state={{ from: location }} replace />;
+    }
 
     return (
         <div>

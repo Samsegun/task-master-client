@@ -16,7 +16,7 @@ import ProjectDetails from "./pages/projects/ProjectDetails";
 import Projects from "./pages/projects/Projects";
 import Tasks from "./pages/tasks/Tasks";
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 
 function App() {
     return (

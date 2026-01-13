@@ -116,7 +116,6 @@ function Dashboard() {
                     projects={projects}
                 />
             </section>
-            {/* </Menu> */}
         </div>
     );
 }

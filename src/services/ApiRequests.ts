@@ -1,4 +1,5 @@
 import type {
+    AuthStatus,
     ForgotPassword,
     LoginUser,
     LogoutUser,
@@ -42,6 +43,10 @@ export const resetPassword = (token: string, password: string) => {
 
 export const verifyEmail = (token: string) => {
     return axiosInstance.get<VerifyEmail>(`/auth/verify-email?token=${token}`);
+};
+
+export const checkAuthStatus = () => {
+    return axiosInstance.get<AuthStatus>("/auth/me");
 };
 
 /* End of auth requests */

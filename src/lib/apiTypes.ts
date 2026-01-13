@@ -50,10 +50,19 @@ export type ResetPasswordCredentials = {
     email: string;
 };
 
+export type AuthStatus = {
+    success: boolean;
+    isAuthenticated: boolean;
+    authMethod: string;
+    user: {
+        userId: string;
+        role: string;
+        isVerified: boolean;
+    };
+};
+
 // type ResetPasswordDetails = {
 //     token: string;
 //     password: string;
 //     email: string;
 // };
-
-// export const AUTH_STATUS_QUERY_KEY = ["authStatus"] as const;
