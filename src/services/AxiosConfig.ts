@@ -92,7 +92,7 @@ axiosInstance.interceptors.response.use(
                         refreshErrorCode === "REFRESH_TOKEN_MISSING"
                     ) {
                         queryClient.clear();
-                        window.location.href = "/login";
+                        // window.location.href = "/login";
                     }
 
                     return Promise.reject(refreshError);
@@ -104,8 +104,7 @@ axiosInstance.interceptors.response.use(
                 errorCode === "TOKEN_MISSING" ||
                 errorCode === "AUTH_FAILED"
             ) {
-                // localStorage.removeItem("user");
-                window.location.href = "/login";
+                // window.location.href = "/login";
                 return Promise.reject(error);
             }
         }

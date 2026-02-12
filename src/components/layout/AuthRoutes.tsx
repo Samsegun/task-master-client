@@ -2,24 +2,26 @@
 import { useAuthStatus } from "@/hooks/useAuth";
 import { Navigate, Outlet, useLocation } from "react-router";
 import Header from "../common/Header";
+import LoadingIcon from "../common/LoadingIcon";
 import Logo from "../common/Logo";
-// import LoadingIcon from "./LoadingIcon";
 
 function AuthRoutes() {
-    const { isAuthenticated, isLoading } = useAuthStatus();
+    const { isLoading, isAuthenticated } = useAuthStatus();
     const location = useLocation();
+
+    // useEffect(() => {
+    //     if (isError) {
+    //         console.log(error);
+    //         toast.error(customErr?.message || "Authentication failed");
+    //     }
+    // }, [isError, error, customErr]);
 
     const from = location.state?.from?.pathname || "/";
 
     if (isLoading) {
-        return (
-            <div className='flex h-screen items-center justify-center'>
-                <p>Verifying Session...</p>
-            </div>
-        );
+        return <LoadingIcon />;
     }
 
-    // if the query finishes and no user is found, redirect
     if (isAuthenticated) {
         return <Navigate to={from} replace />;
     }

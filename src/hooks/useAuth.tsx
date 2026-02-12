@@ -93,17 +93,12 @@ export const useAuthStatus = () => {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
 
-    const {
-        data: user,
-        isLoading,
-        isError,
-        error,
-    } = useQuery({
+    const { data, isLoading, isError, error } = useQuery({
         queryKey: AUTH_STATUS_QUERY_KEY,
         queryFn: checkAuthStatus,
         refetchOnWindowFocus: false,
         retry: false,
-        staleTime: 1000 * 60 * 5, // data fresh for 5 mins
+        staleTime: 5 * 60 * 1000, // data fresh for 5 mins
     });
 
     const logoutMutation = useMutation({
@@ -115,10 +110,12 @@ export const useAuthStatus = () => {
         },
     });
 
-    // Debugging logs
-    if (isLoading) console.log("Status: Loading...");
-    if (isError) console.log("Status: Error", error); // Likely a 401 or 403
-    if (user) console.log("Status: Success", user);
+    const user = data?.data.success ? data.data : null;
+    let customErr: { message: string; code: string } | null = null;
+
+    if (isError) {
+        customErr = (error as any).response.data.error;
+    }
 
     return {
         user,
@@ -126,6 +123,8 @@ export const useAuthStatus = () => {
         isAuthenticated: !!user,
         isError,
         error,
-        logout: logoutMutation,
+        customErr,
+        logout: logoutMutation.mutate,
+        isLoggingOut: logoutMutation.isPending,
     };
 };

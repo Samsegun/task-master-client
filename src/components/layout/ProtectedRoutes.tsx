@@ -1,26 +1,22 @@
 // import { useAuthStatus } from "@/hooks/useAuth";
 import { useState } from "react";
-import { Navigate, Outlet, useLocation } from "react-router";
+import { Navigate, Outlet } from "react-router";
 // import ClaudeSidebar from "./ClaudeSidebar";
 import { useAuthStatus } from "@/hooks/useAuth";
+import LoadingIcon from "../common/LoadingIcon";
 import Navbar from "./Navbar";
-// import LoadingIcon from "./LoadingIcon";
 
 function ProtectedRoutes() {
     const [isCollapsed, setIsCollapsed] = useState(false);
     const { isLoading, isAuthenticated } = useAuthStatus();
-    const location = useLocation();
+    // const location = useLocation();
 
     if (isLoading) {
-        return (
-            <div className='flex h-screen items-center justify-center'>
-                <p className='text-2xl font-bold'>Loading...</p>
-            </div>
-        );
+        return <LoadingIcon />;
     }
 
     if (!isAuthenticated) {
-        return <Navigate to='/login' state={{ from: location }} replace />;
+        return <Navigate to={"/login"} replace />;
     }
 
     return (
