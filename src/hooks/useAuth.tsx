@@ -115,6 +115,11 @@ export const useAuthStatus = () => {
         },
     });
 
+    // Debugging logs
+    if (isLoading) console.log("Status: Loading...");
+    if (isError) console.log("Status: Error", error); // Likely a 401 or 403
+    if (user) console.log("Status: Success", user);
+
     return {
         user,
         isLoading,

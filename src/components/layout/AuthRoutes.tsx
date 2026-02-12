@@ -9,6 +9,8 @@ function AuthRoutes() {
     const { isAuthenticated, isLoading } = useAuthStatus();
     const location = useLocation();
 
+    const from = location.state?.from?.pathname || "/";
+
     if (isLoading) {
         return (
             <div className='flex h-screen items-center justify-center'>
@@ -18,8 +20,8 @@ function AuthRoutes() {
     }
 
     // if the query finishes and no user is found, redirect
-    if (!isAuthenticated) {
-        return <Navigate to='/login' state={{ from: location }} replace />;
+    if (isAuthenticated) {
+        return <Navigate to={from} replace />;
     }
 
     return (

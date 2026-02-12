@@ -52,17 +52,11 @@ export type ResetPasswordCredentials = {
 
 export type AuthStatus = {
     success: boolean;
-    isAuthenticated: boolean;
-    authMethod: string;
-    user: {
-        userId: string;
-        role: string;
+    data: {
+        id: string;
+        email: string;
+        username: string;
+        role: Role;
         isVerified: boolean;
     };
 };
-
-// type ResetPasswordDetails = {
-//     token: string;
-//     password: string;
-//     email: string;
-// };
