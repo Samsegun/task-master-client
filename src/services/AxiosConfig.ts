@@ -104,7 +104,7 @@ axiosInstance.interceptors.response.use(
                 errorCode === "TOKEN_MISSING" ||
                 errorCode === "AUTH_FAILED"
             ) {
-                localStorage.removeItem("user");
+                // localStorage.removeItem("user");
                 window.location.href = "/login";
                 return Promise.reject(error);
             }

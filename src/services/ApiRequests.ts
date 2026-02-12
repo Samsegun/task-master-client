@@ -9,7 +9,7 @@ import type {
 } from "../lib/apiTypes";
 import axiosInstance from "./AxiosConfig";
 
-/* Start of auth requests */
+/* start of auth requests */
 export const registerUser = (email: string, password: string) => {
     return axiosInstance.post<RegisterUser>("/auth/register", {
         email,
@@ -46,7 +46,7 @@ export const verifyEmail = (token: string) => {
 };
 
 export const checkAuthStatus = () => {
-    return axiosInstance.get<AuthStatus>("/auth/me");
+    return axiosInstance.get<AuthStatus>("/v1/users/me");
 };
 
-/* End of auth requests */
+/* end of auth requests */
