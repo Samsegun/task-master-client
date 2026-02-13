@@ -1,3 +1,4 @@
+import { useAuthStatus } from "@/hooks/useAuth";
 import { navLinks, navLinksBaseClasses } from "@/lib/navLinks";
 import { LogOutIcon, Menu as MenuIcon, X } from "lucide-react";
 import { Link, NavLink } from "react-router";
@@ -7,6 +8,8 @@ import Logo from "../common/Logo";
 import { Menu } from "../Menu/Menu";
 
 function TopBar() {
+    const { logout } = useAuthStatus();
+
     return (
         <Header className='block md:hidden bg-brand-bg fixed top-0 left-0 right-0 z-50'>
             <div>
@@ -67,6 +70,7 @@ function TopBar() {
                                         ))}
 
                                         <Button
+                                            onClick={() => logout.mutate()}
                                             variant={"transparent"}
                                             className='text-red-500 flex gap-2'>
                                             <span>Logout</span> <LogOutIcon />

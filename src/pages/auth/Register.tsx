@@ -29,7 +29,6 @@ function Register() {
     });
 
     function onSubmit(data: z.infer<typeof registerUserForm>) {
-        console.log(data);
         const { email, password } = data;
 
         signupMutation.mutate({ email, password });

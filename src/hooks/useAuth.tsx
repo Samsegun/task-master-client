@@ -10,7 +10,7 @@ import {
 } from "@/services/ApiRequests";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 export const AUTH_STATUS_QUERY_KEY = ["authStatus"] as const;
 
@@ -24,14 +24,15 @@ export const useRegisterUser = () => {
             navigate("/email-verification-sent");
         },
         onError: (err: any) => {
-            console.log(err);
-            toast.error(err.response.data.message);
+            toast.error(err.response.data.error.message);
         },
     });
 };
 
 export const useSignin = () => {
     const queryClient = useQueryClient();
+    const navigate = useNavigate();
+    const location = useLocation();
 
     return useMutation({
         mutationFn: ({ email, password }: UserCredentials) =>
@@ -40,9 +41,12 @@ export const useSignin = () => {
             await queryClient.invalidateQueries({
                 queryKey: AUTH_STATUS_QUERY_KEY,
             });
+
+            const from = location.state?.from?.pathname || "/";
+            navigate(from, { replace: true });
         },
         onError: (err: any) => {
-            toast.error(err.response.data.message);
+            toast.error(err.response.data.error.message);
         },
     });
 };
@@ -59,7 +63,9 @@ export const useVerifyEmail = () => {
                 queryKey: AUTH_STATUS_QUERY_KEY,
             });
         },
-        onError: err => toast.error(err.message),
+        onError: (err: any) => {
+            toast.error(err.response.data.error.message);
+        },
     });
 };
 
@@ -70,7 +76,9 @@ export const useForgotPassword = () => {
         onSuccess: response => {
             toast.success(response.data.message);
         },
-        onError: err => toast.error(err.message),
+        onError: (err: any) => {
+            toast.error(err.response.data.error.message);
+        },
     });
 };
 
@@ -85,7 +93,9 @@ export const useResetPassword = () => {
 
             navigate(`/login?email=${encodeURIComponent(variables.email)}`);
         },
-        onError: err => toast.error(err.message),
+        onError: (err: any) => {
+            toast.error(err.response.data.error.message);
+        },
     });
 };
 
@@ -124,7 +134,6 @@ export const useAuthStatus = () => {
         isError,
         error,
         customErr,
-        logout: logoutMutation.mutate,
-        isLoggingOut: logoutMutation.isPending,
+        logout: logoutMutation,
     };
 };

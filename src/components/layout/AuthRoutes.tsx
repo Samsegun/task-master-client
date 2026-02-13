@@ -1,4 +1,3 @@
-// import { useAuthStatus } from "@/hooks/useAuth";
 import { useAuthStatus } from "@/hooks/useAuth";
 import { Navigate, Outlet, useLocation } from "react-router";
 import Header from "../common/Header";

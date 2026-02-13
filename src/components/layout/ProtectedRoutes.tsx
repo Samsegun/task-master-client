@@ -1,22 +1,20 @@
-// import { useAuthStatus } from "@/hooks/useAuth";
-import { useState } from "react";
-import { Navigate, Outlet } from "react-router";
-// import ClaudeSidebar from "./ClaudeSidebar";
 import { useAuthStatus } from "@/hooks/useAuth";
+import { useState } from "react";
+import { Navigate, Outlet, useLocation } from "react-router";
 import LoadingIcon from "../common/LoadingIcon";
 import Navbar from "./Navbar";
 
 function ProtectedRoutes() {
     const [isCollapsed, setIsCollapsed] = useState(false);
-    const { isLoading, isAuthenticated } = useAuthStatus();
-    // const location = useLocation();
+    const { isLoading, isAuthenticated, isError } = useAuthStatus();
+    const location = useLocation();
 
     if (isLoading) {
         return <LoadingIcon />;
     }
 
-    if (!isAuthenticated) {
-        return <Navigate to={"/login"} replace />;
+    if (!isAuthenticated || isError) {
+        return <Navigate to={"/login"} state={{ from: location }} replace />;
     }
 
     return (

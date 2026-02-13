@@ -11,6 +11,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { useAuthStatus } from "@/hooks/useAuth";
 import { LogOutIcon } from "lucide-react";
 import { Link } from "react-router";
 
@@ -60,6 +61,8 @@ const projects = [
 ];
 
 function Dashboard() {
+    const { logout } = useAuthStatus();
+
     return (
         <div className='space-y-10 xl:space-y-12'>
             <div className='flex justify-between items-center'>
@@ -90,6 +93,7 @@ function Dashboard() {
 
                             <DropdownMenuItem>
                                 <Button
+                                    onClick={() => logout.mutate()}
                                     variant={"transparent"}
                                     className='hover:text-red-500 flex gap-2'>
                                     <span>Logout</span> <LogOutIcon />

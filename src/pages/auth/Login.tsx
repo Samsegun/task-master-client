@@ -6,6 +6,7 @@ import {
     FieldLabel,
 } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
+import { useSignin } from "@/hooks/useAuth";
 import { loginUserForm } from "@/lib/formValidations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
@@ -16,6 +17,7 @@ import * as z from "zod";
 
 function Login() {
     const [showPassword, setShowPassword] = useState(false);
+    const signinMutation = useSignin();
 
     const form = useForm<z.infer<typeof loginUserForm>>({
         resolver: zodResolver(loginUserForm),
@@ -26,7 +28,9 @@ function Login() {
     });
 
     function onSubmit(data: z.infer<typeof loginUserForm>) {
-        console.log(data);
+        const { email, password } = data;
+
+        signinMutation.mutate({ email, password });
     }
 
     return (
@@ -115,10 +119,11 @@ function Login() {
 
                 <Button
                     type='submit'
+                    disabled={signinMutation.isPending}
                     form='login-user'
                     variant={"primary"}
-                    className='w-full mt-4'>
-                    Create account
+                    className={"w-full mt-4"}>
+                    {signinMutation.isPending ? "Signing in..." : "Sign In"}
                 </Button>
             </form>
         </>
