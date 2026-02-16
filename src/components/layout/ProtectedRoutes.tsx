@@ -18,7 +18,7 @@ function ProtectedRoutes() {
     }
 
     return (
-        <div className=''>
+        <div>
             <Navbar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
 
             <div
