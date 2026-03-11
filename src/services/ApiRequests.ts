@@ -50,3 +50,10 @@ export const checkAuthStatus = () => {
 };
 
 /* end of auth requests */
+
+/* start of project requests */
+export const getAllProjects = () => {
+    return axiosInstance.get("/v1/projects");
+};
+
+/* end of project requests */
