@@ -1,5 +1,13 @@
 type Role = "USER" | "MODERATOR" | "ADMIN" | "SUPER_ADMIN";
 
+type ProjectStatus = "ACTIVE" | "COMPLETED" | "ARCHIVED";
+
+type ProjectRole = "OWNER" | "MEMBER";
+
+type TaskStatus = "TODO" | "IN_PROGRESS" | "DONE";
+
+type TaskPriority = "LOW" | "MEDIUM" | "HIGH";
+
 export type RegisterUser = {
     success: boolean;
     message: string;
@@ -59,4 +67,24 @@ export type AuthStatus = {
         role: Role;
         isVerified: boolean;
     };
+};
+
+export type MyTasks = {
+    success: boolean;
+    tasks: {
+        assigneeId: string;
+        completedAt: boolean | null;
+        createdAt: string;
+        creator: { id: string; email: string };
+        creatorId: string;
+        description: string;
+        dueDate: string;
+        id: string;
+        priority: TaskPriority;
+        project: { id: string; name: string };
+        projectId: string;
+        status: TaskStatus;
+        title: string;
+        updatedAt: string;
+    }[];
 };

@@ -1,18 +1,32 @@
 import { Table, TableBody, TableHeader, TableRow } from "@/components/ui/table";
+import { useGetMyTasks } from "@/hooks/useTasks";
+import { formatDate } from "@/lib/utils";
+import { DataLoadingIcon } from "../common/LoadingIcon";
 import StatusBadge from "../common/StatusBadge";
 import { TableCell, TableHead } from "./TableUI";
 
-interface TasksTableProps {
-    headers: string[];
-    tasks: {
-        name: string;
-        project: string;
-        dueDate: string;
-        status: string;
-    }[];
-}
+// interface TasksTableProps {
+//     tasks: {
+//         name: string;
+//         project: string;
+//         dueDate: string;
+//         status: string;
+//     }[];
+// }
 
-function DashboardTasksTable({ headers, tasks }: TasksTableProps) {
+const headers = ["task", "project", "due date", "status"];
+
+function DashboardTasksTable() {
+    const { myTasks, isLoading, isError, error } = useGetMyTasks();
+
+    if (isLoading) {
+        return <DataLoadingIcon />;
+    }
+
+    if (isError) {
+        return <div>Something went wrong :( {error?.message}</div>;
+    }
+
     return (
         <div
             className='rounded-xl rounded-t-none lg:rounded-t-xl
@@ -33,20 +47,20 @@ function DashboardTasksTable({ headers, tasks }: TasksTableProps) {
                 </TableHeader>
 
                 <TableBody>
-                    {tasks.map(t => (
+                    {myTasks!.map(t => (
                         <TableRow
-                            key={t.name}
+                            key={t.title}
                             className='border-b border-brand-primary/10 hover:bg-[#2d3f54]'>
                             <TableCell className='font-medium capitalize'>
-                                {t.name}
+                                {t.title}
                             </TableCell>
 
                             <TableCell className='text-brand-primary/70'>
-                                {t.project}
+                                {t.project.name}
                             </TableCell>
 
                             <TableCell className='text-brand-primary/70'>
-                                {t.dueDate}
+                                {formatDate(t.dueDate)}
                             </TableCell>
 
                             <TableCell>

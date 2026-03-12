@@ -15,29 +15,26 @@ import { useAuthStatus } from "@/hooks/useAuth";
 import { LogOutIcon } from "lucide-react";
 import { Link } from "react-router";
 
-const taskHeaders = ["task", "project", "due date", "status"];
-const projectHeaders = ["project", "status", "due date", "progress"];
-
-const tasks = [
-    {
-        name: "Design landing page",
-        project: "Marketing Campaign",
-        dueDate: "Jul 15, 2024",
-        status: "IN_PROGRESS",
-    },
-    {
-        name: "Develop user onboarding flow",
-        project: "Product Launch",
-        dueDate: "Jul 20, 2024",
-        status: "DONE",
-    },
-    {
-        name: "Write blog post",
-        project: "Content Strategy",
-        dueDate: "Jul 25, 2024",
-        status: "TODO",
-    },
-];
+// const tasks = [
+//     {
+//         name: "Design landing page",
+//         project: "Marketing Campaign",
+//         dueDate: "Jul 15, 2024",
+//         status: "IN_PROGRESS",
+//     },
+//     {
+//         name: "Develop user onboarding flow",
+//         project: "Product Launch",
+//         dueDate: "Jul 20, 2024",
+//         status: "DONE",
+//     },
+//     {
+//         name: "Write blog post",
+//         project: "Content Strategy",
+//         dueDate: "Jul 25, 2024",
+//         status: "TODO",
+//     },
+// ];
 
 const projects = [
     {
@@ -109,16 +106,13 @@ function Dashboard() {
                     Latest Tasks
                 </h2>
 
-                <DashboardTasksTable headers={taskHeaders} tasks={tasks} />
+                <DashboardTasksTable />
             </section>
 
             <section className='space-y-2 md:space-y-3'>
                 <h2 className='text-lg font-bold tracking-wide'>Projects</h2>
 
-                <DashboardProjectsTable
-                    headers={projectHeaders}
-                    projects={projects}
-                />
+                <DashboardProjectsTable projects={projects} />
             </section>
         </div>
     );

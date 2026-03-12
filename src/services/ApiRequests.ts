@@ -3,57 +3,67 @@ import type {
     ForgotPassword,
     LoginUser,
     LogoutUser,
+    MyTasks,
     RegisterUser,
     ResetPassword,
     VerifyEmail,
 } from "../lib/apiTypes";
 import axiosInstance from "./AxiosConfig";
 
+const AUTH = "/auth";
+const V1 = "/v1";
+
 /* start of auth requests */
 export const registerUser = (email: string, password: string) => {
-    return axiosInstance.post<RegisterUser>("/auth/register", {
+    return axiosInstance.post<RegisterUser>(`${AUTH}/register`, {
         email,
         password,
     });
 };
 
 export const loginUser = (email: string, password: string) => {
-    return axiosInstance.post<LoginUser>("/auth/login", {
+    return axiosInstance.post<LoginUser>(`${AUTH}/login`, {
         email,
         password,
     });
 };
 
 export const logoutUser = () => {
-    return axiosInstance.post<LogoutUser>("/auth/logout");
+    return axiosInstance.post<LogoutUser>(`${AUTH}/logout`);
 };
 
 export const forgotPassword = (email: string) => {
-    return axiosInstance.post<ForgotPassword>("/auth/forgot-password", {
+    return axiosInstance.post<ForgotPassword>(`${AUTH}/forgot-password`, {
         email,
     });
 };
 
 export const resetPassword = (token: string, password: string) => {
-    return axiosInstance.post<ResetPassword>("/auth/reset-password", {
+    return axiosInstance.post<ResetPassword>(`${AUTH}/reset-password`, {
         token,
         password,
     });
 };
 
 export const verifyEmail = (token: string) => {
-    return axiosInstance.get<VerifyEmail>(`/auth/verify-email?token=${token}`);
+    return axiosInstance.get<VerifyEmail>(
+        `${AUTH}/verify-email?token=${token}`
+    );
 };
 
 export const checkAuthStatus = () => {
-    return axiosInstance.get<AuthStatus>("/v1/users/me");
+    return axiosInstance.get<AuthStatus>(`${V1}/users/me`);
 };
-
 /* end of auth requests */
 
 /* start of project requests */
 export const getAllProjects = () => {
-    return axiosInstance.get("/v1/projects");
+    return axiosInstance.get(`${V1}/projects`);
 };
 
 /* end of project requests */
+
+/* start of task requests */
+export const getMyTasks = () => {
+    return axiosInstance.get<MyTasks>(`${V1}/users/me/tasks`);
+};

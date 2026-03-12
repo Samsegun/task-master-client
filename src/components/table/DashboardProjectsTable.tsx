@@ -4,7 +4,6 @@ import { Progress } from "../ui/progress";
 import { TableCell, TableHead } from "./TableUI";
 
 interface ProjectsTableProps {
-    headers: string[];
     projects: {
         name: string;
         progress: number;
@@ -13,7 +12,9 @@ interface ProjectsTableProps {
     }[];
 }
 
-function DashboardProjectsTable({ headers, projects }: ProjectsTableProps) {
+const headers = ["project", "status", "due date", "progress"];
+
+function DashboardProjectsTable({ projects }: ProjectsTableProps) {
     return (
         <div
             className='rounded-xl rounded-t-none lg:rounded-t-xl

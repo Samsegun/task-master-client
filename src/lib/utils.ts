@@ -14,6 +14,8 @@ export const isOverdue = (dueDate: string, status: TaskStatus) => {
 
 // format date
 export const formatDate = (dateString: string) => {
+    if (!dateString) return "No Due Date";
+
     const date = new Date(dateString);
     const today = new Date();
     const tomorrow = new Date(today);

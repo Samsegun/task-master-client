@@ -8,4 +8,12 @@ function LoadingIcon() {
     );
 }
 
+export function DataLoadingIcon() {
+    return (
+        <div className='flex justify-center items-center'>
+            <LoaderCircle size={32} className='animate-spin' />
+        </div>
+    );
+}
+
 export default LoadingIcon;
