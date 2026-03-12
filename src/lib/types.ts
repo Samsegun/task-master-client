@@ -60,6 +60,11 @@ export interface Member {
     avatar?: string;
 }
 
+export interface GetMyTasksParams {
+    limit?: number;
+    sort?: string;
+}
+
 // export interface Project {
 //     id: string;
 //     name: string;

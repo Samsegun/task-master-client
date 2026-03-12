@@ -1,3 +1,4 @@
+import type { GetMyTasksParams } from "@/lib/types";
 import type {
     AuthStatus,
     ForgotPassword,
@@ -60,10 +61,24 @@ export const checkAuthStatus = () => {
 export const getAllProjects = () => {
     return axiosInstance.get(`${V1}/projects`);
 };
-
 /* end of project requests */
 
 /* start of task requests */
-export const getMyTasks = () => {
-    return axiosInstance.get<MyTasks>(`${V1}/users/me/tasks`);
+export const getMyTasks = (params?: GetMyTasksParams) => {
+    const queryParams = new URLSearchParams();
+
+    if (params?.limit) {
+        queryParams.append("limit", params.limit.toString());
+    }
+
+    if (params?.sort) {
+        queryParams.append("sort", params.sort);
+    }
+
+    const queryString = queryParams.toString();
+    const url = queryString
+        ? `${V1}/users/me/tasks?${queryString}`
+        : `${V1}/users/me/tasks`;
+
+    return axiosInstance.get<MyTasks>(url);
 };

@@ -2,13 +2,15 @@ import type { MyTasks } from "@/lib/apiTypes";
 import { getMyTasks } from "@/services/ApiRequests";
 import { useQuery } from "@tanstack/react-query";
 
-export const useGetMyTasks = () => {
+export const useGetMyTasks = (opts?: { limit?: number }) => {
+    const limit = opts?.limit ?? 3;
+
     const { data, isLoading, isError, error } = useQuery({
-        queryKey: ["myTasks"],
-        queryFn: getMyTasks,
+        queryKey: ["myTasks", limit],
+        queryFn: () => getMyTasks({ limit, sort: "createdAt:desc" }),
         refetchOnWindowFocus: false,
         retry: false,
-        staleTime: Infinity,
+        staleTime: 60 * 1000,
     });
 
     let tasks: MyTasks | undefined;
