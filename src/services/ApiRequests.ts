@@ -1,10 +1,11 @@
-import type { GetMyTasksParams } from "@/lib/types";
+import type { GetDataParams } from "@/lib/types";
 import type {
     AuthStatus,
     ForgotPassword,
     LoginUser,
     LogoutUser,
     MyTasks,
+    Projects,
     RegisterUser,
     ResetPassword,
     VerifyEmail,
@@ -58,22 +59,26 @@ export const checkAuthStatus = () => {
 /* end of auth requests */
 
 /* start of project requests */
-export const getAllProjects = () => {
-    return axiosInstance.get(`${V1}/projects`);
+export const getProjects = (params?: GetDataParams) => {
+    const queryParams = new URLSearchParams();
+
+    if (params?.limit) queryParams.append("limit", params.limit.toString());
+
+    const queryString = queryParams.toString();
+    const url = queryString
+        ? `${V1}/projects?${queryString}`
+        : `${V1}/projects`;
+
+    return axiosInstance.get<Projects>(url);
 };
 /* end of project requests */
 
 /* start of task requests */
-export const getMyTasks = (params?: GetMyTasksParams) => {
+export const getMyTasks = (params?: GetDataParams) => {
     const queryParams = new URLSearchParams();
 
-    if (params?.limit) {
-        queryParams.append("limit", params.limit.toString());
-    }
-
-    if (params?.sort) {
-        queryParams.append("sort", params.sort);
-    }
+    if (params?.limit) queryParams.append("limit", params.limit.toString());
+    if (params?.sort) queryParams.append("sort", params.sort);
 
     const queryString = queryParams.toString();
     const url = queryString

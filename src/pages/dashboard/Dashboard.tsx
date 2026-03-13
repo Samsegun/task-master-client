@@ -36,26 +36,26 @@ import { Link } from "react-router";
 //     },
 // ];
 
-const projects = [
-    {
-        name: "marketing campaign",
-        progress: 75,
-        dueDate: "Jul 15, 2024",
-        status: "ACTIVE",
-    },
-    {
-        name: "product launch",
-        progress: 100,
-        dueDate: "Oct 20, 2024",
-        status: "COMPLETED",
-    },
-    {
-        name: "content strategy",
-        progress: 50,
-        dueDate: "Sep 25, 2024",
-        status: "ARCHIVED",
-    },
-];
+// const projects = [
+//     {
+//         name: "marketing campaign",
+//         progress: 75,
+//         dueDate: "Jul 15, 2024",
+//         status: "ACTIVE",
+//     },
+//     {
+//         name: "product launch",
+//         progress: 100,
+//         dueDate: "Oct 20, 2024",
+//         status: "COMPLETED",
+//     },
+//     {
+//         name: "content strategy",
+//         progress: 50,
+//         dueDate: "Sep 25, 2024",
+//         status: "ARCHIVED",
+//     },
+// ];
 
 function Dashboard() {
     const { logout } = useAuthStatus();
@@ -112,7 +112,7 @@ function Dashboard() {
             <section className='space-y-2 md:space-y-3'>
                 <h2 className='text-lg font-bold tracking-wide'>Projects</h2>
 
-                <DashboardProjectsTable projects={projects} />
+                <DashboardProjectsTable />
             </section>
         </div>
     );

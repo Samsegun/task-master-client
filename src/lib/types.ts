@@ -60,7 +60,7 @@ export interface Member {
     avatar?: string;
 }
 
-export interface GetMyTasksParams {
+export interface GetDataParams {
     limit?: number;
     sort?: string;
 }

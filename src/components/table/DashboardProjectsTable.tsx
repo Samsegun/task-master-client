@@ -1,20 +1,33 @@
 import { Table, TableBody, TableHeader, TableRow } from "@/components/ui/table";
+import { useGetProjects } from "@/hooks/useProjects";
+import { formatDate } from "@/lib/utils";
+import { DataLoadingIcon } from "../common/LoadingIcon";
 import StatusBadge from "../common/StatusBadge";
 import { Progress } from "../ui/progress";
 import { TableCell, TableHead } from "./TableUI";
 
-interface ProjectsTableProps {
-    projects: {
-        name: string;
-        progress: number;
-        dueDate: string;
-        status: string;
-    }[];
-}
+// interface ProjectsTableProps {
+//     projects: {
+//         name: string;
+//         progress: number;
+//         dueDate: string;
+//         status: string;
+//     }[];
+// }
 
 const headers = ["project", "status", "due date", "progress"];
 
-function DashboardProjectsTable({ projects }: ProjectsTableProps) {
+function DashboardProjectsTable() {
+    const { userProjects, isLoading, isError, error } = useGetProjects();
+
+    if (isLoading) {
+        return <DataLoadingIcon />;
+    }
+
+    if (isError) {
+        return <div>Something went wrong :( {error?.message}</div>;
+    }
+
     return (
         <div
             className='rounded-xl rounded-t-none lg:rounded-t-xl
@@ -35,7 +48,7 @@ function DashboardProjectsTable({ projects }: ProjectsTableProps) {
                 </TableHeader>
 
                 <TableBody>
-                    {projects.map(project => (
+                    {userProjects!.map(project => (
                         <TableRow
                             key={project.name}
                             className='border-b border-brand-primary/10 hover:bg-[#2d3f54]'>
@@ -48,7 +61,7 @@ function DashboardProjectsTable({ projects }: ProjectsTableProps) {
                             </TableCell>
 
                             <TableCell className='text-brand-primary/70 '>
-                                {project.dueDate}
+                                {formatDate(project.dueDate)}
                             </TableCell>
 
                             <TableCell className='w-52 flex flex-col lg:flex-row justify-between items-center gap-2'>

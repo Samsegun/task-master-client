@@ -88,3 +88,38 @@ export type MyTasks = {
         updatedAt: string;
     }[];
 };
+
+export type Projects = {
+    success: boolean;
+    projects: {
+        id: string;
+        name: string;
+        description: string;
+        status: ProjectStatus;
+        ownerId: string;
+        createdAt: string;
+        updatedAt: string;
+        owner: { id: string; email: string };
+        _count: { members: number };
+        completedTasks: number;
+        totalTasks: number;
+        progress: number;
+        dueDate: string;
+    }[];
+};
+
+// {
+//     id: 'cmi7wnluz0008nmjkown14te1',
+//     name: 'Marketing Campaign',
+//     description: 'Q1 2024 marketing strategy and execution',
+//     status: 'COMPLETED',
+//     ownerId: 'cmi7wnlu90000nmjkakb024yd',
+//     createdAt: 2025-11-20T20:50:04.524Z,
+//     updatedAt: 2025-11-20T20:50:04.524Z,
+//     owner: { id: 'cmi7wnlu90000nmjkakb024yd', email: 'alice@example.com' },
+//     _count: { members: 2 },
+//     completedTasks: 2,
+//     totalTasks: 3,
+//     progress: 67,
+//     dueDate: null
+//   },
