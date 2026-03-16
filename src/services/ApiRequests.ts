@@ -5,6 +5,7 @@ import type {
     LoginUser,
     LogoutUser,
     MyTasks,
+    Project,
     Projects,
     RegisterUser,
     ResetPassword,
@@ -71,6 +72,11 @@ export const getProjects = (params?: GetDataParams) => {
 
     return axiosInstance.get<Projects>(url);
 };
+
+export const getProject = (projectId: string) => {
+    return axiosInstance.get<Project>(`${V1}/projects/${projectId}`);
+};
+
 /* end of project requests */
 
 /* start of task requests */

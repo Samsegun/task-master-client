@@ -1,4 +1,4 @@
-import type { MyTask, TaskPriority, TaskStatus } from "@/lib/types";
+import type { MyTasks, TaskPriority, TaskStatus } from "@/lib/apiTypes";
 import { formatDate, isOverdue } from "@/lib/utils";
 import { Calendar, CheckCircle, FolderKanban } from "lucide-react";
 import { useNavigate } from "react-router";
@@ -8,7 +8,7 @@ import { Table, TableBody, TableHeader, TableRow } from "../ui/table";
 import { TableCell, TableHead } from "./TableUI";
 
 interface MyTasksTableProps {
-    filteredTasks: MyTask[];
+    filteredTasks: MyTasks["tasks"];
     filterStatus: TaskStatus | "all";
     filterPriority: TaskPriority | "all";
 }

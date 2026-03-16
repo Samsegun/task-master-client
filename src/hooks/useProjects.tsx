@@ -1,5 +1,5 @@
-import type { Projects } from "@/lib/apiTypes";
-import { getProjects } from "@/services/ApiRequests";
+import type { Project, Projects } from "@/lib/apiTypes";
+import { getProject, getProjects } from "@/services/ApiRequests";
 import { useQuery } from "@tanstack/react-query";
 
 export const useGetProjects = (opts?: { limit?: number }) => {
@@ -26,6 +26,35 @@ export const useGetProjects = (opts?: { limit?: number }) => {
 
     return {
         userProjects: projects?.projects,
+        isLoading,
+        isError,
+        error,
+        customErr,
+    };
+};
+
+export const useGetProject = (projectId: string) => {
+    const { data, isLoading, isError, error } = useQuery({
+        queryKey: ["project"],
+        queryFn: () => getProject(projectId),
+        refetchOnWindowFocus: false,
+        retry: false,
+        staleTime: 60 * 1000,
+    });
+
+    let project: Project | undefined;
+    let customErr: { message: string; code: string } | null = null;
+
+    if (isError) {
+        customErr = (error as any).response.data.error;
+    }
+
+    if (!isError) {
+        project = data?.data;
+    }
+
+    return {
+        userProject: project?.project,
         isLoading,
         isError,
         error,

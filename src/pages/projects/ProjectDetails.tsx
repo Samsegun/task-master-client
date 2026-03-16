@@ -1,11 +1,14 @@
 import Button from "@/components/common/Button";
+import { DataLoadingIcon } from "@/components/common/LoadingIcon";
 import PageTitle from "@/components/common/PageTitle";
 import { Stats, StatsTitle } from "@/components/common/ProjectStats";
 import StatusBadge from "@/components/common/StatusBadge";
 import MembersTabTable from "@/components/table/MembersTabTable";
 import TasksTabTable from "@/components/table/TasksTabTable";
 import { Progress } from "@/components/ui/progress";
-import type { Member, Project } from "@/lib/types";
+import { useGetProject } from "@/hooks/useProjects";
+import type { Member } from "@/lib/types";
+import { formatDate } from "@/lib/utils";
 import { ArrowLeft, Settings } from "lucide-react";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
@@ -33,25 +36,40 @@ export const members: Member[] = [
 
 function ProjectDetails() {
     const { projectId } = useParams();
-    const navigate = useNavigate();
-    const [activeTab, setActiveTab] = useState<"tasks" | "members">("tasks");
+    const { error, isLoading, isError, userProject } = useGetProject(
+        projectId!
+    );
 
-    const project: Project = {
-        id: projectId!,
-        name: "Marketing Campaign",
-        description:
-            "Q4 2024 marketing strategy and execution across all channels",
-        status: "ACTIVE",
-        progress: 75,
-        dueDate: "Jul 15, 2024",
-        memberCount: 5,
-        completedTasks: 12,
-        totalTasks: 16,
-        owner: {
-            name: "Sophia Willson",
-            email: "sophia@example.com",
-        },
-    };
+    const [activeTab, setActiveTab] = useState<"tasks" | "members">("tasks");
+    const navigate = useNavigate();
+
+    if (isLoading) {
+        return <DataLoadingIcon />;
+    }
+
+    if (isError) {
+        return <div>Something went wrong :( {error?.message}</div>;
+    }
+
+    // const project = {
+    //     id: projectId!,
+    //     name: "Marketing Campaign",
+    //     description:
+    //         "Q4 2024 marketing strategy and execution across all channels",
+    //     status: "ACTIVE",
+    //     progress: 75,
+    //     dueDate: "Jul 15, 2024",
+    //     memberCount: 5,
+    //     completedTasks: 12,
+    //     totalTasks: 16,
+    //     owner: {
+    //         name: "Sophia Willson",
+    //         email: "sophia@example.com",
+    //     },
+    // };
+
+    const { name, description, dueDate, progress, status, totalMembers } =
+        userProject!;
 
     return (
         <div>
@@ -67,8 +85,8 @@ function ProjectDetails() {
 
                 <div className='mt-6 flex justify-between items-start'>
                     <div>
-                        <PageTitle className=' mb-2'>{project.name}</PageTitle>
-                        <p className='text-brand-gray'>{project.description}</p>
+                        <PageTitle className=' mb-2'>{name}</PageTitle>
+                        <p className='text-brand-gray'>{description}</p>
                     </div>
 
                     <Button
@@ -85,29 +103,31 @@ function ProjectDetails() {
                     <StatsTitle>Status</StatsTitle>
 
                     <p className='text-lg font-semibold'>
-                        <StatusBadge status={project.status} />
+                        <StatusBadge status={status} />
                     </p>
                 </Stats>
 
                 <Stats>
                     <StatsTitle>Progress</StatsTitle>
 
-                    <p className='text-lg font-semibold'>{project.progress}%</p>
+                    <p className='text-lg font-semibold'>{progress}%</p>
 
                     <Progress
-                        value={project.progress}
+                        value={progress}
                         className='bg-brand-button/30 [&>div]:bg-brand-button'
                     />
                 </Stats>
 
                 <Stats>
                     <StatsTitle>Due Date</StatsTitle>
-                    <p className='text-lg font-semibold'>{project.dueDate}</p>
+                    <p className='text-lg font-semibold'>
+                        {formatDate(dueDate)}
+                    </p>
                 </Stats>
 
                 <Stats>
                     <StatsTitle>Members</StatsTitle>
-                    <p className='text-lg font-semibold'>{members.length}</p>
+                    <p className='text-lg font-semibold'>{totalMembers}</p>
                 </Stats>
             </section>
 

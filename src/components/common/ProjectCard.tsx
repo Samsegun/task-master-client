@@ -1,4 +1,5 @@
 import type { Project } from "@/lib/types";
+import { formatDate } from "@/lib/utils";
 import { Calendar, CheckCircle, FolderKanban, Users } from "lucide-react";
 import { memo } from "react";
 import { Link } from "react-router";
@@ -49,13 +50,13 @@ function ProjectCard({ project }: { project: Project }) {
                     <span>
                         {project.status === "COMPLETED"
                             ? "✓ Completed"
-                            : `Due: ${project.dueDate}`}
+                            : `Due: ${formatDate(project.dueDate)}`}
                     </span>
                 </div>
 
                 <div className='flex items-center gap-2'>
                     <Users size={16} />
-                    <span>{project.memberCount} members</span>
+                    <span>{project._count.members} members</span>
                 </div>
 
                 <div className='flex items-center gap-2'>

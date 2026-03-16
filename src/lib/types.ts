@@ -1,39 +1,39 @@
 export type ProjectStatus = "ACTIVE" | "COMPLETED" | "ARCHIVED";
 
-export interface Project {
-    id: string;
-    name: string;
-    description?: string;
-    status: ProjectStatus;
-    progress: number;
-    dueDate: string;
-    memberCount: number;
-    completedTasks: number;
-    totalTasks: number;
-    owner: {
-        name: string;
-        email: string;
-    };
-}
+// export interface Project {
+//     id: string;
+//     name: string;
+//     description?: string;
+//     status: ProjectStatus;
+//     progress: number;
+//     dueDate: string;
+//     memberCount: number;
+//     completedTasks: number;
+//     totalTasks: number;
+//     owner: {
+//         name: string;
+//         email: string;
+//     };
+// }
 
-export interface MyTask {
-    id: string;
-    title: string;
-    description?: string;
-    status: TaskStatus;
-    priority: TaskPriority;
-    dueDate: string;
-    project: {
-        id: string;
-        name: string;
-    };
-    assignee: {
-        name: string;
-    };
-    creator: {
-        name: string;
-    };
-}
+// export interface MyTask {
+//     id: string;
+//     title: string;
+//     description?: string;
+//     status: TaskStatus;
+//     priority: TaskPriority;
+//     dueDate: string;
+//     project: {
+//         id: string;
+//         name: string;
+//     };
+//     assignee: {
+//         name: string;
+//     };
+//     creator: {
+//         name: string;
+//     };
+// }
 
 export type TaskStatus = "TODO" | "IN_PROGRESS" | "DONE";
 export type TaskPriority = "LOW" | "MEDIUM" | "HIGH";
@@ -65,15 +65,18 @@ export interface GetDataParams {
     sort?: string;
 }
 
-// export interface Project {
-//     id: string;
-//     name: string;
-//     description: string;
-//     status: "ACTIVE" | "COMPLETED" | "ARCHIVED";
-//     progress: number;
-//     dueDate: string;
-//     owner: {
-//         name: string;
-//         email: string;
-//     };
-// }
+export type Project = {
+    id: string;
+    name: string;
+    description: string;
+    status: ProjectStatus;
+    ownerId: string;
+    createdAt: string;
+    updatedAt: string;
+    owner: { id: string; email: string };
+    _count: { members: number };
+    completedTasks: number;
+    totalTasks: number;
+    progress: number;
+    dueDate: string | null;
+};

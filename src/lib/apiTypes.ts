@@ -4,9 +4,9 @@ type ProjectStatus = "ACTIVE" | "COMPLETED" | "ARCHIVED";
 
 type ProjectRole = "OWNER" | "MEMBER";
 
-type TaskStatus = "TODO" | "IN_PROGRESS" | "DONE";
+export type TaskStatus = "TODO" | "IN_PROGRESS" | "DONE";
 
-type TaskPriority = "LOW" | "MEDIUM" | "HIGH";
+export type TaskPriority = "LOW" | "MEDIUM" | "HIGH";
 
 export type RegisterUser = {
     success: boolean;
@@ -78,7 +78,7 @@ export type MyTasks = {
         creator: { id: string; email: string };
         creatorId: string;
         description: string;
-        dueDate: string;
+        dueDate: string | null;
         id: string;
         priority: TaskPriority;
         project: { id: string; name: string };
@@ -104,22 +104,19 @@ export type Projects = {
         completedTasks: number;
         totalTasks: number;
         progress: number;
-        dueDate: string;
+        dueDate: string | null;
     }[];
 };
 
-// {
-//     id: 'cmi7wnluz0008nmjkown14te1',
-//     name: 'Marketing Campaign',
-//     description: 'Q1 2024 marketing strategy and execution',
-//     status: 'COMPLETED',
-//     ownerId: 'cmi7wnlu90000nmjkakb024yd',
-//     createdAt: 2025-11-20T20:50:04.524Z,
-//     updatedAt: 2025-11-20T20:50:04.524Z,
-//     owner: { id: 'cmi7wnlu90000nmjkakb024yd', email: 'alice@example.com' },
-//     _count: { members: 2 },
-//     completedTasks: 2,
-//     totalTasks: 3,
-//     progress: 67,
-//     dueDate: null
-//   },
+export type Project = {
+    success: boolean;
+    project: {
+        id: string;
+        name: string;
+        description: string;
+        status: ProjectStatus;
+        dueDate: string | null;
+        totalMembers: number;
+        progress: number;
+    };
+};
