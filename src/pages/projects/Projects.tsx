@@ -95,14 +95,14 @@ function Projects() {
         return <DataLoadingIcon />;
     }
 
-    if (isError) {
+    if (isError || !userProjects) {
         return <div>Something went wrong :( {error?.message}</div>;
     }
 
     const filteredProjects =
         activeTab === "all"
-            ? userProjects!
-            : userProjects!.filter(p => p.status === activeTab);
+            ? userProjects
+            : userProjects.filter(p => p.status === activeTab);
 
     return (
         <div>

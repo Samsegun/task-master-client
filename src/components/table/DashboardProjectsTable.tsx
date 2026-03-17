@@ -6,26 +6,17 @@ import StatusBadge from "../common/StatusBadge";
 import { Progress } from "../ui/progress";
 import { TableCell, TableHead } from "./TableUI";
 
-// interface ProjectsTableProps {
-//     projects: {
-//         name: string;
-//         progress: number;
-//         dueDate: string;
-//         status: string;
-//     }[];
-// }
-
 const headers = ["project", "status", "due date", "progress"];
 
 function DashboardProjectsTable() {
-    const { userProjects, isLoading, isError, error } = useGetProjects();
+    const { userProjects, isLoading, isError, customErr } = useGetProjects();
 
     if (isLoading) {
         return <DataLoadingIcon />;
     }
 
-    if (isError) {
-        return <div>Something went wrong :( {error?.message}</div>;
+    if (isError || !userProjects) {
+        return <div>Something went wrong :( {customErr?.message}</div>;
     }
 
     return (
@@ -48,7 +39,7 @@ function DashboardProjectsTable() {
                 </TableHeader>
 
                 <TableBody>
-                    {userProjects!.map(project => (
+                    {userProjects.map(project => (
                         <TableRow
                             key={project.name}
                             className='border-b border-brand-primary/10 hover:bg-[#2d3f54]'>

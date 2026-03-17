@@ -1,6 +1,9 @@
-import type { Statuses, Task } from "@/lib/types";
+import { useGetTasks } from "@/hooks/useTasks";
+import type { Statuses } from "@/lib/types";
+import { formatDate } from "@/lib/utils";
 import { CheckCircle, MoreVertical, Plus } from "lucide-react";
 import { useState } from "react";
+import { DataLoadingIcon } from "../common/LoadingIcon";
 import StatusBadge from "../common/StatusBadge";
 import StatusIcon from "../common/StatusIcon";
 import Tabs from "../common/Tabs";
@@ -8,42 +11,6 @@ import { Dialog } from "../Dialog/Dialog";
 import CreateTaskModal from "../modal/CreateTaskModal";
 import { Table, TableBody, TableHeader, TableRow } from "../ui/table";
 import { TableCell, TableHead } from "./TableUI";
-
-// mock data
-const tasks: Task[] = [
-    {
-        id: "1",
-        title: "Design Landing Page",
-        status: "IN_PROGRESS",
-        priority: "HIGH",
-        dueDate: "Jul 15, 2024",
-        assignee: { name: "John Doe" },
-    },
-    {
-        id: "2",
-        title: "Write Blog Post",
-        status: "TODO",
-        priority: "MEDIUM",
-        dueDate: "Jul 25, 2024",
-        assignee: { name: "Jane Smith" },
-    },
-    {
-        id: "3",
-        title: "Setup Email Campaign",
-        status: "DONE",
-        priority: "HIGH",
-        dueDate: "Jul 10, 2024",
-        assignee: { name: "Bob Johnson" },
-    },
-    {
-        id: "4",
-        title: "Create Social Media Assets",
-        status: "TODO",
-        priority: "LOW",
-        dueDate: "Jul 30, 2024",
-        assignee: null,
-    },
-];
 
 const taskStatus: Statuses[] = ["all", "TODO", "IN_PROGRESS", "DONE"];
 const taskTableHeaders = [
@@ -55,13 +22,21 @@ const taskTableHeaders = [
     "",
 ];
 
-function TasksTabTable() {
+function TasksTabTable({ projectId }: { projectId: string | undefined }) {
+    const { isLoading, isError, customErr, tasks } = useGetTasks(projectId);
     const [filterStatus, setFilterStatus] = useState<Statuses>("all");
 
-    const filteredTasks =
+    if (isLoading) return <DataLoadingIcon />;
+
+    if (isError || !tasks)
+        return <div>Something went wrong :( {customErr?.message}</div>;
+
+    // filter tasks
+    let filteredTasks = tasks;
+    filteredTasks =
         filterStatus === "all"
-            ? tasks
-            : tasks.filter(t => t.status === filterStatus);
+            ? filteredTasks
+            : filteredTasks.filter(t => t.status === filterStatus);
 
     return (
         <section>
@@ -132,10 +107,13 @@ function TasksTabTable() {
                                             <div
                                                 className='w-8 h-8 rounded-full bg-brand-button flex items-center 
                                         justify-center text-sm'>
-                                                {task.assignee.name.charAt(0)}
+                                                {task.assignee.firstName.charAt(
+                                                    0
+                                                )}
                                             </div>
                                             <span className='text-brand-primary/70'>
-                                                {task.assignee.name}
+                                                {task.assignee.firstName}{" "}
+                                                {task.assignee.lastName}
                                             </span>
                                         </div>
                                     ) : (
@@ -150,7 +128,7 @@ function TasksTabTable() {
                                 </TableCell>
 
                                 <TableCell className='text-brand-primary/70'>
-                                    {task.dueDate}
+                                    {formatDate(task.dueDate)}
                                 </TableCell>
 
                                 <TableCell>

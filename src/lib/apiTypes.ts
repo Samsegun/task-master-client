@@ -69,6 +69,7 @@ export type AuthStatus = {
     };
 };
 
+// user tasks across all projects
 export type MyTasks = {
     success: boolean;
     tasks: {
@@ -86,6 +87,35 @@ export type MyTasks = {
         status: TaskStatus;
         title: string;
         updatedAt: string;
+    }[];
+};
+
+// tasks under a project
+export type Tasks = {
+    success: boolean;
+    tasks: {
+        id: string;
+        title: string;
+        status: TaskStatus;
+        priority: TaskPriority;
+        assignee: { firstName: string; lastName: string } | null;
+        assigneeId: string;
+        dueDate: string | null;
+    }[];
+};
+
+export type ProjectMembers = {
+    success: boolean;
+    projectMembers: {
+        id: string;
+        projectId: string;
+        user: {
+            id: string;
+            firstName: string;
+            lastName: string;
+        };
+        role: ProjectRole;
+        joinedAt: string;
     }[];
 };
 

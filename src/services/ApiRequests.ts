@@ -6,9 +6,11 @@ import type {
     LogoutUser,
     MyTasks,
     Project,
+    ProjectMembers,
     Projects,
     RegisterUser,
     ResetPassword,
+    Tasks,
     VerifyEmail,
 } from "../lib/apiTypes";
 import axiosInstance from "./AxiosConfig";
@@ -80,6 +82,8 @@ export const getProject = (projectId: string) => {
 /* end of project requests */
 
 /* start of task requests */
+
+// user tasks across all projects
 export const getMyTasks = (params?: GetDataParams) => {
     const queryParams = new URLSearchParams();
 
@@ -93,3 +97,29 @@ export const getMyTasks = (params?: GetDataParams) => {
 
     return axiosInstance.get<MyTasks>(url);
 };
+
+// tasks under a project
+export const getTasks = (projectId: string, params?: GetDataParams) => {
+    const queryParams = new URLSearchParams();
+
+    if (params?.limit) queryParams.append("limit", params.limit.toString());
+    if (params?.sort) queryParams.append("sort", params.sort);
+
+    const queryString = queryParams.toString();
+    const url = queryString
+        ? `${V1}/projects/${projectId}/tasks?${queryString}`
+        : `${V1}/projects/${projectId}/tasks`;
+
+    return axiosInstance.get<Tasks>(url);
+};
+
+/* end of task requests */
+
+/* start of project member requests */
+export const getProjectMembers = (projectId: string) => {
+    return axiosInstance.get<ProjectMembers>(
+        `${V1}/projects/${projectId}/members`
+    );
+};
+
+/* end of project member requests */

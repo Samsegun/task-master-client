@@ -1,13 +1,23 @@
-import type { Member } from "@/lib/types";
+import { useGetProjectMembers } from "@/hooks/useProjects";
+import { formatDate } from "@/lib/utils";
 import { MoreVertical, Plus } from "lucide-react";
+import { DataLoadingIcon } from "../common/LoadingIcon";
 import { Dialog } from "../Dialog/Dialog";
 import AddMemberModal from "../modal/AddMemberModal";
 import { Table, TableBody, TableHeader, TableRow } from "../ui/table";
 import { TableCell, TableHead } from "./TableUI";
 
-const membersTableHeaders = ["name", "email", "role", ""];
+const membersTableHeaders = ["name", "joined", "role", ""];
 
-function MembersTabTable({ members }: { members: Member[] }) {
+function MembersTabTable({ projectId }: { projectId: string | undefined }) {
+    const { isLoading, isError, customErr, members } =
+        useGetProjectMembers(projectId);
+
+    if (isLoading) return <DataLoadingIcon />;
+
+    if (isError || !members)
+        return <div>Something went wrong :( {customErr?.message}</div>;
+
     return (
         <section>
             <div className='flex justify-between items-center mb-4'>
@@ -55,16 +65,17 @@ function MembersTabTable({ members }: { members: Member[] }) {
                                 <TableCell className='p-4'>
                                     <div className='flex items-center gap-3'>
                                         <div className='w-10 h-10 rounded-full bg-brand-button flex items-center justify-center'>
-                                            {member.name.charAt(0)}
+                                            {member.user.firstName.charAt(0)}
                                         </div>
                                         <span className='font-medium'>
-                                            {member.name}
+                                            {member.user.firstName}{" "}
+                                            {member.user.lastName}
                                         </span>
                                     </div>
                                 </TableCell>
 
                                 <TableCell className='p-4 text-gray-300'>
-                                    {member.email}
+                                    {formatDate(member.joinedAt)}
                                 </TableCell>
 
                                 <TableCell className='p-4'>

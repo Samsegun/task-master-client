@@ -5,26 +5,17 @@ import { DataLoadingIcon } from "../common/LoadingIcon";
 import StatusBadge from "../common/StatusBadge";
 import { TableCell, TableHead } from "./TableUI";
 
-// interface TasksTableProps {
-//     tasks: {
-//         name: string;
-//         project: string;
-//         dueDate: string;
-//         status: string;
-//     }[];
-// }
-
 const headers = ["task", "project", "due date", "status"];
 
 function DashboardTasksTable() {
-    const { myTasks, isLoading, isError, error } = useGetMyTasks();
+    const { myTasks, isLoading, isError, customErr } = useGetMyTasks();
 
     if (isLoading) {
         return <DataLoadingIcon />;
     }
 
-    if (isError) {
-        return <div>Something went wrong :( {error?.message}</div>;
+    if (isError || !myTasks) {
+        return <div>Something went wrong :( {customErr?.message}</div>;
     }
 
     return (
@@ -47,7 +38,7 @@ function DashboardTasksTable() {
                 </TableHeader>
 
                 <TableBody>
-                    {myTasks!.map(t => (
+                    {myTasks.map(t => (
                         <TableRow
                             key={t.title}
                             className='border-b border-brand-primary/10 hover:bg-[#2d3f54]'>

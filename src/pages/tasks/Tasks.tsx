@@ -7,90 +7,29 @@ import type { TaskPriority, TaskStatus } from "@/lib/apiTypes";
 import { Filter } from "lucide-react";
 import { useState } from "react";
 
-// mock data - replace with API call
-// const tasks: MyTask[] = [
-//     {
-//         id: "1",
-//         title: "Design Landing Page",
-//         description: "Create wireframes and high-fidelity designs for homepage",
-//         status: "IN_PROGRESS",
-//         priority: "HIGH",
-//         dueDate: "2024-07-15",
-//         project: { id: "1", name: "Marketing Campaign" },
-//         assignee: { name: "Sophia Willson" },
-//         creator: { name: "John Doe" },
-//     },
-//     {
-//         id: "2",
-//         title: "Write Blog Post",
-//         description: "Write article about new features",
-//         status: "TODO",
-//         priority: "MEDIUM",
-//         dueDate: "2024-07-25",
-//         project: { id: "2", name: "Content Strategy" },
-//         assignee: { name: "Sophia Willson" },
-//         creator: { name: "Jane Smith" },
-//     },
-//     {
-//         id: "3",
-//         title: "Setup Email Campaign",
-//         description: "Configure automation and templates",
-//         status: "DONE",
-//         priority: "HIGH",
-//         dueDate: "2024-07-10",
-//         project: { id: "1", name: "Marketing Campaign" },
-//         assignee: { name: "Sophia Willson" },
-//         creator: { name: "Bob Johnson" },
-//     },
-//     {
-//         id: "4",
-//         title: "Review PR #234",
-//         description: "Code review for authentication module",
-//         status: "TODO",
-//         priority: "HIGH",
-//         dueDate: "2024-07-18",
-//         project: { id: "3", name: "Product Launch" },
-//         assignee: { name: "Sophia Willson" },
-//         creator: { name: "Alice Cooper" },
-//     },
-//     {
-//         id: "5",
-//         title: "Update Documentation",
-//         description: "Add API endpoint documentation",
-//         status: "TODO",
-//         priority: "LOW",
-//         dueDate: "2024-08-05",
-//         project: { id: "3", name: "Product Launch" },
-//         assignee: { name: "Sophia Willson" },
-//         creator: { name: "Mike Wilson" },
-//     },
-// ];
-
 function MyTasks() {
-    const { myTasks, isLoading, isError, error } = useGetMyTasks({ limit: 5 });
+    const { myTasks, isLoading, isError, customErr } = useGetMyTasks({
+        limit: 5,
+    });
     const [filterStatus, setFilterStatus] = useState<TaskStatus | "all">("all");
     const [filterPriority, setFilterPriority] = useState<TaskPriority | "all">(
         "all"
     );
 
-    if (isLoading) {
-        return <DataLoadingIcon />;
-    }
+    if (isLoading) return <DataLoadingIcon />;
 
-    if (isError) {
-        return <div>Something went wrong :( {error?.message}</div>;
-    }
+    if (isError || !myTasks)
+        return <div>Something went wrong :( {customErr?.message}</div>;
 
     // filter tasks
-    let filteredTasks = myTasks!;
-    if (filterStatus !== "all") {
+    let filteredTasks = myTasks;
+    if (filterStatus !== "all")
         filteredTasks = filteredTasks.filter(t => t.status === filterStatus);
-    }
-    if (filterPriority !== "all") {
+
+    if (filterPriority !== "all")
         filteredTasks = filteredTasks.filter(
             t => t.priority === filterPriority
         );
-    }
 
     const todoTasks = filteredTasks.filter(t => t.status === "TODO");
     const inProgressTasks = filteredTasks.filter(

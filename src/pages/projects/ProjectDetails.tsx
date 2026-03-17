@@ -36,40 +36,19 @@ export const members: Member[] = [
 
 function ProjectDetails() {
     const { projectId } = useParams();
-    const { error, isLoading, isError, userProject } = useGetProject(
-        projectId!
-    );
+    const { isLoading, isError, customErr, userProject } =
+        useGetProject(projectId);
 
     const [activeTab, setActiveTab] = useState<"tasks" | "members">("tasks");
     const navigate = useNavigate();
 
-    if (isLoading) {
-        return <DataLoadingIcon />;
-    }
+    if (isLoading) return <DataLoadingIcon />;
 
-    if (isError) {
-        return <div>Something went wrong :( {error?.message}</div>;
-    }
-
-    // const project = {
-    //     id: projectId!,
-    //     name: "Marketing Campaign",
-    //     description:
-    //         "Q4 2024 marketing strategy and execution across all channels",
-    //     status: "ACTIVE",
-    //     progress: 75,
-    //     dueDate: "Jul 15, 2024",
-    //     memberCount: 5,
-    //     completedTasks: 12,
-    //     totalTasks: 16,
-    //     owner: {
-    //         name: "Sophia Willson",
-    //         email: "sophia@example.com",
-    //     },
-    // };
+    if (isError || !userProject)
+        return <div>Something went wrong :( {customErr?.message}</div>;
 
     const { name, description, dueDate, progress, status, totalMembers } =
-        userProject!;
+        userProject;
 
     return (
         <div>
@@ -154,10 +133,12 @@ function ProjectDetails() {
             </section>
 
             {/* tasks tab */}
-            {activeTab === "tasks" && <TasksTabTable />}
+            {activeTab === "tasks" && <TasksTabTable projectId={projectId} />}
 
             {/* members tab */}
-            {activeTab === "members" && <MembersTabTable members={members} />}
+            {activeTab === "members" && (
+                <MembersTabTable projectId={projectId} />
+            )}
         </div>
     );
 }
