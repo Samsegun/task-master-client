@@ -122,7 +122,9 @@ function Login() {
                     disabled={signinMutation.isPending}
                     form='login-user'
                     variant={"primary"}
-                    className={"w-full mt-4"}>
+                    className={`w-full mt-4 ${
+                        signinMutation.isPending && "cursor-not-allowed"
+                    }`}>
                     {signinMutation.isPending ? "Signing in..." : "Sign In"}
                 </Button>
             </form>

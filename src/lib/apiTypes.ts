@@ -150,3 +150,17 @@ export type Project = {
         progress: number;
     };
 };
+
+export type CreateProject = {
+    success: boolean;
+    message: string;
+    project: {
+        id: string;
+        name: string;
+        description?: string;
+        status: ProjectStatus;
+        ownerId: string;
+        createdAt: string;
+        updatedAt: string;
+    };
+};

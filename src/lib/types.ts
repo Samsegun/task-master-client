@@ -80,3 +80,8 @@ export type Project = {
     progress: number;
     dueDate: string | null;
 };
+
+export type ProjectDetails = {
+    name: string;
+    description?: string;
+};

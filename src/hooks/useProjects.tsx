@@ -1,10 +1,13 @@
 import type { Project, ProjectMembers, Projects } from "@/lib/apiTypes";
+import type { ProjectDetails } from "@/lib/types";
 import {
+    createProject,
     getProject,
     getProjectMembers,
     getProjects,
 } from "@/services/ApiRequests";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 export const useGetProjects = (opts?: { limit?: number }) => {
     const limit = opts?.limit ?? 3;
@@ -99,4 +102,21 @@ export const useGetProjectMembers = (projectId?: string) => {
         error,
         customErr,
     };
+};
+
+export const useCreateProject = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (payLoad: ProjectDetails) => createProject(payLoad),
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({
+                queryKey: ["projects"],
+            });
+            toast.success("Project created");
+        },
+        onError: (err: any) => {
+            toast.error(err.response.data.error.message);
+        },
+    });
 };

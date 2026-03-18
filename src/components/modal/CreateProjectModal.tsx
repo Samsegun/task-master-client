@@ -1,3 +1,4 @@
+import { useCreateProject } from "@/hooks/useProjects";
 import { createProject } from "@/lib/formValidations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleAlert, X } from "lucide-react";
@@ -11,6 +12,7 @@ import { Input } from "../ui/input";
 type CreateProjectFormData = z.input<typeof createProject>;
 
 const CreateProjectModal = () => {
+    const createProjectMutation = useCreateProject();
     const form = useForm<CreateProjectFormData>({
         resolver: zodResolver(createProject),
         defaultValues: {
@@ -21,10 +23,15 @@ const CreateProjectModal = () => {
     const { closeDialog } = useDialog();
 
     function onSubmit(data: CreateProjectFormData) {
-        console.log(data);
-
-        form.reset();
-        closeDialog();
+        createProjectMutation.mutate(data, {
+            onSuccess: () => {
+                form.reset();
+                closeDialog();
+            },
+            onError: (err: any) => {
+                console.log(err);
+            },
+        });
     }
 
     function closeModal() {
@@ -126,15 +133,19 @@ const CreateProjectModal = () => {
                         type='submit'
                         variant={"primary"}
                         form='create-project'
-                        // disabled={isSubmitting}
-                        className='flex-1'>
-                        {/* {isSubmitting ? "Creating..." : "Create Project"} */}
+                        disabled={createProjectMutation.isPending}
+                        className={`flex-1 ${
+                            createProjectMutation.isPending &&
+                            "cursor-not-allowed"
+                        }`}>
+                        {createProjectMutation.isPending
+                            ? "Creating..."
+                            : "Create Project"}
                         Create Project
                     </Button>
                 </div>
             </form>
         </div>
-        // </div>
     );
 };
 

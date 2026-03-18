@@ -1,6 +1,7 @@
-import type { GetDataParams } from "@/lib/types";
+import type { GetDataParams, ProjectDetails } from "@/lib/types";
 import type {
     AuthStatus,
+    CreateProject,
     ForgotPassword,
     LoginUser,
     LogoutUser,
@@ -79,6 +80,9 @@ export const getProject = (projectId: string) => {
     return axiosInstance.get<Project>(`${V1}/projects/${projectId}`);
 };
 
+export const createProject = (payLoad: ProjectDetails) => {
+    return axiosInstance.post<CreateProject>(`${V1}/projects`, payLoad);
+};
 /* end of project requests */
 
 /* start of task requests */
