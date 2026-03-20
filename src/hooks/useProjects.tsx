@@ -1,6 +1,7 @@
 import type { Project, ProjectMembers, Projects } from "@/lib/apiTypes";
-import type { ProjectDetails } from "@/lib/types";
+import type { AddMemberDetails, ProjectDetails } from "@/lib/types";
 import {
+    addProjectMember,
     createProject,
     getProject,
     getProjectMembers,
@@ -81,6 +82,7 @@ export const useGetProjectMembers = (projectId?: string) => {
         enabled,
         refetchOnWindowFocus: false,
         retry: false,
+        staleTime: 60 * 1000,
     });
 
     let projectMembers: ProjectMembers | undefined;
@@ -113,6 +115,33 @@ export const useCreateProject = () => {
                 queryKey: ["projects"],
             });
             toast.success("Project created");
+        },
+        onError: (err: any) => {
+            toast.error(err.response.data.error.message);
+        },
+    });
+};
+
+export const useAddProjectMember = (projectId: string) => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (payLoad: AddMemberDetails) =>
+            addProjectMember(projectId, payLoad),
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({
+                queryKey: ["projectMembers", projectId, "members"],
+            });
+
+            await queryClient.invalidateQueries({
+                queryKey: ["project", projectId],
+            });
+
+            await queryClient.invalidateQueries({
+                queryKey: ["projects"],
+            });
+
+            toast.success("Project member added");
         },
         onError: (err: any) => {
             toast.error(err.response.data.error.message);

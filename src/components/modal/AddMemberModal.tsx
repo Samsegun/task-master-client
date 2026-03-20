@@ -1,3 +1,4 @@
+import { useAddProjectMember } from "@/hooks/useProjects";
 import { addProjectMember } from "@/lib/formValidations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleAlert, X } from "lucide-react";
@@ -21,13 +22,10 @@ import {
     SelectValue,
 } from "../ui/select";
 
-interface AddMemberModalProps {
-    projectId: string;
-}
-
 type AddMemberFormData = z.input<typeof addProjectMember>;
 
-function AddMemberModal({ projectId }: AddMemberModalProps) {
+function AddMemberModal({ projectId }: { projectId: string | undefined }) {
+    const addMemberMutation = useAddProjectMember(projectId!);
     const form = useForm<AddMemberFormData>({
         resolver: zodResolver(addProjectMember),
         defaultValues: {
@@ -45,10 +43,15 @@ function AddMemberModal({ projectId }: AddMemberModalProps) {
     }
 
     function onSubmit(data: AddMemberFormData) {
-        console.log(data, projectId);
-
-        form.reset();
-        closeDialog();
+        addMemberMutation.mutate(data, {
+            onSuccess: () => {
+                form.reset();
+                closeDialog();
+            },
+            onError: (err: any) => {
+                console.log(err);
+            },
+        });
     }
 
     return (
@@ -175,8 +178,9 @@ function AddMemberModal({ projectId }: AddMemberModalProps) {
                     <button
                         type='button'
                         onClick={closeModal}
+                        disabled={addMemberMutation.isPending}
                         className='flex-1 bg-[#1a2332] hover:bg-[#0f1729] text-brand-primary py-2 rounded-lg
-                         transition-colors border border-brand-gray'>
+                         transition-colors border border-brand-gray cursor-pointer'>
                         Cancel
                     </button>
 
@@ -184,10 +188,11 @@ function AddMemberModal({ projectId }: AddMemberModalProps) {
                         type='submit'
                         variant={"primary"}
                         form='add-member'
-                        // disabled={isSubmitting}
+                        disabled={addMemberMutation.isPending}
                         className='flex-1'>
-                        {/* {isSubmitting ? "Creating..." : "Create Task"} */}
-                        Add Member
+                        {addMemberMutation.isPending
+                            ? "Adding Member..."
+                            : "Add Member"}
                     </Button>
                 </div>
             </form>

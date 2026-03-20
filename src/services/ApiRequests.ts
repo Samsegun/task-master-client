@@ -1,5 +1,11 @@
-import type { GetDataParams, ProjectDetails, TaskDetails } from "@/lib/types";
 import type {
+    AddMemberDetails,
+    GetDataParams,
+    ProjectDetails,
+    TaskDetails,
+} from "@/lib/types";
+import type {
+    AddProjectMember,
     AuthStatus,
     CreateProject,
     CreateTask,
@@ -129,6 +135,16 @@ export const createTask = (projectId: string, payLoad: TaskDetails) => {
 export const getProjectMembers = (projectId: string) => {
     return axiosInstance.get<ProjectMembers>(
         `${V1}/projects/${projectId}/members`
+    );
+};
+
+export const addProjectMember = (
+    projectId: string,
+    payLoad: AddMemberDetails
+) => {
+    return axiosInstance.post<AddProjectMember>(
+        `${V1}/projects/${projectId}/members`,
+        payLoad
     );
 };
 

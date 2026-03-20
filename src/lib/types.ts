@@ -1,3 +1,5 @@
+import type { ProjectRole } from "./apiTypes";
+
 export type ProjectStatus = "ACTIVE" | "COMPLETED" | "ARCHIVED";
 
 export type TaskStatus = "TODO" | "IN_PROGRESS" | "DONE";
@@ -54,4 +56,9 @@ export type ProjectDetails = {
 export type TaskDetails = {
     title: string;
     description?: string;
+};
+
+export type AddMemberDetails = {
+    email: string;
+    role?: ProjectRole;
 };

@@ -1,4 +1,5 @@
 import { useGetProjectMembers } from "@/hooks/useProjects";
+import type { ProjectRole } from "@/lib/apiTypes";
 import { formatDate } from "@/lib/utils";
 import { MoreVertical, Plus } from "lucide-react";
 import { DataLoadingIcon } from "../common/LoadingIcon";
@@ -9,7 +10,13 @@ import { TableCell, TableHead } from "./TableUI";
 
 const membersTableHeaders = ["name", "joined", "role", ""];
 
-function MembersTabTable({ projectId }: { projectId: string | undefined }) {
+function MembersTabTable({
+    projectId,
+    projectRole,
+}: {
+    projectId: string | undefined;
+    projectRole: ProjectRole;
+}) {
     const { isLoading, isError, customErr, members } =
         useGetProjectMembers(projectId);
 
@@ -23,19 +30,21 @@ function MembersTabTable({ projectId }: { projectId: string | undefined }) {
             <div className='flex justify-between items-center mb-4'>
                 <h2 className='text-xl font-semibold'>Team Members</h2>
 
-                <Dialog>
-                    <Dialog.Trigger
-                        variant={"primary"}
-                        className={`flex items-center gap-2`}>
-                        <Plus size={30} />
+                {projectRole === "OWNER" && (
+                    <Dialog>
+                        <Dialog.Trigger
+                            variant={"primary"}
+                            className={`flex items-center gap-2`}>
+                            <Plus size={30} />
 
-                        <span>Add Member</span>
-                    </Dialog.Trigger>
+                            <span>Add Member</span>
+                        </Dialog.Trigger>
 
-                    <Dialog.Content height='auto'>
-                        <AddMemberModal projectId='23' />
-                    </Dialog.Content>
-                </Dialog>
+                        <Dialog.Content height='auto'>
+                            <AddMemberModal projectId={projectId} />
+                        </Dialog.Content>
+                    </Dialog>
+                )}
             </div>
 
             {/* members table */}

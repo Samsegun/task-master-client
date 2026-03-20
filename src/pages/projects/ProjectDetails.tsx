@@ -47,8 +47,15 @@ function ProjectDetails() {
     if (isError || !userProject)
         return <div>Something went wrong :( {customErr?.message}</div>;
 
-    const { name, description, dueDate, progress, status, totalMembers } =
-        userProject;
+    const {
+        name,
+        description,
+        dueDate,
+        progress,
+        status,
+        totalMembers,
+        projectRole,
+    } = userProject;
 
     return (
         <div>
@@ -139,7 +146,10 @@ function ProjectDetails() {
 
             {/* members tab */}
             {activeTab === "members" && (
-                <MembersTabTable projectId={projectId} />
+                <MembersTabTable
+                    projectId={projectId}
+                    projectRole={projectRole}
+                />
             )}
         </div>
     );

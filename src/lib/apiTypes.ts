@@ -1,8 +1,8 @@
 type Role = "USER" | "MODERATOR" | "ADMIN" | "SUPER_ADMIN";
 
-type ProjectStatus = "ACTIVE" | "COMPLETED" | "ARCHIVED";
+export type ProjectStatus = "ACTIVE" | "COMPLETED" | "ARCHIVED";
 
-type ProjectRole = "OWNER" | "MEMBER";
+export type ProjectRole = "OWNER" | "MEMBER";
 
 export type TaskStatus = "TODO" | "IN_PROGRESS" | "DONE";
 
@@ -145,6 +145,7 @@ export type Project = {
         name: string;
         description: string;
         status: ProjectStatus;
+        projectRole: ProjectRole;
         dueDate: string | null;
         totalMembers: number;
         progress: number;
@@ -167,5 +168,13 @@ export type CreateTask = {
         id: string;
         title: string;
         projectId: string;
+    };
+};
+
+export type AddProjectMember = {
+    success: boolean;
+    user: {
+        id: string;
+        email: string;
     };
 };
