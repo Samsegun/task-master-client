@@ -76,12 +76,11 @@ export const useGetProjectMembers = (projectId?: string) => {
     const enabled = Boolean(projectId);
 
     const { data, isLoading, isError, error } = useQuery({
-        queryKey: ["projectMembers", projectId],
+        queryKey: ["projectMembers", projectId, "members"],
         queryFn: () => getProjectMembers(projectId!),
         enabled,
         refetchOnWindowFocus: false,
         retry: false,
-        staleTime: 5 * 60 * 1000,
     });
 
     let projectMembers: ProjectMembers | undefined;

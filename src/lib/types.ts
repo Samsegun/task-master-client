@@ -1,40 +1,5 @@
 export type ProjectStatus = "ACTIVE" | "COMPLETED" | "ARCHIVED";
 
-// export interface Project {
-//     id: string;
-//     name: string;
-//     description?: string;
-//     status: ProjectStatus;
-//     progress: number;
-//     dueDate: string;
-//     memberCount: number;
-//     completedTasks: number;
-//     totalTasks: number;
-//     owner: {
-//         name: string;
-//         email: string;
-//     };
-// }
-
-// export interface MyTask {
-//     id: string;
-//     title: string;
-//     description?: string;
-//     status: TaskStatus;
-//     priority: TaskPriority;
-//     dueDate: string;
-//     project: {
-//         id: string;
-//         name: string;
-//     };
-//     assignee: {
-//         name: string;
-//     };
-//     creator: {
-//         name: string;
-//     };
-// }
-
 export type TaskStatus = "TODO" | "IN_PROGRESS" | "DONE";
 export type TaskPriority = "LOW" | "MEDIUM" | "HIGH";
 
@@ -83,5 +48,10 @@ export type Project = {
 
 export type ProjectDetails = {
     name: string;
+    description?: string;
+};
+
+export type TaskDetails = {
+    title: string;
     description?: string;
 };

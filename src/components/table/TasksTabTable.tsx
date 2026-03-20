@@ -57,7 +57,7 @@ function TasksTabTable({ projectId }: { projectId: string | undefined }) {
                     </Dialog.Trigger>
 
                     <Dialog.Content height='auto'>
-                        <CreateTaskModal />
+                        <CreateTaskModal projectId={projectId} />
                     </Dialog.Content>
                 </Dialog>
             </div>

@@ -1,6 +1,8 @@
 import type { MyTasks, Tasks } from "@/lib/apiTypes";
-import { getMyTasks, getTasks } from "@/services/ApiRequests";
-import { useQuery } from "@tanstack/react-query";
+import type { TaskDetails } from "@/lib/types";
+import { createTask, getMyTasks, getTasks } from "@/services/ApiRequests";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 export const useGetMyTasks = (opts?: { limit?: number }) => {
     const limit = opts?.limit ?? 3;
@@ -64,4 +66,23 @@ export const useGetTasks = (projectId?: string, opts?: { limit?: number }) => {
         error,
         customErr,
     };
+};
+
+export const useCreateTask = (projectId?: string) => {
+    // const enabled = Boolean(projectId);
+
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: (payLoad: TaskDetails) => createTask(projectId!, payLoad),
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({
+                queryKey: ["projects"],
+            });
+            toast.success("Project created");
+        },
+        onError: (err: any) => {
+            toast.error(err.response.data.error.message);
+        },
+    });
 };

@@ -157,10 +157,15 @@ export type CreateProject = {
     project: {
         id: string;
         name: string;
-        description?: string;
-        status: ProjectStatus;
-        ownerId: string;
-        createdAt: string;
-        updatedAt: string;
+    };
+};
+
+export type CreateTask = {
+    success: boolean;
+    message: string;
+    task: {
+        id: string;
+        title: string;
+        projectId: string;
     };
 };

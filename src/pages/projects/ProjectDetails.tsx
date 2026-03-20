@@ -64,7 +64,9 @@ function ProjectDetails() {
 
                 <div className='mt-6 flex justify-between items-start'>
                     <div>
-                        <PageTitle className=' mb-2'>{name}</PageTitle>
+                        <PageTitle className=' mb-2 capitalize'>
+                            {name}
+                        </PageTitle>
                         <p className='text-brand-gray'>{description}</p>
                     </div>
 

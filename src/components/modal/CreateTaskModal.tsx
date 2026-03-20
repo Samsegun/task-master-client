@@ -1,6 +1,7 @@
 import { createTaskForm } from "@/lib/formValidations";
 import { cn } from "@/lib/utils";
-import { members } from "@/pages/projects/ProjectDetails";
+// import { members } from "@/pages/projects/ProjectDetails";
+import { useGetProjectMembers } from "@/hooks/useProjects";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { X } from "lucide-react";
@@ -28,7 +29,9 @@ import {
 
 type CreateTaskFormData = z.input<typeof createTaskForm>;
 
-function CreateTaskModal() {
+function CreateTaskModal({ projectId }: { projectId: string | undefined }) {
+    const { isLoading, customErr, members, isError } =
+        useGetProjectMembers(projectId);
     const { closeDialog } = useDialog();
     const form = useForm<CreateTaskFormData>({
         resolver: zodResolver(createTaskForm),
@@ -234,11 +237,27 @@ function CreateTaskModal() {
                                             Unassigned
                                         </SelectItem>
 
-                                        {members.map(member => (
+                                        {isLoading && (
+                                            <SelectItem
+                                                value='loading'
+                                                disabled>
+                                                Loading...
+                                            </SelectItem>
+                                        )}
+
+                                        {(isError || !members) && (
+                                            <p>
+                                                Failed to load members.{" "}
+                                                {customErr?.message}
+                                            </p>
+                                        )}
+
+                                        {(members ?? []).map(member => (
                                             <SelectItem
                                                 key={member.id}
-                                                value={member.id}>
-                                                {member.name}
+                                                value={member.user.id}>
+                                                {member.user.firstName}{" "}
+                                                {member.user.lastName}
                                             </SelectItem>
                                         ))}
                                     </SelectContent>

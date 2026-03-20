@@ -1,7 +1,8 @@
-import type { GetDataParams, ProjectDetails } from "@/lib/types";
+import type { GetDataParams, ProjectDetails, TaskDetails } from "@/lib/types";
 import type {
     AuthStatus,
     CreateProject,
+    CreateTask,
     ForgotPassword,
     LoginUser,
     LogoutUser,
@@ -86,7 +87,6 @@ export const createProject = (payLoad: ProjectDetails) => {
 /* end of project requests */
 
 /* start of task requests */
-
 // user tasks across all projects
 export const getMyTasks = (params?: GetDataParams) => {
     const queryParams = new URLSearchParams();
@@ -117,6 +117,12 @@ export const getTasks = (projectId: string, params?: GetDataParams) => {
     return axiosInstance.get<Tasks>(url);
 };
 
+export const createTask = (projectId: string, payLoad: TaskDetails) => {
+    return axiosInstance.post<CreateTask>(
+        `${V1}/projects/${projectId}/tasks`,
+        payLoad
+    );
+};
 /* end of task requests */
 
 /* start of project member requests */
