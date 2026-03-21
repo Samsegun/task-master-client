@@ -144,7 +144,9 @@ export const useAddProjectMember = (projectId: string) => {
             toast.success("Project member added");
         },
         onError: (err: any) => {
-            toast.error(err.response.data.error.message);
+            toast.error(
+                err.response.data.error.message || "Failed to add Member"
+            );
         },
     });
 };

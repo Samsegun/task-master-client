@@ -69,20 +69,33 @@ export const useGetTasks = (projectId?: string, opts?: { limit?: number }) => {
 };
 
 export const useCreateTask = (projectId?: string) => {
-    // const enabled = Boolean(projectId);
-
     const queryClient = useQueryClient();
 
     return useMutation({
         mutationFn: (payLoad: TaskDetails) => createTask(projectId!, payLoad),
         onSuccess: async () => {
             await queryClient.invalidateQueries({
+                queryKey: ["tasks"],
+            });
+
+            await queryClient.invalidateQueries({
+                queryKey: ["myTasks"],
+            });
+
+            await queryClient.invalidateQueries({
+                queryKey: ["project"],
+            });
+
+            await queryClient.invalidateQueries({
                 queryKey: ["projects"],
             });
+
             toast.success("Project created");
         },
         onError: (err: any) => {
-            toast.error(err.response.data.error.message);
+            toast.error(
+                err.response.data.error.message || "Failed to create task"
+            );
         },
     });
 };

@@ -2,12 +2,14 @@ import { createTaskForm } from "@/lib/formValidations";
 import { cn } from "@/lib/utils";
 // import { members } from "@/pages/projects/ProjectDetails";
 import { useGetProjectMembers } from "@/hooks/useProjects";
+import { useCreateTask } from "@/hooks/useTasks";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { X } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
 import { useDialog } from "../Dialog/DialogContext";
+import AssigneeSelect from "../common/AssigneeSelect";
 import Button from "../common/Button";
 import { Calendar } from "../ui/calendar";
 import {
@@ -32,6 +34,7 @@ type CreateTaskFormData = z.input<typeof createTaskForm>;
 function CreateTaskModal({ projectId }: { projectId: string | undefined }) {
     const { isLoading, customErr, members, isError } =
         useGetProjectMembers(projectId);
+    const createTaskMutation = useCreateTask(projectId);
     const { closeDialog } = useDialog();
     const form = useForm<CreateTaskFormData>({
         resolver: zodResolver(createTaskForm),
@@ -49,10 +52,15 @@ function CreateTaskModal({ projectId }: { projectId: string | undefined }) {
     }
 
     function onSubmit(data: CreateTaskFormData) {
-        console.log(data);
-
-        form.reset();
-        closeDialog();
+        createTaskMutation.mutate(data, {
+            onSuccess: () => {
+                form.reset();
+                closeDialog();
+            },
+            onError: (err: any) => {
+                console.log(err);
+            },
+        });
     }
 
     return (
@@ -210,59 +218,15 @@ function CreateTaskModal({ projectId }: { projectId: string | undefined }) {
                         name='assigneeId'
                         control={form.control}
                         render={({ field, fieldState }) => (
-                            <Field data-invalid={fieldState.invalid}>
-                                <FieldContent>
-                                    <FieldLabel htmlFor='task-assigneeId'>
-                                        Assign To
-                                    </FieldLabel>
-                                    {fieldState.invalid && (
-                                        <FieldError
-                                            errors={[fieldState.error]}
-                                        />
-                                    )}
-                                </FieldContent>
-                                <Select
-                                    name={field.name}
-                                    value={field.value}
-                                    onValueChange={field.onChange}>
-                                    <SelectTrigger
-                                        id='task-assigneeId'
-                                        aria-invalid={fieldState.invalid}>
-                                        <SelectValue placeholder='Unassigned' />
-                                    </SelectTrigger>
-                                    <SelectContent
-                                        position='item-aligned'
-                                        className='bg-[#263447]'>
-                                        <SelectItem value='null'>
-                                            Unassigned
-                                        </SelectItem>
-
-                                        {isLoading && (
-                                            <SelectItem
-                                                value='loading'
-                                                disabled>
-                                                Loading...
-                                            </SelectItem>
-                                        )}
-
-                                        {(isError || !members) && (
-                                            <p>
-                                                Failed to load members.{" "}
-                                                {customErr?.message}
-                                            </p>
-                                        )}
-
-                                        {(members ?? []).map(member => (
-                                            <SelectItem
-                                                key={member.id}
-                                                value={member.user.id}>
-                                                {member.user.firstName}{" "}
-                                                {member.user.lastName}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                            </Field>
+                            <AssigneeSelect
+                                projectId={projectId}
+                                members={members}
+                                isLoading={isLoading}
+                                isError={isError}
+                                customErr={customErr}
+                                field={field}
+                                fieldState={fieldState}
+                            />
                         )}
                     />
                 </FieldGroup>
@@ -271,7 +235,7 @@ function CreateTaskModal({ projectId }: { projectId: string | undefined }) {
                     <button
                         type='button'
                         onClick={closeModal}
-                        // disabled={isSubmitting}
+                        disabled={createTaskMutation.isPending}
                         className='flex-1 bg-[#1a2332] hover:bg-[#0f1729] disabled:opacity-50 text-brand-primary py-2 rounded-lg
                          transition-colors border border-brand-gray'>
                         Cancel
@@ -281,10 +245,11 @@ function CreateTaskModal({ projectId }: { projectId: string | undefined }) {
                         type='submit'
                         variant={"primary"}
                         form='create-task'
-                        // disabled={isSubmitting}
+                        disabled={createTaskMutation.isPending}
                         className='flex-1'>
-                        {/* {isSubmitting ? "Creating..." : "Create Task"} */}
-                        Create Task
+                        {createTaskMutation.isPending
+                            ? "Creating Task..."
+                            : "Create Task"}
                     </Button>
                 </div>
             </form>
