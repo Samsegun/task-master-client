@@ -142,7 +142,12 @@ function ProjectDetails() {
             </section>
 
             {/* tasks tab */}
-            {activeTab === "tasks" && <TasksTabTable projectId={projectId} />}
+            {activeTab === "tasks" && (
+                <TasksTabTable
+                    projectId={projectId}
+                    projectRole={projectRole}
+                />
+            )}
 
             {/* members tab */}
             {activeTab === "members" && (

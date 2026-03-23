@@ -5,6 +5,12 @@ import { MoreVertical, Plus } from "lucide-react";
 import { DataLoadingIcon } from "../common/LoadingIcon";
 import { Dialog } from "../Dialog/Dialog";
 import AddMemberModal from "../modal/AddMemberModal";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 import { Table, TableBody, TableHeader, TableRow } from "../ui/table";
 import { TableCell, TableHead } from "./TableUI";
 
@@ -99,12 +105,26 @@ function MembersTabTable({
                                 </TableCell>
 
                                 <TableCell className='p-4'>
-                                    <button className='p-1 hover:bg-[#1a2332] rounded transition-colors cursor-pointer'>
-                                        <MoreVertical
-                                            size={20}
-                                            className='text-gray-400'
-                                        />
-                                    </button>
+                                    {projectRole === "OWNER" && (
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger className='p-1 hover:bg-brand-gray/50 rounded transition-colors cursor-pointer'>
+                                                <MoreVertical
+                                                    size={20}
+                                                    className='text-brand-gray'
+                                                />
+                                            </DropdownMenuTrigger>
+
+                                            <DropdownMenuContent>
+                                                {/* <DropdownMenuItem className="cursor-pointer">
+                                                <p>Edit</p>
+                                            </DropdownMenuItem> */}
+
+                                                <DropdownMenuItem className='cursor-pointer'>
+                                                    <p>Remove Member</p>
+                                                </DropdownMenuItem>
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                    )}
                                 </TableCell>
                             </TableRow>
                         ))}

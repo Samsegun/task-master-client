@@ -1,4 +1,5 @@
 import { useGetTasks } from "@/hooks/useTasks";
+import type { ProjectRole } from "@/lib/apiTypes";
 import type { Statuses } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
 import { CheckCircle, MoreVertical, Plus } from "lucide-react";
@@ -9,8 +10,19 @@ import StatusIcon from "../common/StatusIcon";
 import Tabs from "../common/Tabs";
 import { Dialog } from "../Dialog/Dialog";
 import CreateTaskModal from "../modal/CreateTaskModal";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "../ui/dropdown-menu";
 import { Table, TableBody, TableHeader, TableRow } from "../ui/table";
 import { TableCell, TableHead } from "./TableUI";
+
+type TasksTabProps = {
+    projectId: string | undefined;
+    projectRole: ProjectRole;
+};
 
 const taskStatus: Statuses[] = ["all", "TODO", "IN_PROGRESS", "DONE"];
 const taskTableHeaders = [
@@ -22,7 +34,7 @@ const taskTableHeaders = [
     "",
 ];
 
-function TasksTabTable({ projectId }: { projectId: string | undefined }) {
+function TasksTabTable({ projectId, projectRole }: TasksTabProps) {
     const { isLoading, isError, customErr, tasks } = useGetTasks(projectId);
     const [filterStatus, setFilterStatus] = useState<Statuses>("all");
 
@@ -136,12 +148,26 @@ function TasksTabTable({ projectId }: { projectId: string | undefined }) {
                                 </TableCell>
 
                                 <TableCell>
-                                    <button className='p-1 hover:bg-brand-gray/50 rounded transition-colors'>
-                                        <MoreVertical
-                                            size={20}
-                                            className='text-brand-gray'
-                                        />
-                                    </button>
+                                    <DropdownMenu>
+                                        <DropdownMenuTrigger className='p-1 hover:bg-brand-gray/50 rounded transition-colors cursor-pointer'>
+                                            <MoreVertical
+                                                size={20}
+                                                className='text-brand-gray'
+                                            />
+                                        </DropdownMenuTrigger>
+
+                                        <DropdownMenuContent>
+                                            <DropdownMenuItem className="cursor-pointer">
+                                                <p>Edit</p>
+                                            </DropdownMenuItem>
+
+                                            {projectRole === "OWNER" && (
+                                                <DropdownMenuItem className="cursor-pointer">
+                                                    <p>Delete</p>
+                                                </DropdownMenuItem>
+                                            )}
+                                        </DropdownMenuContent>
+                                    </DropdownMenu>
                                 </TableCell>
                             </TableRow>
                         ))}
