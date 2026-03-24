@@ -19,6 +19,7 @@ import type {
     RegisterUser,
     ResetPassword,
     Tasks,
+    UpdateTask,
     VerifyEmail,
 } from "../lib/apiTypes";
 import axiosInstance from "./AxiosConfig";
@@ -126,6 +127,17 @@ export const getTasks = (projectId: string, params?: GetDataParams) => {
 export const createTask = (projectId: string, payLoad: TaskDetails) => {
     return axiosInstance.post<CreateTask>(
         `${V1}/projects/${projectId}/tasks`,
+        payLoad
+    );
+};
+
+export const updateTask = (
+    projectId: string,
+    taskId: string,
+    payLoad: TaskDetails
+) => {
+    return axiosInstance.patch<UpdateTask>(
+        `${V1}/projects/${projectId}/tasks/${taskId}`,
         payLoad
     );
 };

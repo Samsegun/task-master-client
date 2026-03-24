@@ -2,7 +2,7 @@ import { useGetTasks } from "@/hooks/useTasks";
 import type { ProjectRole } from "@/lib/apiTypes";
 import type { Statuses } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
-import { CheckCircle, MoreVertical, Plus } from "lucide-react";
+import { CheckCircle, Plus } from "lucide-react";
 import { useState } from "react";
 import { DataLoadingIcon } from "../common/LoadingIcon";
 import StatusBadge from "../common/StatusBadge";
@@ -10,18 +10,22 @@ import StatusIcon from "../common/StatusIcon";
 import Tabs from "../common/Tabs";
 import { Dialog } from "../Dialog/Dialog";
 import CreateTaskModal from "../modal/CreateTaskModal";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
 import { Table, TableBody, TableHeader, TableRow } from "../ui/table";
 import { TableCell, TableHead } from "./TableUI";
+import TasksTableRowOptions from "./TasksTableRowOptions";
 
 type TasksTabProps = {
-    projectId: string | undefined;
+    projectId: string;
     projectRole: ProjectRole;
+    projectMembers: {
+        role: ProjectRole;
+        joinedAt: string;
+        user: {
+            id: string;
+            firstName: string | null;
+            lastName: string | null;
+        };
+    }[];
 };
 
 const taskStatus: Statuses[] = ["all", "TODO", "IN_PROGRESS", "DONE"];
@@ -34,7 +38,11 @@ const taskTableHeaders = [
     "",
 ];
 
-function TasksTabTable({ projectId, projectRole }: TasksTabProps) {
+function TasksTabTable({
+    projectMembers,
+    projectId,
+    projectRole,
+}: TasksTabProps) {
     const { isLoading, isError, customErr, tasks } = useGetTasks(projectId);
     const [filterStatus, setFilterStatus] = useState<Statuses>("all");
 
@@ -69,7 +77,10 @@ function TasksTabTable({ projectId, projectRole }: TasksTabProps) {
                     </Dialog.Trigger>
 
                     <Dialog.Content height='auto'>
-                        <CreateTaskModal projectId={projectId} />
+                        <CreateTaskModal
+                            projectId={projectId}
+                            projectMembers={projectMembers}
+                        />
                     </Dialog.Content>
                 </Dialog>
             </div>
@@ -148,26 +159,12 @@ function TasksTabTable({ projectId, projectRole }: TasksTabProps) {
                                 </TableCell>
 
                                 <TableCell>
-                                    <DropdownMenu>
-                                        <DropdownMenuTrigger className='p-1 hover:bg-brand-gray/50 rounded transition-colors cursor-pointer'>
-                                            <MoreVertical
-                                                size={20}
-                                                className='text-brand-gray'
-                                            />
-                                        </DropdownMenuTrigger>
-
-                                        <DropdownMenuContent>
-                                            <DropdownMenuItem className="cursor-pointer">
-                                                <p>Edit</p>
-                                            </DropdownMenuItem>
-
-                                            {projectRole === "OWNER" && (
-                                                <DropdownMenuItem className="cursor-pointer">
-                                                    <p>Delete</p>
-                                                </DropdownMenuItem>
-                                            )}
-                                        </DropdownMenuContent>
-                                    </DropdownMenu>
+                                    <TasksTableRowOptions
+                                        projectMembers={projectMembers}
+                                        projectId={projectId}
+                                        projectRole={projectRole}
+                                        task={task}
+                                    />
                                 </TableCell>
                             </TableRow>
                         ))}

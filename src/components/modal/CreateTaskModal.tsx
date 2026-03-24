@@ -1,8 +1,7 @@
+import { useCreateTask } from "@/hooks/useTasks";
+import type { ProjectRole } from "@/lib/apiTypes";
 import { createTaskForm } from "@/lib/formValidations";
 import { cn } from "@/lib/utils";
-// import { members } from "@/pages/projects/ProjectDetails";
-import { useGetProjectMembers } from "@/hooks/useProjects";
-import { useCreateTask } from "@/hooks/useTasks";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { format } from "date-fns";
 import { X } from "lucide-react";
@@ -29,13 +28,27 @@ import {
     SelectValue,
 } from "../ui/select";
 
+type CreateTaskModalProps = {
+    projectId: string | undefined;
+    projectMembers: {
+        role: ProjectRole;
+        joinedAt: string;
+        user: {
+            id: string;
+            firstName: string | null;
+            lastName: string | null;
+        };
+    }[];
+};
+
 type CreateTaskFormData = z.input<typeof createTaskForm>;
 
-function CreateTaskModal({ projectId }: { projectId: string | undefined }) {
-    const { isLoading, customErr, members, isError } =
-        useGetProjectMembers(projectId);
+function CreateTaskModal({ projectId, projectMembers }: CreateTaskModalProps) {
+    // const { isLoading, customErr, members, isError } =
+    //     useGetProjectMembers(projectId);
     const createTaskMutation = useCreateTask(projectId);
     const { closeDialog } = useDialog();
+
     const form = useForm<CreateTaskFormData>({
         resolver: zodResolver(createTaskForm),
         defaultValues: {
@@ -220,10 +233,10 @@ function CreateTaskModal({ projectId }: { projectId: string | undefined }) {
                         render={({ field, fieldState }) => (
                             <AssigneeSelect
                                 projectId={projectId}
-                                members={members}
-                                isLoading={isLoading}
-                                isError={isError}
-                                customErr={customErr}
+                                members={projectMembers}
+                                // isLoading={isLoading}
+                                // isError={isError}
+                                // customErr={customErr}
                                 field={field}
                                 fieldState={fieldState}
                             />

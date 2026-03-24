@@ -1,3 +1,4 @@
+import type { ProjectRole } from "@/lib/apiTypes";
 import { Field, FieldContent, FieldError, FieldLabel } from "../ui/field";
 import {
     Select,
@@ -7,16 +8,25 @@ import {
     SelectValue,
 } from "../ui/select";
 
-type MemberShape = {
-    user: { id: string; firstName: string; lastName: string };
-};
+// type MemberShape = {
+//     user: { id: string; firstName: string; lastName: string };
+// };
 
 type Props = {
     projectId?: string;
-    members?: MemberShape[] | null;
-    isLoading: boolean;
-    isError: boolean;
-    customErr?: { message?: string } | null;
+    // members?: MemberShape[] | null;
+    // isLoading: boolean;
+    // isError: boolean;
+    // customErr?: { message?: string } | null;
+    members: {
+        role: ProjectRole;
+        joinedAt: string;
+        user: {
+            id: string;
+            firstName: string | null;
+            lastName: string | null;
+        };
+    }[];
     field: {
         name: string;
         value: any;
@@ -25,14 +35,7 @@ type Props = {
     fieldState?: { invalid?: boolean; error?: any };
 };
 
-function AssigneeSelect({
-    members,
-    isLoading,
-    isError,
-    customErr,
-    field,
-    fieldState,
-}: Props) {
+function AssigneeSelect({ members, field, fieldState }: Props) {
     return (
         <Field data-invalid={fieldState?.invalid}>
             <FieldContent>
@@ -53,7 +56,7 @@ function AssigneeSelect({
                 <SelectContent position='item-aligned' className='bg-[#263447]'>
                     <SelectItem value='null'>Unassigned</SelectItem>
 
-                    {isLoading && (
+                    {/* {isLoading && (
                         <SelectItem value='loading' disabled>
                             Loading...
                         </SelectItem>
@@ -61,9 +64,14 @@ function AssigneeSelect({
 
                     {(isError || !members) && (
                         <p>Failed to load members. {customErr?.message}</p>
-                    )}
+                    )} */}
 
-                    {(members ?? []).map(member => (
+                    {/* {(members ?? []).map(member => (
+                        <SelectItem key={member.user.id} value={member.user.id}>
+                            {member.user.firstName} {member.user.lastName}
+                        </SelectItem>
+                    ))} */}
+                    {members.map(member => (
                         <SelectItem key={member.user.id} value={member.user.id}>
                             {member.user.firstName} {member.user.lastName}
                         </SelectItem>

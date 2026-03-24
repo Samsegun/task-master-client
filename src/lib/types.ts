@@ -7,30 +7,29 @@ export type TaskPriority = "LOW" | "MEDIUM" | "HIGH";
 
 export type Statuses = "all" | ProjectStatus | TaskStatus;
 
-export interface Task {
+export type Task = {
     id: string;
     title: string;
     status: TaskStatus;
     priority: TaskPriority;
-    dueDate: string;
-    assignee: {
-        name: string;
-        avatar?: string;
-    } | null;
-}
+    description: string | null;
+    dueDate: string | null;
+    assignee: { firstName: string; lastName: string } | null;
+    assigneeId: string | null;
+};
 
-export interface Member {
+export type Member = {
     id: string;
     name: string;
     email: string;
     role: "OWNER" | "MEMBER";
     avatar?: string;
-}
+};
 
-export interface GetDataParams {
+export type GetDataParams = {
     limit?: number;
     sort?: string;
-}
+};
 
 export type Project = {
     id: string;

@@ -1,8 +1,6 @@
-import { useGetProjectMembers } from "@/hooks/useProjects";
-import type { ProjectRole } from "@/lib/apiTypes";
+import type { Project, ProjectRole } from "@/lib/apiTypes";
 import { formatDate } from "@/lib/utils";
 import { MoreVertical, Plus } from "lucide-react";
-import { DataLoadingIcon } from "../common/LoadingIcon";
 import { Dialog } from "../Dialog/Dialog";
 import AddMemberModal from "../modal/AddMemberModal";
 import {
@@ -17,20 +15,12 @@ import { TableCell, TableHead } from "./TableUI";
 const membersTableHeaders = ["name", "joined", "role", ""];
 
 function MembersTabTable({
-    projectId,
+    project,
     projectRole,
 }: {
-    projectId: string | undefined;
+    project: Project["project"];
     projectRole: ProjectRole;
 }) {
-    const { isLoading, isError, customErr, members } =
-        useGetProjectMembers(projectId);
-
-    if (isLoading) return <DataLoadingIcon />;
-
-    if (isError || !members)
-        return <div>Something went wrong :( {customErr?.message}</div>;
-
     return (
         <section>
             <div className='flex justify-between items-center mb-4'>
@@ -47,7 +37,7 @@ function MembersTabTable({
                         </Dialog.Trigger>
 
                         <Dialog.Content height='auto'>
-                            <AddMemberModal projectId={projectId} />
+                            <AddMemberModal projectId={project.id} />
                         </Dialog.Content>
                     </Dialog>
                 )}
@@ -73,14 +63,14 @@ function MembersTabTable({
                     </TableHeader>
 
                     <TableBody>
-                        {members.map(member => (
+                        {project.members.map(member => (
                             <TableRow
-                                key={member.id}
+                                key={member.user.id}
                                 className='border-b border-brand-primary/10 hover:bg-[#2d3f54]'>
                                 <TableCell className='p-4'>
                                     <div className='flex items-center gap-3'>
                                         <div className='w-10 h-10 rounded-full bg-brand-button flex items-center justify-center'>
-                                            {member.user.firstName.charAt(0)}
+                                            {member.user.firstName!.charAt(0)}
                                         </div>
                                         <span className='font-medium'>
                                             {member.user.firstName}{" "}
@@ -120,7 +110,7 @@ function MembersTabTable({
                                             </DropdownMenuItem> */}
 
                                                 <DropdownMenuItem className='cursor-pointer'>
-                                                    <p>Remove Member</p>
+                                                    <span>Remove Member</span>
                                                 </DropdownMenuItem>
                                             </DropdownMenuContent>
                                         </DropdownMenu>

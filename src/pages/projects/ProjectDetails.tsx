@@ -144,7 +144,8 @@ function ProjectDetails() {
             {/* tasks tab */}
             {activeTab === "tasks" && (
                 <TasksTabTable
-                    projectId={projectId}
+                    projectMembers={userProject.members}
+                    projectId={projectId!}
                     projectRole={projectRole}
                 />
             )}
@@ -152,7 +153,7 @@ function ProjectDetails() {
             {/* members tab */}
             {activeTab === "members" && (
                 <MembersTabTable
-                    projectId={projectId}
+                    project={userProject}
                     projectRole={projectRole}
                 />
             )}

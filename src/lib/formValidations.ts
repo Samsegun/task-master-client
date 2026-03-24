@@ -2,7 +2,7 @@ import * as z from "zod";
 
 // enums
 const TaskPrioritySchema = z.enum(["LOW", "MEDIUM", "HIGH"]);
-// const TaskStatusSchema = z.enum(["TODO", "IN_PROGRESS", "DONE"]);
+const TaskStatusSchema = z.enum(["TODO", "IN_PROGRESS", "DONE"]);
 const AddMemberSchema = z.enum(["OWNER", "MEMBER"]);
 
 // auth
@@ -44,6 +44,15 @@ const createTaskForm = z.object({
     assigneeId: z.string().optional(),
 });
 
+const editTaskForm = z.object({
+    title: z.string().min(5).max(200),
+    description: z.string().max(1000).optional(),
+    dueDate: z.coerce.date().optional(),
+    priority: TaskPrioritySchema.optional(),
+    status: TaskStatusSchema.optional(),
+    assigneeId: z.string().optional(),
+});
+
 // project
 const createProject = z.object({
     name: z.string().min(3).max(100),
@@ -58,6 +67,7 @@ export {
     addProjectMember,
     createProject,
     createTaskForm,
+    editTaskForm,
     forgotPasswordForm,
     loginUserForm,
     registerUserForm,

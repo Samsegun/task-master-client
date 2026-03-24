@@ -98,8 +98,9 @@ export type Tasks = {
         title: string;
         status: TaskStatus;
         priority: TaskPriority;
+        description: string | null;
         assignee: { firstName: string; lastName: string } | null;
-        assigneeId: string;
+        assigneeId: string | null;
         dueDate: string | null;
     }[];
 };
@@ -147,6 +148,15 @@ export type Project = {
         status: ProjectStatus;
         projectRole: ProjectRole;
         dueDate: string | null;
+        members: {
+            role: ProjectRole;
+            joinedAt: string;
+            user: {
+                id: string;
+                firstName: string | null;
+                lastName: string | null;
+            };
+        }[];
         totalMembers: number;
         progress: number;
     };
@@ -161,6 +171,14 @@ export type CreateProject = {
     };
 };
 
+export type AddProjectMember = {
+    success: boolean;
+    user: {
+        id: string;
+        email: string;
+    };
+};
+
 export type CreateTask = {
     success: boolean;
     message: string;
@@ -171,10 +189,12 @@ export type CreateTask = {
     };
 };
 
-export type AddProjectMember = {
+export type UpdateTask = {
     success: boolean;
-    user: {
+    message: string;
+    task: {
         id: string;
-        email: string;
+        title: string;
+        projectId: string;
     };
 };
