@@ -8,16 +8,8 @@ import {
     SelectValue,
 } from "../ui/select";
 
-// type MemberShape = {
-//     user: { id: string; firstName: string; lastName: string };
-// };
-
 type Props = {
     projectId?: string;
-    // members?: MemberShape[] | null;
-    // isLoading: boolean;
-    // isError: boolean;
-    // customErr?: { message?: string } | null;
     members: {
         role: ProjectRole;
         joinedAt: string;
@@ -56,21 +48,6 @@ function AssigneeSelect({ members, field, fieldState }: Props) {
                 <SelectContent position='item-aligned' className='bg-[#263447]'>
                     <SelectItem value='null'>Unassigned</SelectItem>
 
-                    {/* {isLoading && (
-                        <SelectItem value='loading' disabled>
-                            Loading...
-                        </SelectItem>
-                    )}
-
-                    {(isError || !members) && (
-                        <p>Failed to load members. {customErr?.message}</p>
-                    )} */}
-
-                    {/* {(members ?? []).map(member => (
-                        <SelectItem key={member.user.id} value={member.user.id}>
-                            {member.user.firstName} {member.user.lastName}
-                        </SelectItem>
-                    ))} */}
                     {members.map(member => (
                         <SelectItem key={member.user.id} value={member.user.id}>
                             {member.user.firstName} {member.user.lastName}

@@ -1,14 +1,12 @@
+import { useUpdateTask } from "@/hooks/useTasks";
 import type { ProjectRole } from "@/lib/apiTypes";
 import { editTaskForm } from "@/lib/formValidations";
 import type { Task } from "@/lib/types";
-import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { format } from "date-fns";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
 import AssigneeSelect from "../common/AssigneeSelect";
 import Button from "../common/Button";
-import { Calendar } from "../ui/calendar";
 import {
     Dialog,
     DialogClose,
@@ -26,7 +24,6 @@ import {
     FieldLabel,
 } from "../ui/field";
 import { Input } from "../ui/input";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import {
     Select,
     SelectContent,
@@ -67,27 +64,41 @@ function EditTaskModal({
             description: task.description || "",
             assigneeId: task.assigneeId || undefined,
             priority: task.priority,
-            dueDate: task.dueDate,
+            dueDate: task.dueDate
+                ? new Date(task.dueDate).toISOString().split("T")[0]
+                : null,
             status: task.status,
         },
     });
 
-    function onSubmit(data: UpdateTaskFormData) {
-        console.log(data);
+    const updateTaskMutation = useUpdateTask();
 
-        // updateTaskMutation.mutate(data, {
-        //     onSuccess: () => {
-        //         form.reset();
-        //         closeDialog();
-        //     },
-        //     onError: (err: any) => {
-        //         console.log(err);
-        //     },
-        // });
+    function onSubmit(data: UpdateTaskFormData) {
+        const payLoad = {
+            ...data,
+            dueDate: data.dueDate || null,
+        };
+
+        updateTaskMutation.mutate(
+            { projectId, taskId: task.id, payLoad },
+            {
+                onSuccess: () => {
+                    closeModal();
+                },
+                onError: (err: any) => {
+                    console.log(err);
+                },
+            }
+        );
+    }
+
+    function closeModal() {
+        form.reset();
+        onClose();
     }
 
     return (
-        <Dialog open={isOpen} onOpenChange={onClose}>
+        <Dialog open={isOpen} onOpenChange={closeModal}>
             <form id='update-task' onSubmit={form.handleSubmit(onSubmit)}>
                 <DialogContent className='bg-brand-modal rounded-lg border border-nav-border'>
                     <DialogHeader className='border-b border-brand-primary/10'>
@@ -248,43 +259,36 @@ function EditTaskModal({
                         <Controller
                             name='dueDate'
                             control={form.control}
-                            render={({ field }) => (
-                                <>
-                                    <FieldLabel htmlFor='date'>
-                                        Due Date
-                                    </FieldLabel>
-                                    <Popover>
-                                        <PopoverTrigger asChild>
-                                            <Button
-                                                variant='transparent'
-                                                id='date'
-                                                className={cn(
-                                                    "justify-start bg-[#2d3f54] text-brand-primary -mt-4",
-                                                    !field.value &&
-                                                        "text-muted-foreground"
-                                                )}>
-                                                {field.value instanceof Date
-                                                    ? format(field.value, "PPP")
-                                                    : "Pick a date"}
-                                            </Button>
-                                        </PopoverTrigger>
+                            render={({ field }) => {
+                                return (
+                                    <>
+                                        <FieldLabel htmlFor='dueDate'>
+                                            Due Date
+                                        </FieldLabel>
 
-                                        <PopoverContent className='w-auto p-0'>
-                                            <Calendar
-                                                className=''
-                                                mode='single'
-                                                selected={
-                                                    field.value instanceof Date
-                                                        ? field.value
-                                                        : undefined
-                                                }
-                                                captionLayout='dropdown'
-                                                onSelect={field.onChange}
-                                            />
-                                        </PopoverContent>
-                                    </Popover>
-                                </>
-                            )}
+                                        <input
+                                            type='date'
+                                            id='dueDate'
+                                            value={
+                                                field.value
+                                                    ? String(field.value).split(
+                                                          "T"
+                                                      )[0]
+                                                    : ""
+                                            }
+                                            onChange={e => {
+                                                const dateValue = e.target.value
+                                                    ? new Date(
+                                                          e.target.value
+                                                      ).toISOString()
+                                                    : null;
+                                                field.onChange(dateValue);
+                                            }}
+                                            className='w-full bg-[#1a2332] border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500'
+                                        />
+                                    </>
+                                );
+                            }}
                         />
 
                         {/* assignee */}
@@ -307,7 +311,7 @@ function EditTaskModal({
                             <button
                                 type='button'
                                 // onClick={closeModal}
-                                // disabled={createTaskMutation.isPending}
+                                disabled={updateTaskMutation.isPending}
                                 className='flex-1 bg-[#1a2332] hover:bg-[#0f1729] cursor-pointer
                                      disabled:opacity-50 text-brand-primary py-2 rounded-lg
                          transition-colors border border-brand-gray'>
@@ -317,10 +321,13 @@ function EditTaskModal({
 
                         <Button
                             type='submit'
+                            disabled={updateTaskMutation.isPending}
                             variant={"primary"}
                             form='update-task'
                             className='flex-1'>
-                            Update Task
+                            {updateTaskMutation.isPending
+                                ? "Updating Task..."
+                                : "Update Task"}
                         </Button>
                     </DialogFooter>
                 </DialogContent>

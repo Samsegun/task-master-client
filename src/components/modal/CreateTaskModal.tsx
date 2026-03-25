@@ -44,8 +44,6 @@ type CreateTaskModalProps = {
 type CreateTaskFormData = z.input<typeof createTaskForm>;
 
 function CreateTaskModal({ projectId, projectMembers }: CreateTaskModalProps) {
-    // const { isLoading, customErr, members, isError } =
-    //     useGetProjectMembers(projectId);
     const createTaskMutation = useCreateTask(projectId);
     const { closeDialog } = useDialog();
 

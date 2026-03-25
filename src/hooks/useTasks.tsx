@@ -1,6 +1,11 @@
 import type { MyTasks, Tasks } from "@/lib/apiTypes";
 import type { TaskDetails } from "@/lib/types";
-import { createTask, getMyTasks, getTasks } from "@/services/ApiRequests";
+import {
+    createTask,
+    getMyTasks,
+    getTasks,
+    updateTask,
+} from "@/services/ApiRequests";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
@@ -37,7 +42,7 @@ export const useGetMyTasks = (opts?: { limit?: number }) => {
 
 export const useGetTasks = (projectId?: string, opts?: { limit?: number }) => {
     const enabled = Boolean(projectId);
-    const limit = opts?.limit ?? 5;
+    const limit = opts?.limit ?? 10;
 
     const { data, isLoading, isError, error } = useQuery({
         queryKey: ["tasks", projectId, limit],
@@ -90,11 +95,56 @@ export const useCreateTask = (projectId?: string) => {
                 queryKey: ["projects"],
             });
 
-            toast.success("Project created");
+            toast.success("Task created");
         },
         onError: (err: any) => {
             toast.error(
                 err.response.data.error.message || "Failed to create task"
+            );
+        },
+    });
+};
+
+export const useUpdateTask = () => {
+    const queryClient = useQueryClient();
+
+    let project;
+
+    return useMutation({
+        mutationFn: ({
+            projectId,
+            taskId,
+            payLoad,
+        }: {
+            projectId: string;
+            taskId: string;
+            payLoad: TaskDetails;
+        }) => {
+            project = projectId;
+            return updateTask(projectId, taskId, payLoad);
+        },
+        onSuccess: async ({}) => {
+            await queryClient.invalidateQueries({
+                queryKey: ["tasks"],
+            });
+
+            await queryClient.invalidateQueries({
+                queryKey: ["myTasks"],
+            });
+
+            await queryClient.invalidateQueries({
+                queryKey: ["projects", project!],
+            });
+
+            await queryClient.invalidateQueries({
+                queryKey: ["projects"],
+            });
+
+            toast.success("Task updated");
+        },
+        onError: (err: any) => {
+            toast.error(
+                err.response.data.error.message || "Failed to update task"
             );
         },
     });

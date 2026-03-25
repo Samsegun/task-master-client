@@ -47,7 +47,7 @@ const createTaskForm = z.object({
 const editTaskForm = z.object({
     title: z.string().min(5).max(200),
     description: z.string().max(1000).optional(),
-    dueDate: z.coerce.date().optional(),
+    dueDate: z.coerce.date().optional().nullable(),
     priority: TaskPrioritySchema.optional(),
     status: TaskStatusSchema.optional(),
     assigneeId: z.string().optional(),

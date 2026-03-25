@@ -1,6 +1,6 @@
 import { useGetTasks } from "@/hooks/useTasks";
 import type { ProjectRole } from "@/lib/apiTypes";
-import type { Statuses } from "@/lib/types";
+import type { Statuses, Task } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
 import { CheckCircle, Plus } from "lucide-react";
 import { useState } from "react";
@@ -10,6 +10,8 @@ import StatusIcon from "../common/StatusIcon";
 import Tabs from "../common/Tabs";
 import { Dialog } from "../Dialog/Dialog";
 import CreateTaskModal from "../modal/CreateTaskModal";
+import DeleteModal from "../modal/DeleteModal";
+import EditTaskModal from "../modal/EditTaskModal";
 import { Table, TableBody, TableHeader, TableRow } from "../ui/table";
 import { TableCell, TableHead } from "./TableUI";
 import TasksTableRowOptions from "./TasksTableRowOptions";
@@ -45,6 +47,10 @@ function TasksTabTable({
 }: TasksTabProps) {
     const { isLoading, isError, customErr, tasks } = useGetTasks(projectId);
     const [filterStatus, setFilterStatus] = useState<Statuses>("all");
+    const [selectedTask, setSelectedTask] = useState<{
+        task: Task;
+        option: "EDIT" | "DELETE";
+    } | null>(null);
 
     if (isLoading) return <DataLoadingIcon />;
 
@@ -160,10 +166,10 @@ function TasksTabTable({
 
                                 <TableCell>
                                     <TasksTableRowOptions
-                                        projectMembers={projectMembers}
-                                        projectId={projectId}
+                                        onEditClick={(
+                                            option: "EDIT" | "DELETE"
+                                        ) => setSelectedTask({ option, task })}
                                         projectRole={projectRole}
-                                        task={task}
                                     />
                                 </TableCell>
                             </TableRow>
@@ -171,6 +177,24 @@ function TasksTabTable({
                     </TableBody>
                 </Table>
             </div>
+
+            {selectedTask?.option === "EDIT" && (
+                <EditTaskModal
+                    projectId={projectId}
+                    projectMembers={projectMembers}
+                    task={selectedTask.task}
+                    isOpen={!!selectedTask}
+                    onClose={() => setSelectedTask(null)}
+                />
+            )}
+
+            {selectedTask?.option === "DELETE" && (
+                <DeleteModal
+                    taskId={selectedTask.task.id}
+                    isOpen={!!selectedTask}
+                    onClose={() => setSelectedTask(null)}
+                />
+            )}
 
             {filteredTasks.length === 0 && (
                 <div className='text-center py-16 bg-[#263447] rounded-lg border border-brand-gray/50'>
