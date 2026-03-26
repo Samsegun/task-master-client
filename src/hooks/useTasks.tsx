@@ -108,8 +108,6 @@ export const useCreateTask = (projectId?: string) => {
 export const useUpdateTask = () => {
     const queryClient = useQueryClient();
 
-    let project;
-
     return useMutation({
         mutationFn: ({
             projectId,
@@ -120,10 +118,11 @@ export const useUpdateTask = () => {
             taskId: string;
             payLoad: TaskDetails;
         }) => {
-            project = projectId;
             return updateTask(projectId, taskId, payLoad);
         },
-        onSuccess: async ({}) => {
+        onSuccess: async (_data, variables) => {
+            const projectId = variables.projectId;
+
             await queryClient.invalidateQueries({
                 queryKey: ["tasks"],
             });
@@ -133,7 +132,7 @@ export const useUpdateTask = () => {
             });
 
             await queryClient.invalidateQueries({
-                queryKey: ["projects", project!],
+                queryKey: ["project", projectId],
             });
 
             await queryClient.invalidateQueries({
