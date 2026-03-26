@@ -9,6 +9,7 @@ import type {
     AuthStatus,
     CreateProject,
     CreateTask,
+    DeleteTask,
     ForgotPassword,
     LoginUser,
     LogoutUser,
@@ -139,6 +140,12 @@ export const updateTask = (
     return axiosInstance.patch<UpdateTask>(
         `${V1}/projects/${projectId}/tasks/${taskId}`,
         payLoad
+    );
+};
+
+export const deleteTask = (projectId: string, taskId: string) => {
+    return axiosInstance.delete<DeleteTask>(
+        `${V1}/projects/${projectId}/tasks/${taskId}`
     );
 };
 /* end of task requests */

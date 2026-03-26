@@ -2,6 +2,7 @@ import type { MyTasks, Tasks } from "@/lib/apiTypes";
 import type { TaskDetails } from "@/lib/types";
 import {
     createTask,
+    deleteTask,
     getMyTasks,
     getTasks,
     updateTask,
@@ -66,6 +67,7 @@ export const useGetTasks = (projectId?: string, opts?: { limit?: number }) => {
 
     return {
         tasks: tasks?.tasks,
+        userId: tasks?.userId,
         isLoading,
         isError,
         error,
@@ -119,6 +121,48 @@ export const useUpdateTask = () => {
             payLoad: TaskDetails;
         }) => {
             return updateTask(projectId, taskId, payLoad);
+        },
+        onSuccess: async (_data, variables) => {
+            const projectId = variables.projectId;
+
+            await queryClient.invalidateQueries({
+                queryKey: ["tasks"],
+            });
+
+            await queryClient.invalidateQueries({
+                queryKey: ["myTasks"],
+            });
+
+            await queryClient.invalidateQueries({
+                queryKey: ["project", projectId],
+            });
+
+            await queryClient.invalidateQueries({
+                queryKey: ["projects"],
+            });
+
+            toast.success("Task updated");
+        },
+        onError: (err: any) => {
+            toast.error(
+                err.response.data.error.message || "Failed to update task"
+            );
+        },
+    });
+};
+
+export const useDeleteTask = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: ({
+            projectId,
+            taskId,
+        }: {
+            projectId: string;
+            taskId: string;
+        }) => {
+            return deleteTask(projectId, taskId);
         },
         onSuccess: async (_data, variables) => {
             const projectId = variables.projectId;

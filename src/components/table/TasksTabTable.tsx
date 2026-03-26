@@ -45,7 +45,8 @@ function TasksTabTable({
     projectId,
     projectRole,
 }: TasksTabProps) {
-    const { isLoading, isError, customErr, tasks } = useGetTasks(projectId);
+    const { isLoading, isError, customErr, tasks, userId } =
+        useGetTasks(projectId);
     const [filterStatus, setFilterStatus] = useState<Statuses>("all");
     const [selectedTask, setSelectedTask] = useState<{
         task: Task;
@@ -124,7 +125,7 @@ function TasksTabTable({
                                     <div className='flex items-center gap-3'>
                                         {StatusIcon(task.status)}
 
-                                        <span className='font-medium'>
+                                        <span className='font-medium capitalize'>
                                             {task.title}
                                         </span>
                                     </div>
@@ -170,6 +171,8 @@ function TasksTabTable({
                                             option: "EDIT" | "DELETE"
                                         ) => setSelectedTask({ option, task })}
                                         projectRole={projectRole}
+                                        creatorId={task.creatorId}
+                                        userId={userId!}
                                     />
                                 </TableCell>
                             </TableRow>
@@ -190,7 +193,11 @@ function TasksTabTable({
 
             {selectedTask?.option === "DELETE" && (
                 <DeleteModal
-                    taskId={selectedTask.task.id}
+                    task={{
+                        id: selectedTask.task.id,
+                        title: selectedTask.task.title,
+                    }}
+                    projectId={projectId}
                     isOpen={!!selectedTask}
                     onClose={() => setSelectedTask(null)}
                 />

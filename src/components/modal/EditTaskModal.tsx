@@ -83,9 +83,7 @@ function EditTaskModal({
         updateTaskMutation.mutate(
             { projectId, taskId: task.id, payLoad },
             {
-                onSuccess: () => {
-                    closeModal();
-                },
+                onSuccess: () => closeModal(),
             }
         );
     }
@@ -308,7 +306,6 @@ function EditTaskModal({
                         <DialogClose asChild>
                             <button
                                 type='button'
-                                // onClick={closeModal}
                                 disabled={updateTaskMutation.isPending}
                                 className='flex-1 bg-[#1a2332] hover:bg-[#0f1729] cursor-pointer
                                      disabled:opacity-50 text-brand-primary py-2 rounded-lg

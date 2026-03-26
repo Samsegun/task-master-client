@@ -9,14 +9,23 @@ import {
 
 type RowOptionsProps = {
     projectRole: ProjectRole;
+    creatorId: string;
+    userId: string;
     onEditClick: (opt: "EDIT" | "DELETE") => void;
 };
 
-function TasksTableRowOptions({ projectRole, onEditClick }: RowOptionsProps) {
+function TasksTableRowOptions({
+    projectRole,
+    onEditClick,
+    creatorId,
+    userId,
+}: RowOptionsProps) {
     return (
         <>
             <DropdownMenu>
-                <DropdownMenuTrigger className='p-1 hover:bg-brand-gray/50 rounded transition-colors cursor-pointer'>
+                <DropdownMenuTrigger
+                    className='p-1 hover:bg-brand-gray/50 rounded
+                 transition-colors cursor-pointer'>
                     <MoreVertical size={20} className='text-brand-gray' />
                 </DropdownMenuTrigger>
 
@@ -27,7 +36,7 @@ function TasksTableRowOptions({ projectRole, onEditClick }: RowOptionsProps) {
                         <span>Edit</span>
                     </DropdownMenuItem>
 
-                    {projectRole === "OWNER" && (
+                    {(projectRole === "OWNER" || creatorId === userId) && (
                         <DropdownMenuItem
                             className='cursor-pointer text-red-500 hover:text-red-700'
                             onClick={() => onEditClick("DELETE")}>

@@ -52,7 +52,7 @@ function CreateTaskModal({ projectId, projectMembers }: CreateTaskModalProps) {
         defaultValues: {
             title: "",
             description: "",
-            assigneeId: "",
+            assigneeId: null,
             priority: "MEDIUM",
         },
     });

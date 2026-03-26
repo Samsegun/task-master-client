@@ -16,6 +16,7 @@ export type Task = {
     dueDate: string | null;
     assignee: { firstName: string; lastName: string } | null;
     assigneeId: string | null;
+    creatorId: string;
 };
 
 export type Member = {

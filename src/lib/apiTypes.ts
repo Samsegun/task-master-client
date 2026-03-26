@@ -102,7 +102,9 @@ export type Tasks = {
         assignee: { firstName: string; lastName: string } | null;
         assigneeId: string | null;
         dueDate: string | null;
+        creatorId: string;
     }[];
+    userId: string;
 };
 
 export type ProjectMembers = {
@@ -197,4 +199,9 @@ export type UpdateTask = {
         title: string;
         projectId: string;
     };
+};
+
+export type DeleteTask = {
+    success: boolean;
+    message: string;
 };

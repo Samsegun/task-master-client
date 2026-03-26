@@ -39,9 +39,9 @@ const resetPasswordForm = z.object({
 const createTaskForm = z.object({
     title: z.string().min(5).max(200),
     description: z.string().max(1000).optional(),
-    dueDate: z.coerce.date().optional(),
+    dueDate: z.coerce.date().optional().nullable(),
     priority: TaskPrioritySchema.optional().default("MEDIUM"),
-    assigneeId: z.string().optional(),
+    assigneeId: z.string().optional().nullable(),
 });
 
 const editTaskForm = z.object({
