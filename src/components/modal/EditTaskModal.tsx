@@ -62,7 +62,7 @@ function EditTaskModal({
         defaultValues: {
             title: task.title,
             description: task.description || "",
-            assigneeId: task.assigneeId || undefined,
+            assigneeId: task.assigneeId || null,
             priority: task.priority,
             dueDate: task.dueDate
                 ? new Date(task.dueDate).toISOString().split("T")[0]
@@ -76,6 +76,7 @@ function EditTaskModal({
     function onSubmit(data: UpdateTaskFormData) {
         const payLoad = {
             ...data,
+            assigneeId: data.assigneeId !== "null" ? data.assigneeId : null,
             dueDate: data.dueDate || null,
         };
 
@@ -84,9 +85,6 @@ function EditTaskModal({
             {
                 onSuccess: () => {
                     closeModal();
-                },
-                onError: (err: any) => {
-                    console.log(err);
                 },
             }
         );

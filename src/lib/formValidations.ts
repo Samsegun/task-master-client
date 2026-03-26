@@ -50,7 +50,7 @@ const editTaskForm = z.object({
     dueDate: z.coerce.date().optional().nullable(),
     priority: TaskPrioritySchema.optional(),
     status: TaskStatusSchema.optional(),
-    assigneeId: z.string().optional(),
+    assigneeId: z.string().optional().nullable(),
 });
 
 // project

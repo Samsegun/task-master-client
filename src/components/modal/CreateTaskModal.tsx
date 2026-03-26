@@ -68,9 +68,6 @@ function CreateTaskModal({ projectId, projectMembers }: CreateTaskModalProps) {
                 form.reset();
                 closeDialog();
             },
-            onError: (err: any) => {
-                console.log(err);
-            },
         });
     }
 

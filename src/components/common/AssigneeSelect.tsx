@@ -38,7 +38,7 @@ function AssigneeSelect({ members, field, fieldState }: Props) {
             </FieldContent>
             <Select
                 name={field.name}
-                value={field.value}
+                value={field.value ?? ""}
                 onValueChange={field.onChange}>
                 <SelectTrigger
                     id='task-assigneeId'
