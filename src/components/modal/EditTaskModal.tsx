@@ -96,7 +96,9 @@ function EditTaskModal({
     return (
         <Dialog open={isOpen} onOpenChange={closeModal}>
             <form id='update-task' onSubmit={form.handleSubmit(onSubmit)}>
-                <DialogContent className='bg-brand-modal rounded-lg border border-nav-border'>
+                <DialogContent
+                    className='bg-brand-modal max-h-[500px] lg:max-h-[700px] overflow-y-auto
+                 rounded-lg border border-nav-border'>
                     <DialogHeader className='border-b border-brand-primary/10'>
                         <DialogTitle className="text-xl font-bold text-brand-primary'">
                             Edit Task

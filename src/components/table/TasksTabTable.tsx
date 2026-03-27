@@ -4,11 +4,11 @@ import type { Statuses, Task } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
 import { CheckCircle, Plus } from "lucide-react";
 import { useState } from "react";
+import Button from "../common/Button";
 import { DataLoadingIcon } from "../common/LoadingIcon";
 import StatusBadge from "../common/StatusBadge";
 import StatusIcon from "../common/StatusIcon";
 import Tabs from "../common/Tabs";
-import { Dialog } from "../Dialog/Dialog";
 import CreateTaskModal from "../modal/CreateTaskModal";
 import DeleteModal from "../modal/DeleteModal";
 import EditTaskModal from "../modal/EditTaskModal";
@@ -48,6 +48,7 @@ function TasksTabTable({
     const { isLoading, isError, customErr, tasks, userId } =
         useGetTasks(projectId);
     const [filterStatus, setFilterStatus] = useState<Statuses>("all");
+    const [openNewTask, setOpenNewTask] = useState(false);
     const [selectedTask, setSelectedTask] = useState<{
         task: Task;
         option: "EDIT" | "DELETE";
@@ -74,7 +75,15 @@ function TasksTabTable({
                     statusList={taskStatus}
                 />
 
-                <Dialog>
+                <Button
+                    variant={"primary"}
+                    className={`flex items-center gap-2`}
+                    onClick={() => setOpenNewTask(true)}>
+                    <Plus size={30} />
+                    <span>New Task</span>
+                </Button>
+
+                {/* <Dialog>
                     <Dialog.Trigger
                         variant={"primary"}
                         className={`flex items-center gap-2`}>
@@ -89,7 +98,7 @@ function TasksTabTable({
                             projectMembers={projectMembers}
                         />
                     </Dialog.Content>
-                </Dialog>
+                </Dialog> */}
             </div>
 
             {/* tasks table */}
@@ -180,6 +189,15 @@ function TasksTabTable({
                     </TableBody>
                 </Table>
             </div>
+
+            {openNewTask && (
+                <CreateTaskModal
+                    projectId={projectId}
+                    projectMembers={projectMembers}
+                    openNewTask={openNewTask}
+                    setOpenNewTask={setOpenNewTask}
+                />
+            )}
 
             {selectedTask?.option === "EDIT" && (
                 <EditTaskModal
