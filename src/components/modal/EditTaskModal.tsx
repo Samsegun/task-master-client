@@ -97,7 +97,7 @@ function EditTaskModal({
         <Dialog open={isOpen} onOpenChange={closeModal}>
             <form id='update-task' onSubmit={form.handleSubmit(onSubmit)}>
                 <DialogContent
-                    className='bg-brand-modal max-h-[500px] lg:max-h-[700px] overflow-y-auto
+                    className='bg-brand-modal max-h-[500px] lg:max-h-[732px] overflow-y-auto
                  rounded-lg border border-nav-border'>
                     <DialogHeader className='border-b border-brand-primary/10'>
                         <DialogTitle className="text-xl font-bold text-brand-primary'">
@@ -305,10 +305,11 @@ function EditTaskModal({
                     </FieldGroup>
 
                     <DialogFooter className='flex gap-3'>
-                        <DialogClose asChild>
+                        <DialogClose
+                            asChild
+                            disabled={updateTaskMutation.isPending}>
                             <button
                                 type='button'
-                                disabled={updateTaskMutation.isPending}
                                 className='flex-1 bg-[#1a2332] hover:bg-[#0f1729] cursor-pointer
                                      disabled:opacity-50 text-brand-primary py-2 rounded-lg
                          transition-colors border border-brand-gray'>

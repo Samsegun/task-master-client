@@ -75,12 +75,20 @@ export const useGetTasks = (projectId?: string, opts?: { limit?: number }) => {
     };
 };
 
-export const useCreateTask = (projectId?: string) => {
+export const useCreateTask = () => {
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: (payLoad: TaskDetails) => createTask(projectId!, payLoad),
-        onSuccess: async () => {
+        mutationFn: ({
+            projectId,
+            payLoad,
+        }: {
+            payLoad: TaskDetails;
+            projectId?: string;
+        }) => createTask(projectId!, payLoad),
+        onSuccess: async (_data, variables) => {
+            const projectId = variables.projectId;
+
             await queryClient.invalidateQueries({
                 queryKey: ["tasks"],
             });
@@ -90,7 +98,7 @@ export const useCreateTask = (projectId?: string) => {
             });
 
             await queryClient.invalidateQueries({
-                queryKey: ["project"],
+                queryKey: ["project", projectId],
             });
 
             await queryClient.invalidateQueries({
@@ -119,9 +127,7 @@ export const useUpdateTask = () => {
             projectId: string;
             taskId: string;
             payLoad: TaskDetails;
-        }) => {
-            return updateTask(projectId, taskId, payLoad);
-        },
+        }) => updateTask(projectId, taskId, payLoad),
         onSuccess: async (_data, variables) => {
             const projectId = variables.projectId;
 
@@ -183,7 +189,7 @@ export const useDeleteTask = () => {
                 queryKey: ["projects"],
             });
 
-            toast.success("Task updated");
+            toast.success("Task deleted");
         },
         onError: (err: any) => {
             toast.error(
