@@ -310,6 +310,7 @@ function EditTaskModal({
                             disabled={updateTaskMutation.isPending}>
                             <button
                                 type='button'
+                                onClick={() => form.reset()}
                                 className='flex-1 bg-[#1a2332] hover:bg-[#0f1729] cursor-pointer
                                      disabled:opacity-50 text-brand-primary py-2 rounded-lg
                          transition-colors border border-brand-gray'>

@@ -1,7 +1,8 @@
 import { useGetTasks } from "@/hooks/useTasks";
 import type { ProjectRole } from "@/lib/apiTypes";
-import type { Statuses, Task } from "@/lib/types";
+import type { Statuses } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
+import { useTaskModals } from "@/providers/TaskModalsProvider";
 import { CheckCircle, Plus } from "lucide-react";
 import { useState } from "react";
 import Button from "../common/Button";
@@ -9,9 +10,6 @@ import { DataLoadingIcon } from "../common/LoadingIcon";
 import StatusBadge from "../common/StatusBadge";
 import StatusIcon from "../common/StatusIcon";
 import Tabs from "../common/Tabs";
-import CreateTaskModal from "../modal/CreateTaskModal";
-import DeleteModal from "../modal/DeleteModal";
-import EditTaskModal from "../modal/EditTaskModal";
 import { Table, TableBody, TableHeader, TableRow } from "../ui/table";
 import { TableCell, TableHead } from "./TableUI";
 import TasksTableRowOptions from "./TasksTableRowOptions";
@@ -19,15 +17,6 @@ import TasksTableRowOptions from "./TasksTableRowOptions";
 type TasksTabProps = {
     projectId: string;
     projectRole: ProjectRole;
-    projectMembers: {
-        role: ProjectRole;
-        joinedAt: string;
-        user: {
-            id: string;
-            firstName: string | null;
-            lastName: string | null;
-        };
-    }[];
 };
 
 const taskStatus: Statuses[] = ["all", "TODO", "IN_PROGRESS", "DONE"];
@@ -40,19 +29,11 @@ const taskTableHeaders = [
     "",
 ];
 
-function TasksTabTable({
-    projectMembers,
-    projectId,
-    projectRole,
-}: TasksTabProps) {
+function TasksTabTable({ projectId, projectRole }: TasksTabProps) {
     const { isLoading, isError, customErr, tasks, userId } =
         useGetTasks(projectId);
     const [filterStatus, setFilterStatus] = useState<Statuses>("all");
-    const [openNewTask, setOpenNewTask] = useState(false);
-    const [selectedTask, setSelectedTask] = useState<{
-        task: Task;
-        option: "EDIT" | "DELETE";
-    } | null>(null);
+    const { openCreate, openEdit, openDelete } = useTaskModals();
 
     if (isLoading) return <DataLoadingIcon />;
 
@@ -78,7 +59,7 @@ function TasksTabTable({
                 <Button
                     variant={"primary"}
                     className={`flex items-center gap-2`}
-                    onClick={() => setOpenNewTask(true)}>
+                    onClick={() => openCreate()}>
                     <Plus size={30} />
                     <span>New Task</span>
                 </Button>
@@ -161,7 +142,11 @@ function TasksTabTable({
                                     <TasksTableRowOptions
                                         onEditClick={(
                                             option: "EDIT" | "DELETE"
-                                        ) => setSelectedTask({ option, task })}
+                                        ) =>
+                                            option === "EDIT"
+                                                ? openEdit(task)
+                                                : openDelete(task)
+                                        }
                                         projectRole={projectRole}
                                         creatorId={task.creatorId}
                                         userId={userId!}
@@ -172,37 +157,6 @@ function TasksTabTable({
                     </TableBody>
                 </Table>
             </div>
-
-            {openNewTask && (
-                <CreateTaskModal
-                    projectId={projectId}
-                    projectMembers={projectMembers}
-                    openNewTask={openNewTask}
-                    setOpenNewTask={setOpenNewTask}
-                />
-            )}
-
-            {selectedTask?.option === "EDIT" && (
-                <EditTaskModal
-                    projectId={projectId}
-                    projectMembers={projectMembers}
-                    task={selectedTask.task}
-                    isOpen={!!selectedTask}
-                    onClose={() => setSelectedTask(null)}
-                />
-            )}
-
-            {selectedTask?.option === "DELETE" && (
-                <DeleteModal
-                    task={{
-                        id: selectedTask.task.id,
-                        title: selectedTask.task.title,
-                    }}
-                    projectId={projectId}
-                    isOpen={!!selectedTask}
-                    onClose={() => setSelectedTask(null)}
-                />
-            )}
 
             {filteredTasks.length === 0 && (
                 <div className='text-center py-16 bg-[#263447] rounded-lg border border-brand-gray/50'>

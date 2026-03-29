@@ -63,12 +63,19 @@ function CreateTaskModal({
             description: "",
             assigneeId: null,
             priority: "MEDIUM",
+            dueDate: null,
         },
     });
 
     function onSubmit(data: CreateTaskFormData) {
+        const payLoad = {
+            ...data,
+            assigneeId: data.assigneeId !== "null" ? data.assigneeId : null,
+        };
+
+        console.log(payLoad);
         createTaskMutation.mutate(
-            { payLoad: data, projectId: projectId },
+            { payLoad, projectId: projectId },
             {
                 onSuccess: () => {
                     form.reset();
@@ -254,6 +261,7 @@ function CreateTaskModal({
                             disabled={createTaskMutation.isPending}>
                             <button
                                 type='button'
+                                onClick={() => form.reset()}
                                 className='flex-1 bg-[#1a2332] hover:bg-[#0f1729] cursor-pointer
                                                       disabled:opacity-50 text-brand-primary py-2 rounded-lg
                                           transition-colors border border-brand-gray'>
