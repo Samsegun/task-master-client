@@ -82,23 +82,6 @@ function TasksTabTable({
                     <Plus size={30} />
                     <span>New Task</span>
                 </Button>
-
-                {/* <Dialog>
-                    <Dialog.Trigger
-                        variant={"primary"}
-                        className={`flex items-center gap-2`}>
-                        <Plus size={30} />
-
-                        <span>New Task</span>
-                    </Dialog.Trigger>
-
-                    <Dialog.Content height='auto'>
-                        <CreateTaskModal
-                            projectId={projectId}
-                            projectMembers={projectMembers}
-                        />
-                    </Dialog.Content>
-                </Dialog> */}
             </div>
 
             {/* tasks table */}

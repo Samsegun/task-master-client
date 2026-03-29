@@ -1,87 +1,13 @@
+import Button from "@/components/common/Button";
 import { DataLoadingIcon } from "@/components/common/LoadingIcon";
 import PageTitle from "@/components/common/PageTitle";
 import ProjectCard from "@/components/common/ProjectCard";
 import Tabs from "@/components/common/Tabs";
-import { Dialog } from "@/components/Dialog/Dialog";
-import CreateProjectModal from "@/components/modal/CreateProjectModal";
 import { useGetProjects } from "@/hooks/useProjects";
 import type { Statuses } from "@/lib/types";
+import { useCreateProjectModal } from "@/providers/CreateProjectProvider";
 import { FolderKanban, Plus } from "lucide-react";
 import { useState } from "react";
-
-// mock data
-// const projects: Project[] = [
-//     {
-//         id: "1",
-//         name: "Marketing Campaign",
-//         status: "ACTIVE",
-//         progress: 75,
-//         dueDate: "Jul 15, 2024",
-//         memberCount: 5,
-//         completedTasks: 12,
-//         totalTasks: 16,
-//         owner: {
-//             name: "sophia wilson",
-//             email: "sophia@mail.com",
-//         },
-//     },
-//     {
-//         id: "2",
-//         name: "Product Launch",
-//         status: "COMPLETED",
-//         progress: 100,
-//         dueDate: "Oct 20, 2024",
-//         memberCount: 3,
-//         completedTasks: 8,
-//         totalTasks: 8,
-//         owner: {
-//             name: "sophia wilson",
-//             email: "sophia@mail.com",
-//         },
-//     },
-//     {
-//         id: "3",
-//         name: "Content Strategy",
-//         status: "ARCHIVED",
-//         progress: 50,
-//         dueDate: "Sep 25, 2024",
-//         memberCount: 2,
-//         completedTasks: 4,
-//         totalTasks: 8,
-//         owner: {
-//             name: "sophia wilson",
-//             email: "sophia@mail.com",
-//         },
-//     },
-//     {
-//         id: "4",
-//         name: "Website Redesign",
-//         status: "ACTIVE",
-//         progress: 30,
-//         dueDate: "Aug 30, 2024",
-//         memberCount: 4,
-//         completedTasks: 3,
-//         totalTasks: 10,
-//         owner: {
-//             name: "sophia wilson",
-//             email: "sophia@mail.com",
-//         },
-//     },
-//     {
-//         id: "5",
-//         name: "Mobile App",
-//         status: "ACTIVE",
-//         progress: 60,
-//         dueDate: "Sep 10, 2024",
-//         memberCount: 6,
-//         completedTasks: 6,
-//         totalTasks: 10,
-//         owner: {
-//             name: "sophia wilson",
-//             email: "sophia@mail.com",
-//         },
-//     },
-// ];
 
 const projectStatus: Statuses[] = ["all", "ACTIVE", "COMPLETED", "ARCHIVED"];
 
@@ -90,6 +16,7 @@ function Projects() {
         limit: 5,
     });
     const [activeTab, setActiveTab] = useState<Statuses>("all");
+    const { openCreateProject } = useCreateProjectModal();
 
     if (isLoading) {
         return <DataLoadingIcon />;
@@ -109,18 +36,13 @@ function Projects() {
             <div className='flex justify-between items-center mb-8'>
                 <PageTitle>Projects</PageTitle>
 
-                <Dialog>
-                    <Dialog.Trigger
-                        variant={"primary"}
-                        className=' flex items-center gap-2'>
-                        <Plus size={30} />
-                        New Project
-                    </Dialog.Trigger>
-
-                    <Dialog.Content height='auto'>
-                        <CreateProjectModal />
-                    </Dialog.Content>
-                </Dialog>
+                <Button
+                    variant={"primary"}
+                    className={`flex items-center gap-2`}
+                    onClick={() => openCreateProject()}>
+                    <Plus size={30} />
+                    <span>New Project</span>
+                </Button>
             </div>
 
             <Tabs
@@ -137,6 +59,13 @@ function Projects() {
                     <ProjectCard key={project.id} project={project} />
                 ))}
             </section>
+
+            {/* {openNewProject && (
+                <CreateProjectModal
+                    openNewProject={openNewProject}
+                    setOpenNewProject={setOpenNewProject}
+                />
+            )} */}
 
             {/* empty state */}
             {filteredProjects!.length === 0 && (

@@ -1,10 +1,9 @@
 import { navLinks, navLinksBaseClasses } from "@/lib/navLinks";
+import { useCreateProjectModal } from "@/providers/CreateProjectProvider";
 import { PanelLeft, PanelRight, Plus } from "lucide-react";
 import { Link, NavLink } from "react-router";
 import Button from "../common/Button";
 import Logo from "../common/Logo";
-import { Dialog } from "../Dialog/Dialog";
-import CreateProjectModal from "../modal/CreateProjectModal";
 
 interface SidebarProps {
     isCollapsed: boolean;
@@ -12,6 +11,8 @@ interface SidebarProps {
 }
 
 function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
+    const { openCreateProject } = useCreateProjectModal();
+
     return (
         <aside
             className={`hidden md:flex flex-col bg-brand-sidebar 
@@ -85,21 +86,16 @@ function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
                     </nav>
                 </div>
 
-                <Dialog>
-                    <Dialog.Trigger
-                        variant={"primary"}
-                        className={`w-full flex items-center gap-2 ${
-                            isCollapsed ? "" : "justify-center"
-                        }`}>
-                        <Plus size={30} />
+                <Button
+                    variant={"primary"}
+                    className={`flex items-center gap-2 ${
+                        isCollapsed ? "" : "justify-center"
+                    }`}
+                    onClick={() => openCreateProject()}>
+                    <Plus size={30} />
 
-                        {!isCollapsed && <span>New Project</span>}
-                    </Dialog.Trigger>
-
-                    <Dialog.Content height='auto'>
-                        <CreateProjectModal />
-                    </Dialog.Content>
-                </Dialog>
+                    {!isCollapsed && <span>New Project</span>}
+                </Button>
             </div>
         </aside>
     );

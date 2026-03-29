@@ -1,4 +1,5 @@
 import { useAuthStatus } from "@/hooks/useAuth";
+import { CreateProjectModalProvider } from "@/providers/CreateProjectProvider";
 import { useState } from "react";
 import { Navigate, Outlet, useLocation } from "react-router";
 import LoadingIcon from "../common/LoadingIcon";
@@ -18,19 +19,24 @@ function ProtectedRoutes() {
     }
 
     return (
-        <div>
-            <Navbar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
+        <CreateProjectModalProvider>
+            <div>
+                <Navbar
+                    isCollapsed={isCollapsed}
+                    setIsCollapsed={setIsCollapsed}
+                />
 
-            <div
-                className={`min-h-screen p-6 mt-18 
+                <div
+                    className={`min-h-screen p-6 mt-18 
             md:mt-0 xl:px-10 transition-all duration-300 ease-in-out ${
                 isCollapsed ? "ml-20" : "md:ml-60 xl:ml-64"
             }`}>
-                <main className='max-w-7xl mx-auto lg:p-4'>
-                    <Outlet />
-                </main>
+                    <main className='max-w-7xl mx-auto lg:p-4'>
+                        <Outlet />
+                    </main>
+                </div>
             </div>
-        </div>
+        </CreateProjectModalProvider>
     );
 }
 
