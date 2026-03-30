@@ -167,4 +167,13 @@ export const addProjectMember = (
     );
 };
 
+export const removeProjectMember = (
+    projectId: string,
+    userIdToRemove: string
+) => {
+    return axiosInstance.delete<AddProjectMember>(
+        `${V1}/projects/${projectId}/members/${userIdToRemove}`
+    );
+};
+
 /* end of project member requests */

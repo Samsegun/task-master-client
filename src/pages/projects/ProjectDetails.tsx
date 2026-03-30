@@ -7,33 +7,11 @@ import MembersTabTable from "@/components/table/MembersTabTable";
 import TasksTabTable from "@/components/table/TasksTabTable";
 import { Progress } from "@/components/ui/progress";
 import { useGetProject } from "@/hooks/useProjects";
-import type { Member } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
-import { TaskModalsProvider } from "@/providers/TaskModalsProvider";
+import { ProjectModalsProvider } from "@/providers/ProjectModalsProvider";
 import { ArrowLeft, Settings } from "lucide-react";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
-
-export const members: Member[] = [
-    {
-        id: "1",
-        name: "Sophia Willson",
-        email: "sophia@example.com",
-        role: "OWNER",
-    },
-    {
-        id: "2",
-        name: "John Doe",
-        email: "john@example.com",
-        role: "MEMBER",
-    },
-    {
-        id: "3",
-        name: "Jane Smith",
-        email: "jane@example.com",
-        role: "MEMBER",
-    },
-];
 
 function ProjectDetails() {
     const { projectId } = useParams();
@@ -142,26 +120,21 @@ function ProjectDetails() {
                 </button>
             </section>
 
-            {/* tasks tab */}
-            {activeTab === "tasks" && (
-                <TaskModalsProvider
-                    projectId={projectId!}
-                    projectMembers={userProject.members}>
+            <ProjectModalsProvider
+                projectId={projectId!}
+                projectMembers={userProject.members}>
+                {activeTab === "tasks" ? (
                     <TasksTabTable
-                        // projectMembers={userProject.members}
                         projectId={projectId!}
                         projectRole={projectRole}
                     />
-                </TaskModalsProvider>
-            )}
-
-            {/* members tab */}
-            {activeTab === "members" && (
-                <MembersTabTable
-                    project={userProject}
-                    projectRole={projectRole}
-                />
-            )}
+                ) : (
+                    <MembersTabTable
+                        project={userProject}
+                        projectRole={projectRole}
+                    />
+                )}
+            </ProjectModalsProvider>
         </div>
     );
 }

@@ -6,6 +6,7 @@ import {
     getProject,
     getProjectMembers,
     getProjects,
+    removeProjectMember,
 } from "@/services/ApiRequests";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
@@ -141,11 +142,62 @@ export const useAddProjectMember = (projectId: string) => {
                 queryKey: ["projects"],
             });
 
+            await queryClient.invalidateQueries({
+                queryKey: ["tasks"],
+            });
+
+            await queryClient.invalidateQueries({
+                queryKey: ["myTasks"],
+            });
+
             toast.success("Project member added");
         },
         onError: (err: any) => {
             toast.error(
                 err.response.data.error.message || "Failed to add Member"
+            );
+        },
+    });
+};
+export const useRemoveProjectMember = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: ({
+            projectId,
+            userIdToRemove,
+        }: {
+            projectId: string;
+            userIdToRemove: string;
+        }) => removeProjectMember(projectId, userIdToRemove),
+        onSuccess: async (_data, variables) => {
+            const projectId = variables.projectId;
+
+            await queryClient.invalidateQueries({
+                queryKey: ["projectMembers", projectId, "members"],
+            });
+
+            await queryClient.invalidateQueries({
+                queryKey: ["project", projectId],
+            });
+
+            await queryClient.invalidateQueries({
+                queryKey: ["projects"],
+            });
+
+            await queryClient.invalidateQueries({
+                queryKey: ["tasks"],
+            });
+
+            await queryClient.invalidateQueries({
+                queryKey: ["myTasks"],
+            });
+
+            toast.success("Project member added");
+        },
+        onError: (err: any) => {
+            toast.error(
+                err.response.data.error.message || "Failed to remove Member"
             );
         },
     });

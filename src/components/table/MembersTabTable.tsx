@@ -1,8 +1,8 @@
 import type { Project, ProjectRole } from "@/lib/apiTypes";
 import { formatDate } from "@/lib/utils";
+import { useProjectModals } from "@/providers/ProjectModalsProvider";
 import { MoreVertical, Plus } from "lucide-react";
-import { Dialog } from "../Dialog/Dialog";
-import AddMemberModal from "../modal/AddMemberModal";
+import Button from "../common/Button";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -21,25 +21,22 @@ function MembersTabTable({
     project: Project["project"];
     projectRole: ProjectRole;
 }) {
+    const { openAddMember, handleProjectMember } = useProjectModals();
+
     return (
         <section>
             <div className='flex justify-between items-center mb-4'>
                 <h2 className='text-xl font-semibold'>Team Members</h2>
 
                 {projectRole === "OWNER" && (
-                    <Dialog>
-                        <Dialog.Trigger
-                            variant={"primary"}
-                            className={`flex items-center gap-2`}>
-                            <Plus size={30} />
+                    <Button
+                        variant={"primary"}
+                        className={`flex items-center gap-2`}
+                        onClick={openAddMember}>
+                        <Plus size={30} />
 
-                            <span>Add Member</span>
-                        </Dialog.Trigger>
-
-                        <Dialog.Content height='auto'>
-                            <AddMemberModal projectId={project.id} />
-                        </Dialog.Content>
-                    </Dialog>
+                        <span>Add Member</span>
+                    </Button>
                 )}
             </div>
 
@@ -105,13 +102,35 @@ function MembersTabTable({
                                             </DropdownMenuTrigger>
 
                                             <DropdownMenuContent>
-                                                {/* <DropdownMenuItem className="cursor-pointer">
-                                                <p>Edit</p>
-                                            </DropdownMenuItem> */}
-
-                                                <DropdownMenuItem className='cursor-pointer'>
-                                                    <span>Remove Member</span>
+                                                <DropdownMenuItem
+                                                    className='cursor-pointer'
+                                                    onClick={() =>
+                                                        console.log(
+                                                            "edit member"
+                                                        )
+                                                    }>
+                                                    <p>Edit</p>
                                                 </DropdownMenuItem>
+
+                                                {member.role === "MEMBER" && (
+                                                    <DropdownMenuItem
+                                                        className='cursor-pointer text-red-500
+                                                 hover:text-red-700'
+                                                        onClick={() => {
+                                                            handleProjectMember(
+                                                                {
+                                                                    userToBeRemoved:
+                                                                        member,
+                                                                    projectName:
+                                                                        project.name,
+                                                                }
+                                                            );
+                                                        }}>
+                                                        <span>
+                                                            Remove Member
+                                                        </span>
+                                                    </DropdownMenuItem>
+                                                )}
                                             </DropdownMenuContent>
                                         </DropdownMenu>
                                     )}

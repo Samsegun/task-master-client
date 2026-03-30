@@ -73,7 +73,6 @@ function CreateTaskModal({
             assigneeId: data.assigneeId !== "null" ? data.assigneeId : null,
         };
 
-        console.log(payLoad);
         createTaskMutation.mutate(
             { payLoad, projectId: projectId },
             {
@@ -256,12 +255,11 @@ function CreateTaskModal({
                     </FieldGroup>
 
                     <DialogFooter className='flex gap-3'>
-                        <DialogClose
-                            asChild
-                            disabled={createTaskMutation.isPending}>
+                        <DialogClose asChild>
                             <button
                                 type='button'
                                 onClick={() => form.reset()}
+                                disabled={createTaskMutation.isPending}
                                 className='flex-1 bg-[#1a2332] hover:bg-[#0f1729] cursor-pointer
                                                       disabled:opacity-50 text-brand-primary py-2 rounded-lg
                                           transition-colors border border-brand-gray'>

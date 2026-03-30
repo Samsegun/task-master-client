@@ -2,7 +2,7 @@ import { useGetTasks } from "@/hooks/useTasks";
 import type { ProjectRole } from "@/lib/apiTypes";
 import type { Statuses } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
-import { useTaskModals } from "@/providers/TaskModalsProvider";
+import { useProjectModals } from "@/providers/ProjectModalsProvider";
 import { CheckCircle, Plus } from "lucide-react";
 import { useState } from "react";
 import Button from "../common/Button";
@@ -33,7 +33,7 @@ function TasksTabTable({ projectId, projectRole }: TasksTabProps) {
     const { isLoading, isError, customErr, tasks, userId } =
         useGetTasks(projectId);
     const [filterStatus, setFilterStatus] = useState<Statuses>("all");
-    const { openCreate, openEdit, openDelete } = useTaskModals();
+    const { openCreate, openEdit, openDelete } = useProjectModals();
 
     if (isLoading) return <DataLoadingIcon />;
 

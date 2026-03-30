@@ -27,6 +27,12 @@ export type Member = {
     avatar?: string;
 };
 
+export type MemberShape = {
+    role: ProjectRole;
+    joinedAt: string;
+    user: { id: string; firstName: string | null; lastName: string | null };
+};
+
 export type GetDataParams = {
     limit?: number;
     sort?: string;

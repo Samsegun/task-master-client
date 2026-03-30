@@ -17,7 +17,12 @@ type DeleteModalProps = {
     onClose: () => void;
 };
 
-function DeleteModal({ task, projectId, isOpen, onClose }: DeleteModalProps) {
+function DeleteTaskModal({
+    task,
+    projectId,
+    isOpen,
+    onClose,
+}: DeleteModalProps) {
     const deleteTaskMutation = useDeleteTask();
 
     function onDelete() {
@@ -42,8 +47,9 @@ function DeleteModal({ task, projectId, isOpen, onClose }: DeleteModalProps) {
                     </DialogDescription>
                 </DialogHeader>
 
-                <p className='text-lg font-semibold ml-4 tracking-wide'>
-                    This will permanently delete "{task.title}"?
+                <p className='font-semibold ml-4 italic text-center tracking-wide'>
+                    This action will permanently delete "{task.title}" from
+                    tasks?
                 </p>
 
                 <DialogFooter className='flex gap-3'>
@@ -63,7 +69,7 @@ function DeleteModal({ task, projectId, isOpen, onClose }: DeleteModalProps) {
                         disabled={deleteTaskMutation.isPending}
                         onClick={onDelete}
                         variant={"destructive"}
-                        form='update-task'
+                        // form='update-task'
                         className='flex-1'>
                         {deleteTaskMutation.isPending
                             ? "Deleting Task..."
@@ -75,4 +81,4 @@ function DeleteModal({ task, projectId, isOpen, onClose }: DeleteModalProps) {
     );
 }
 
-export default DeleteModal;
+export default DeleteTaskModal;
