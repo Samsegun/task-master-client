@@ -282,6 +282,13 @@ function EditTaskModal({
                                                     : null;
                                                 field.onChange(dateValue);
                                             }}
+                                            min={
+                                                field.value
+                                                    ? undefined
+                                                    : new Date()
+                                                          .toISOString()
+                                                          .split("T")[0]
+                                            }
                                             className='w-full bg-[#1a2332] border border-gray-600 rounded-lg px-4 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500'
                                         />
                                     </>
