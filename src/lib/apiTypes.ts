@@ -181,6 +181,24 @@ export type AddProjectMember = {
     };
 };
 
+export type UpdateMemberRole = {
+    success: boolean;
+    updatedMember:
+        | ({
+              user: {
+                  id: string;
+                  email: string;
+              };
+          } & {
+              id: string;
+              projectId: string;
+              userId: string;
+              role: ProjectRole;
+              joinedAt: Date;
+          })
+        | null;
+};
+
 export type CreateTask = {
     success: boolean;
     message: string;

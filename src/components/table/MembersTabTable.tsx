@@ -23,6 +23,17 @@ function MembersTabTable({
 }) {
     const { openAddMember, handleProjectMember } = useProjectModals();
 
+    // function updateRole(userIdToUpdate: string, role: ProjectRole) {
+    //     console.log(project.id, userIdToUpdate, role);
+
+    //     updateMemberRoleMutation.mutate(
+    //         { projectId: project.id, role, userIdToUpdate },
+    //         {
+    //             onSuccess: () => console.log("updated"),
+    //         }
+    //     );
+    // }
+
     return (
         <section>
             <div className='flex justify-between items-center mb-4'>
@@ -92,48 +103,64 @@ function MembersTabTable({
                                 </TableCell>
 
                                 <TableCell className='p-4'>
-                                    {projectRole === "OWNER" && (
-                                        <DropdownMenu>
-                                            <DropdownMenuTrigger className='p-1 hover:bg-brand-gray/50 rounded transition-colors cursor-pointer'>
-                                                <MoreVertical
-                                                    size={20}
-                                                    className='text-brand-gray'
-                                                />
-                                            </DropdownMenuTrigger>
+                                    {projectRole === "OWNER" &&
+                                        member.role !== "OWNER" && (
+                                            <DropdownMenu>
+                                                <DropdownMenuTrigger className='p-1 hover:bg-brand-gray/50 rounded transition-colors cursor-pointer'>
+                                                    <MoreVertical
+                                                        size={20}
+                                                        className='text-brand-gray'
+                                                    />
+                                                </DropdownMenuTrigger>
 
-                                            <DropdownMenuContent>
-                                                <DropdownMenuItem
-                                                    className='cursor-pointer'
-                                                    onClick={() =>
-                                                        console.log(
-                                                            "edit member"
-                                                        )
-                                                    }>
-                                                    <p>Edit</p>
-                                                </DropdownMenuItem>
+                                                <DropdownMenuContent>
+                                                    {member.role ===
+                                                        "MEMBER" && (
+                                                        <DropdownMenuItem
+                                                            className='cursor-pointer'
+                                                            onClick={() =>
+                                                                handleProjectMember(
+                                                                    {
+                                                                        userToBeEdited:
+                                                                            member,
+                                                                        projectName:
+                                                                            project.name,
+                                                                        action: "EDIT",
+                                                                        memberRoleToEdit:
+                                                                            "OWNER",
+                                                                    }
+                                                                )
+                                                            }>
+                                                            <span>
+                                                                Promote to Owner
+                                                            </span>
+                                                        </DropdownMenuItem>
+                                                    )}
 
-                                                {member.role === "MEMBER" && (
-                                                    <DropdownMenuItem
-                                                        className='cursor-pointer text-red-500
+                                                    {member.role ===
+                                                        "MEMBER" && (
+                                                        <DropdownMenuItem
+                                                            className='cursor-pointer text-red-500
                                                  hover:text-red-700'
-                                                        onClick={() => {
-                                                            handleProjectMember(
-                                                                {
-                                                                    userToBeRemoved:
-                                                                        member,
-                                                                    projectName:
-                                                                        project.name,
-                                                                }
-                                                            );
-                                                        }}>
-                                                        <span>
-                                                            Remove Member
-                                                        </span>
-                                                    </DropdownMenuItem>
-                                                )}
-                                            </DropdownMenuContent>
-                                        </DropdownMenu>
-                                    )}
+                                                            onClick={() => {
+                                                                handleProjectMember(
+                                                                    {
+                                                                        userToBeEdited:
+                                                                            member,
+                                                                        projectName:
+                                                                            project.name,
+                                                                        action: "REMOVE",
+                                                                    }
+                                                                );
+                                                            }}>
+                                                            <span>
+                                                                Remove Member
+                                                            </span>
+                                                        </DropdownMenuItem>
+                                                    )}
+                                                </DropdownMenuContent>
+                                            </DropdownMenu>
+                                        )}
                                 </TableCell>
                             </TableRow>
                         ))}

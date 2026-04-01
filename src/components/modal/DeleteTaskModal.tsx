@@ -48,8 +48,7 @@ function DeleteTaskModal({
                 </DialogHeader>
 
                 <p className='font-semibold ml-4 italic text-center tracking-wide'>
-                    This action will permanently delete "{task.title}" from
-                    tasks?
+                    This action will delete "{task.title}" from tasks?
                 </p>
 
                 <DialogFooter className='flex gap-3'>

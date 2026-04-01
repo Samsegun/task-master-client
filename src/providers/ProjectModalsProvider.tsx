@@ -2,18 +2,25 @@ import AddMemberModal from "@/components/modal/AddMemberModal";
 import CreateTaskModal from "@/components/modal/CreateTaskModal";
 import DeleteMemberModal from "@/components/modal/DeleteMemberModal";
 import DeleteTaskModal from "@/components/modal/DeleteTaskModal";
+import EditMemberModal from "@/components/modal/EditMemberModal";
 import EditTaskModal from "@/components/modal/EditTaskModal";
+import type { ProjectRole } from "@/lib/apiTypes";
 import type { MemberShape, Task } from "@/lib/types";
 import { createContext, useContext, useState, type ReactNode } from "react";
 
-type DeleteMemberInfo = { userToBeRemoved: MemberShape; projectName: string };
+type MemberInfo = {
+    userToBeEdited: MemberShape;
+    projectName: string;
+    action: "EDIT" | "REMOVE";
+    memberRoleToEdit?: ProjectRole;
+};
 
 type ProjectModalsContextType = {
     openCreate: () => void;
     openEdit: (task: Task) => void;
     openDelete: (task: Task) => void;
     openAddMember: () => void;
-    handleProjectMember: (deleteMemberInfo: DeleteMemberInfo) => void;
+    handleProjectMember: (memberInfo: MemberInfo) => void;
 };
 
 const ProjectModalsContext = createContext<
@@ -32,8 +39,10 @@ export const ProjectModalsProvider = ({
     const [isCreateOpen, setCreateOpen] = useState(false);
     const [isAddMemberOpen, setAddMemberOpen] = useState(false);
     const [isRemoveMemberOpen, setRemoveMemberOpen] = useState(false);
-    const [memberToBeRemoved, setMemberToBeRemoved] =
-        useState<DeleteMemberInfo | null>(null);
+    const [isEditMemberOpen, setEditMemberOpen] = useState(false);
+    const [editableMember, setEditableMember] = useState<MemberInfo | null>(
+        null
+    );
 
     const [editTask, setEditTask] = useState<Task | null>(null);
     const [deleteTask, setDeleteTask] = useState<Task | null>(null);
@@ -42,9 +51,16 @@ export const ProjectModalsProvider = ({
     const openEdit = (task: Task) => setEditTask(task);
     const openDelete = (task: Task) => setDeleteTask(task);
     const openAddMember = () => setAddMemberOpen(true);
-    const handleProjectMember = (deleteMemberInfo: DeleteMemberInfo) => {
-        setRemoveMemberOpen(true);
-        setMemberToBeRemoved(deleteMemberInfo);
+    const handleProjectMember = (memberInfo: MemberInfo) => {
+        if (memberInfo.action === "REMOVE") {
+            setRemoveMemberOpen(true);
+        }
+
+        if (memberInfo.action === "EDIT") {
+            setEditMemberOpen(true);
+        }
+
+        setEditableMember(memberInfo);
     };
 
     return (
@@ -72,10 +88,20 @@ export const ProjectModalsProvider = ({
                 onClose={() => setAddMemberOpen(false)}
             />
 
-            {memberToBeRemoved?.userToBeRemoved.user && (
+            {editableMember?.userToBeEdited.user && (
+                <EditMemberModal
+                    editMemberInfo={editableMember}
+                    memberRoleToEdit={editableMember.memberRoleToEdit!}
+                    projectId={projectId}
+                    isOpen={isEditMemberOpen}
+                    onClose={() => setEditMemberOpen(false)}
+                />
+            )}
+
+            {editableMember?.userToBeEdited.user && (
                 <DeleteMemberModal
                     projectId={projectId}
-                    deleteMemberInfo={memberToBeRemoved}
+                    deleteMemberInfo={editableMember}
                     isOpen={isRemoveMemberOpen}
                     onClose={() => setRemoveMemberOpen(false)}
                 />

@@ -1,4 +1,9 @@
-import type { Project, ProjectMembers, Projects } from "@/lib/apiTypes";
+import type {
+    Project,
+    ProjectMembers,
+    ProjectRole,
+    Projects,
+} from "@/lib/apiTypes";
 import type { AddMemberDetails, ProjectDetails } from "@/lib/types";
 import {
     addProjectMember,
@@ -7,6 +12,7 @@ import {
     getProjectMembers,
     getProjects,
     removeProjectMember,
+    updateMemberRole,
 } from "@/services/ApiRequests";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
@@ -193,11 +199,58 @@ export const useRemoveProjectMember = () => {
                 queryKey: ["myTasks"],
             });
 
-            toast.success("Project member added");
+            toast.success("Project member removed");
         },
         onError: (err: any) => {
             toast.error(
                 err.response.data.error.message || "Failed to remove Member"
+            );
+        },
+    });
+};
+
+export const useUpdateMemberRole = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: ({
+            projectId,
+            userIdToUpdate,
+            role,
+        }: {
+            projectId: string;
+            userIdToUpdate: string;
+            role: ProjectRole;
+        }) => updateMemberRole(projectId, userIdToUpdate, role),
+        onSuccess: async (_data, variables) => {
+            const projectId = variables.projectId;
+
+            await queryClient.invalidateQueries({
+                queryKey: ["projectMembers", projectId, "members"],
+            });
+
+            await queryClient.invalidateQueries({
+                queryKey: ["project", projectId],
+            });
+
+            await queryClient.invalidateQueries({
+                queryKey: ["projects"],
+            });
+
+            await queryClient.invalidateQueries({
+                queryKey: ["tasks"],
+            });
+
+            await queryClient.invalidateQueries({
+                queryKey: ["myTasks"],
+            });
+
+            toast.success("Project members updated");
+        },
+        onError: (err: any) => {
+            toast.error(
+                err.response.data.error.message ||
+                    "Failed to update member role"
             );
         },
     });

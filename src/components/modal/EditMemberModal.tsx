@@ -1,4 +1,5 @@
-import { useRemoveProjectMember } from "@/hooks/useProjects";
+import { useUpdateMemberRole } from "@/hooks/useProjects";
+import type { ProjectRole } from "@/lib/apiTypes";
 import type { MemberShape } from "@/lib/types";
 import Button from "../common/Button";
 import {
@@ -11,28 +12,30 @@ import {
     DialogTitle,
 } from "../ui/dialog";
 
-type DeleteMemberProps = {
+type EditMemberProps = {
+    editMemberInfo: { userToBeEdited: MemberShape; projectName: string };
+    memberRoleToEdit: ProjectRole;
     projectId: string;
-    deleteMemberInfo: { userToBeEdited: MemberShape; projectName: string };
     isOpen: boolean;
     onClose: () => void;
 };
 
-function DeleteMemberModal({
-    projectId,
-    deleteMemberInfo,
+function EditMemberModal({
     isOpen,
     onClose,
-}: DeleteMemberProps) {
-    const deleteMemberMutation = useRemoveProjectMember();
+    editMemberInfo,
+    projectId,
+    memberRoleToEdit,
+}: EditMemberProps) {
+    const updateMemberRoleMutation = useUpdateMemberRole();
+
     const {
-        projectName,
         userToBeEdited: { user },
-    } = deleteMemberInfo;
+    } = editMemberInfo;
 
     function onDelete() {
-        deleteMemberMutation.mutate(
-            { projectId, userIdToRemove: user.id },
+        updateMemberRoleMutation.mutate(
+            { projectId, role: memberRoleToEdit, userIdToUpdate: user.id },
             {
                 onSuccess: () => onClose(),
             }
@@ -41,43 +44,45 @@ function DeleteMemberModal({
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent className='bg-brand-modal rounded-lg border border-nav-border space-y-4'>
+            <DialogContent
+                className='bg-brand-modal max-h-[500px] lg:max-h-[732px] overflow-y-auto
+                        rounded-lg border border-nav-border'>
                 <DialogHeader className='border-b border-brand-primary/10'>
                     <DialogTitle className="text-xl font-bold text-brand-primary'">
-                        Remove Member
+                        Edit Member Role
                     </DialogTitle>
 
                     <DialogDescription className='sr-only'>
-                        Remove member from this project
+                        Edit member role on a project
                     </DialogDescription>
                 </DialogHeader>
 
                 <p className='font-semibold ml-4 italic text-center tracking-wide'>
-                    This action will remove "{user.firstName}" from "
-                    {projectName}" ?
+                    This action will make "{user.firstName}" the OWNER of this
+                    project and demote you to "MEMBER" ?
                 </p>
 
                 <DialogFooter className='flex gap-3'>
                     <DialogClose asChild>
                         <button
                             type='button'
-                            disabled={deleteMemberMutation.isPending}
+                            disabled={updateMemberRoleMutation.isPending}
                             className='flex-1 bg-[#1a2332] hover:bg-[#0f1729] cursor-pointer
-                                                     disabled:opacity-50 text-brand-primary py-2 rounded-lg
-                                         transition-colors border border-brand-gray'>
+                                                                     disabled:opacity-50 text-brand-primary py-2 rounded-lg
+                                                         transition-colors border border-brand-gray'>
                             Cancel
                         </button>
                     </DialogClose>
 
                     <Button
                         type='submit'
-                        disabled={deleteMemberMutation.isPending}
+                        disabled={updateMemberRoleMutation.isPending}
                         onClick={onDelete}
                         variant={"destructive"}
                         className='flex-1'>
-                        {deleteMemberMutation.isPending
-                            ? "Removing Member..."
-                            : "Remove Member"}
+                        {updateMemberRoleMutation.isPending
+                            ? "Editing Member..."
+                            : "Edit Member"}
                     </Button>
                 </DialogFooter>
             </DialogContent>
@@ -85,4 +90,4 @@ function DeleteMemberModal({
     );
 }
 
-export default DeleteMemberModal;
+export default EditMemberModal;

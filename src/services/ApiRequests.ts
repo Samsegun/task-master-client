@@ -16,6 +16,7 @@ import type {
     MyTasks,
     Project,
     ProjectMembers,
+    ProjectRole,
     Projects,
     RegisterUser,
     ResetPassword,
@@ -173,6 +174,17 @@ export const removeProjectMember = (
 ) => {
     return axiosInstance.delete<AddProjectMember>(
         `${V1}/projects/${projectId}/members/${userIdToRemove}`
+    );
+};
+
+export const updateMemberRole = (
+    projectId: string,
+    userIdToUpdate: string,
+    role: ProjectRole
+) => {
+    return axiosInstance.patch<AddProjectMember>(
+        `${V1}/projects/${projectId}/members/${userIdToUpdate}`,
+        { role }
     );
 };
 
