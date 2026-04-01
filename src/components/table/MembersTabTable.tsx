@@ -2,6 +2,7 @@ import type { Project, ProjectRole } from "@/lib/apiTypes";
 import { formatDate } from "@/lib/utils";
 import { useProjectModals } from "@/providers/ProjectModalsProvider";
 import { MoreVertical, Plus } from "lucide-react";
+import { useMemo } from "react";
 import Button from "../common/Button";
 import {
     DropdownMenu,
@@ -23,16 +24,16 @@ function MembersTabTable({
 }) {
     const { openAddMember, handleProjectMember } = useProjectModals();
 
-    // function updateRole(userIdToUpdate: string, role: ProjectRole) {
-    //     console.log(project.id, userIdToUpdate, role);
+    const sortedMembersByOwner = useMemo(
+        () =>
+            [...project.members].sort((a, b) => {
+                if (a.role === "OWNER" && b.role !== "OWNER") return -1;
+                if (a.role !== "OWNER" && b.role === "OWNER") return 1;
+                return 0;
+            }),
 
-    //     updateMemberRoleMutation.mutate(
-    //         { projectId: project.id, role, userIdToUpdate },
-    //         {
-    //             onSuccess: () => console.log("updated"),
-    //         }
-    //     );
-    // }
+        [project.members]
+    );
 
     return (
         <section>
@@ -71,7 +72,7 @@ function MembersTabTable({
                     </TableHeader>
 
                     <TableBody>
-                        {project.members.map(member => (
+                        {sortedMembersByOwner.map(member => (
                             <TableRow
                                 key={member.user.id}
                                 className='border-b border-brand-primary/10 hover:bg-[#2d3f54]'>
