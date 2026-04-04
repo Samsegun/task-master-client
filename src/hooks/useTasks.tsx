@@ -1,4 +1,4 @@
-import type { MyTasks, Tasks } from "@/lib/apiTypes";
+import type { Tasks } from "@/lib/apiTypes";
 import type { TaskDetails } from "@/lib/types";
 import {
     createTask,
@@ -21,7 +21,7 @@ export const useGetMyTasks = (opts?: { limit?: number }) => {
         staleTime: 5 * 60 * 1000,
     });
 
-    let tasks: MyTasks | undefined;
+    let tasks: Tasks | undefined;
     let customErr: { message: string; code: string } | null = null;
 
     if (isError) {

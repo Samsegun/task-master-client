@@ -13,7 +13,7 @@ import type {
     ForgotPassword,
     LoginUser,
     LogoutUser,
-    MyTasks,
+    // MyTasks,
     Project,
     ProjectMembers,
     ProjectRole,
@@ -108,7 +108,7 @@ export const getMyTasks = (params?: GetDataParams) => {
         ? `${V1}/users/me/tasks?${queryString}`
         : `${V1}/users/me/tasks`;
 
-    return axiosInstance.get<MyTasks>(url);
+    return axiosInstance.get<Tasks>(url);
 };
 
 // tasks under a project

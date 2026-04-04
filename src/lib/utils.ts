@@ -7,14 +7,17 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 // check if task is overdue
-export const isOverdue = (dueDate: string | null, status: TaskStatus) => {
+export const isOverdue = (
+    dueDate: Date | string | null,
+    status: TaskStatus
+) => {
     if (!dueDate) return false;
     if (status === "DONE") return false;
     return new Date(dueDate) < new Date();
 };
 
 // format date
-export const formatDate = (dateString: string | null) => {
+export const formatDate = (dateString: Date | string | null) => {
     if (!dateString) return "No Due Date";
 
     const date = new Date(dateString);

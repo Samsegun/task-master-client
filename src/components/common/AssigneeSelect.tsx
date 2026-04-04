@@ -1,4 +1,4 @@
-import type { ProjectRole } from "@/lib/apiTypes";
+import type { MemberShape } from "@/lib/types";
 import { Field, FieldContent, FieldError, FieldLabel } from "../ui/field";
 import {
     Select,
@@ -10,15 +10,7 @@ import {
 
 type Props = {
     projectId?: string;
-    members: {
-        role: ProjectRole;
-        joinedAt: string;
-        user: {
-            id: string;
-            firstName: string | null;
-            lastName: string | null;
-        };
-    }[];
+    members: MemberShape[];
     field: {
         name: string;
         value: any;
@@ -50,7 +42,10 @@ function AssigneeSelect({ members, field, fieldState }: Props) {
 
                     {members.map(member => (
                         <SelectItem key={member.user.id} value={member.user.id}>
-                            {member.user.firstName} {member.user.lastName}
+                            {member.user.username
+                                ? member.user.username
+                                : `${member.user.firstName} ${member.user.lastName}`}
+                            {/* {member.user.firstName} {member.user.lastName} */}
                         </SelectItem>
                     ))}
                 </SelectContent>

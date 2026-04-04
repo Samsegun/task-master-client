@@ -1,7 +1,6 @@
 import { useUpdateTask } from "@/hooks/useTasks";
-import type { ProjectRole } from "@/lib/apiTypes";
 import { editTaskForm } from "@/lib/formValidations";
-import type { Task } from "@/lib/types";
+import type { MemberShape, Task } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
@@ -37,15 +36,7 @@ type EditTaskModalProps = {
     task: Task;
     isOpen: boolean;
     onClose: () => void;
-    projectMembers: {
-        role: ProjectRole;
-        joinedAt: string;
-        user: {
-            id: string;
-            firstName: string | null;
-            lastName: string | null;
-        };
-    }[];
+    projectMembers: MemberShape[];
 };
 
 type UpdateTaskFormData = z.input<typeof editTaskForm>;

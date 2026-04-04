@@ -30,7 +30,12 @@ export type Member = {
 export type MemberShape = {
     role: ProjectRole;
     joinedAt: string;
-    user: { id: string; firstName: string | null; lastName: string | null };
+    user: {
+        id: string;
+        firstName: string | null;
+        lastName: string | null;
+        username: string | null;
+    };
 };
 
 export type GetDataParams = {

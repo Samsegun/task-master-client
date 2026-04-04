@@ -70,41 +70,77 @@ export type AuthStatus = {
 };
 
 // user tasks across all projects
-export type MyTasks = {
+// export type MyTasks = {
+//     success: boolean;
+//     tasks: {
+//         assigneeId: string | null;
+//         completedAt: string | null;
+//         createdAt: string;
+//         creator: {
+//             id: string;
+//             email: string;
+//             username: string | null;
+//             firstName: string | null;
+//             lastName: string | null;
+//         };
+//         creatorId: string;
+//         description: string | null;
+//         dueDate: string | null;
+//         id: string;
+//         priority: TaskPriority;
+//         project: { id: string; name: string };
+//         projectId: string;
+//         status: TaskStatus;
+//         title: string;
+//         updatedAt: string;
+//     }[];
+// };
+
+export type Tasks = {
     success: boolean;
-    tasks: {
-        assigneeId: string;
-        completedAt: boolean | null;
-        createdAt: string;
-        creator: { id: string; email: string };
-        creatorId: string;
-        description: string;
-        dueDate: string | null;
-        id: string;
-        priority: TaskPriority;
-        project: { id: string; name: string };
-        projectId: string;
-        status: TaskStatus;
-        title: string;
-        updatedAt: string;
-    }[];
+    tasks: Task["task"][];
+    userId: string;
 };
 
 // tasks under a project
-export type Tasks = {
-    success: boolean;
-    tasks: {
+export type Task = {
+    task: {
         id: string;
         title: string;
-        status: TaskStatus;
-        priority: TaskPriority;
         description: string | null;
-        assignee: { firstName: string; lastName: string } | null;
-        assigneeId: string | null;
-        dueDate: string | null;
-        creatorId: string;
-    }[];
-    userId: string;
+        dueDate: Date | null;
+        createdAt: Date;
+        updatedAt: Date;
+        completedAt: Date;
+        priority: TaskPriority;
+        status: TaskStatus;
+        assignee: {
+            id: string;
+            firstName: string | null;
+            lastName: string | null;
+            username: string | null;
+        };
+        creator: {
+            id: string;
+            firstName: string | null;
+            lastName: string | null;
+            username: string | null;
+        };
+        project: {
+            id: string;
+            name: string;
+            members: {
+                role: ProjectRole;
+                joinedAt: Date;
+                user: {
+                    id: string;
+                    firstName: string | null;
+                    lastName: string | null;
+                    username: string | null;
+                };
+            }[];
+        };
+    };
 };
 
 export type ProjectMembers = {
@@ -157,6 +193,7 @@ export type Project = {
                 id: string;
                 firstName: string | null;
                 lastName: string | null;
+                username: string | null;
             };
         }[];
         totalMembers: number;

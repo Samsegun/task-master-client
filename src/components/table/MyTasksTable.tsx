@@ -1,14 +1,16 @@
-import type { MyTasks, TaskPriority, TaskStatus } from "@/lib/apiTypes";
+import type { TaskPriority, Tasks, TaskStatus } from "@/lib/apiTypes";
 import { formatDate, isOverdue } from "@/lib/utils";
 import { Calendar, CheckCircle, FolderKanban } from "lucide-react";
-import { useNavigate } from "react-router";
+import { useState } from "react";
+import { Fragment } from "react/jsx-runtime";
+import Button from "../common/Button";
 import StatusBadge from "../common/StatusBadge";
 import StatusIcon from "../common/StatusIcon";
 import { Table, TableBody, TableHeader, TableRow } from "../ui/table";
 import { TableCell, TableHead } from "./TableUI";
 
 interface MyTasksTableProps {
-    filteredTasks: MyTasks["tasks"];
+    filteredTasks: Tasks["tasks"];
     filterStatus: TaskStatus | "all";
     filterPriority: TaskPriority | "all";
 }
@@ -20,7 +22,8 @@ function MyTasksTable({
     filterStatus,
     filterPriority,
 }: MyTasksTableProps) {
-    const navigate = useNavigate();
+    // const { openEdit } = useProjectModals();
+    const [expandedTaskId, setExpandedTaskId] = useState<string | null>(null);
 
     return (
         <div
@@ -64,75 +67,181 @@ function MyTasksTable({
                         </TableRow>
                     ) : (
                         filteredTasks.map(task => (
-                            <TableRow
-                                key={task.id}
-                                className='border-b border-brand-primary/10 hover:bg-[#2d3f54]'
-                                onClick={() =>
-                                    navigate(`/projects/${task.project.id}`)
-                                }>
-                                <TableCell className='p-4'>
-                                    <div className='flex items-center gap-3'>
-                                        {StatusIcon(task.status)}
-                                        <div>
-                                            <p className='font-medium'>
-                                                {task.title}
-                                            </p>
-                                            {task.description && (
-                                                <p className='text-xs text-wrap text-brand-gray mt-1'>
-                                                    {task.description}
+                            <Fragment key={task.id}>
+                                <TableRow
+                                    key={task.id}
+                                    className='border-b border-brand-primary/10 hover:bg-[#2d3f54]'
+                                    // onClick={() =>
+                                    //     navigate(`/projects/${task.project.id}`)
+                                    // }
+                                    onClick={() =>
+                                        setExpandedTaskId(
+                                            expandedTaskId === task.id
+                                                ? null
+                                                : task.id
+                                        )
+                                    }>
+                                    <TableCell className='p-4'>
+                                        <div className='flex items-center gap-3'>
+                                            {StatusIcon(task.status)}
+                                            <div>
+                                                <p className='font-medium'>
+                                                    {task.title}
                                                 </p>
-                                            )}
+                                                {task.description && (
+                                                    <p className='text-xs text-wrap text-brand-gray mt-1'>
+                                                        {task.description}
+                                                    </p>
+                                                )}
+                                            </div>
                                         </div>
-                                    </div>
-                                </TableCell>
+                                    </TableCell>
 
-                                <TableCell>
-                                    <div className='flex items-center gap-2'>
-                                        <FolderKanban
-                                            size={16}
-                                            className='text-brand-button'
-                                        />
-                                        <span>{task.project.name}</span>
-                                    </div>
-                                </TableCell>
+                                    <TableCell>
+                                        <div className='flex items-center gap-2'>
+                                            <FolderKanban
+                                                size={16}
+                                                className='text-brand-button'
+                                            />
+                                            <span>{task.project.name}</span>
+                                        </div>
+                                    </TableCell>
 
-                                <TableCell>
-                                    <StatusBadge status={task.priority} />
-                                </TableCell>
+                                    <TableCell>
+                                        <StatusBadge status={task.priority} />
+                                    </TableCell>
 
-                                <TableCell>
-                                    <div className='flex items-center gap-2'>
-                                        <Calendar
-                                            size={16}
-                                            className='text-brand-gray'
-                                        />
+                                    <TableCell>
+                                        <div className='flex items-center gap-2'>
+                                            <Calendar
+                                                size={16}
+                                                className='text-brand-gray'
+                                            />
 
-                                        <span
-                                            className={
-                                                isOverdue(
+                                            <span
+                                                className={
+                                                    isOverdue(
+                                                        task.dueDate,
+                                                        task.status
+                                                    )
+                                                        ? "text-red-500 font-medium"
+                                                        : "text-brand-primary/70"
+                                                }>
+                                                {formatDate(task.dueDate)}
+                                                {isOverdue(
                                                     task.dueDate,
                                                     task.status
-                                                )
-                                                    ? "text-red-500 font-medium"
-                                                    : "text-brand-primary/70"
-                                            }>
-                                            {formatDate(task.dueDate)}
-                                            {isOverdue(
-                                                task.dueDate,
-                                                task.status
-                                            ) && (
-                                                <span className='ml-2 text-xs'>
-                                                    (overdue)
-                                                </span>
-                                            )}
-                                        </span>
-                                    </div>
-                                </TableCell>
+                                                ) && (
+                                                    <span className='ml-2 text-xs'>
+                                                        (overdue)
+                                                    </span>
+                                                )}
+                                            </span>
+                                        </div>
+                                    </TableCell>
 
-                                <TableCell>
-                                    <StatusBadge status={task.status} />
-                                </TableCell>
-                            </TableRow>
+                                    <TableCell>
+                                        <StatusBadge status={task.status} />
+                                    </TableCell>
+                                </TableRow>
+
+                                {/* expanded Row */}
+                                {expandedTaskId === task.id && (
+                                    <TableRow>
+                                        <TableCell
+                                            colSpan={6}
+                                            className='bg-[#1a2332] p-6'>
+                                            <div className='space-y-4'>
+                                                {/* Description */}
+                                                {task.description && (
+                                                    <div>
+                                                        <h4 className='text-sm font-medium text-gray-400 mb-2'>
+                                                            Description
+                                                        </h4>
+                                                        <p className='text-gray-300'>
+                                                            {task.description}
+                                                        </p>
+                                                    </div>
+                                                )}
+
+                                                {/* Details Grid */}
+                                                <section className='grid grid-cols-2 md:grid-cols-4 gap-4'>
+                                                    <div>
+                                                        <p className='text-xs text-gray-400 mb-1'>
+                                                            Creator
+                                                        </p>
+                                                        <p className='text-white'>
+                                                            {task.creator
+                                                                .username ||
+                                                                task.creator
+                                                                    .firstName}
+                                                        </p>
+                                                    </div>
+
+                                                    <div>
+                                                        <p className='text-xs text-gray-400 mb-1'>
+                                                            Created
+                                                        </p>
+                                                        <p className='text-white'>
+                                                            {new Date(
+                                                                task.createdAt
+                                                            ).toLocaleDateString()}
+                                                        </p>
+                                                    </div>
+
+                                                    <div>
+                                                        <p className='text-xs text-gray-400 mb-1'>
+                                                            Last Updated
+                                                        </p>
+                                                        <p className='text-white'>
+                                                            {new Date(
+                                                                task.updatedAt
+                                                            ).toLocaleDateString()}
+                                                        </p>
+                                                    </div>
+
+                                                    {task.completedAt && (
+                                                        <div>
+                                                            <p className='text-xs text-gray-400 mb-1'>
+                                                                Completed
+                                                            </p>
+                                                            <p className='text-white'>
+                                                                {new Date(
+                                                                    task.completedAt
+                                                                ).toLocaleDateString()}
+                                                            </p>
+                                                        </div>
+                                                    )}
+                                                </section>
+
+                                                {/* actions */}
+                                                <div className='flex gap-3 pt-2'>
+                                                    <Button
+                                                        variant={"primary"}
+                                                        onClick={e => {
+                                                            e.stopPropagation();
+                                                            // openEdit(task);
+                                                        }}
+                                                        className='bg-blue-600 hover:bg-blue-700'>
+                                                        Edit Task
+                                                    </Button>
+
+                                                    <Button
+                                                        variant={"secondary"}
+                                                        onClick={e => {
+                                                            e.stopPropagation();
+                                                            setExpandedTaskId(
+                                                                null
+                                                            ); // Collapse
+                                                        }}>
+                                                        Close
+                                                    </Button>
+                                                </div>
+                                            </div>
+                                        </TableCell>
+                                    </TableRow>
+                                )}
+                            </Fragment>
                         ))
                     )}
                 </TableBody>
