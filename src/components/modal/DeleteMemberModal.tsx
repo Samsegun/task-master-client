@@ -12,27 +12,28 @@ import {
 } from "../ui/dialog";
 
 type DeleteMemberProps = {
-    projectId: string;
-    deleteMemberInfo: { userToBeEdited: MemberShape; projectName: string };
+    deleteMemberInfo: {
+        userToBeEdited: MemberShape;
+        project: { name: string; id: string };
+    };
     isOpen: boolean;
     onClose: () => void;
 };
 
 function DeleteMemberModal({
-    projectId,
     deleteMemberInfo,
     isOpen,
     onClose,
 }: DeleteMemberProps) {
     const deleteMemberMutation = useRemoveProjectMember();
     const {
-        projectName,
+        project: { id, name },
         userToBeEdited: { user },
     } = deleteMemberInfo;
 
     function onDelete() {
         deleteMemberMutation.mutate(
-            { projectId, userIdToRemove: user.id },
+            { projectId: id, userIdToRemove: user.id },
             {
                 onSuccess: () => onClose(),
             }
@@ -53,8 +54,7 @@ function DeleteMemberModal({
                 </DialogHeader>
 
                 <p className='font-semibold ml-4 italic text-center tracking-wide'>
-                    This action will remove "{user.firstName}" from "
-                    {projectName}" ?
+                    This action will remove "{user.firstName}" from "{name}" ?
                 </p>
 
                 <DialogFooter className='flex gap-3'>

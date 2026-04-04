@@ -34,6 +34,7 @@ export const useGetMyTasks = (opts?: { limit?: number }) => {
 
     return {
         myTasks: tasks?.tasks,
+        userId: tasks?.userId!,
         isLoading,
         isError,
         error,
@@ -67,7 +68,7 @@ export const useGetTasks = (projectId?: string, opts?: { limit?: number }) => {
 
     return {
         tasks: tasks?.tasks,
-        userId: tasks?.userId,
+        userId: tasks?.userId!,
         isLoading,
         isError,
         error,

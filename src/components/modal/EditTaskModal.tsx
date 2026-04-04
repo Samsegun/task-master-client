@@ -1,6 +1,7 @@
 import { useUpdateTask } from "@/hooks/useTasks";
+import type { Task } from "@/lib/apiTypes";
 import { editTaskForm } from "@/lib/formValidations";
-import type { MemberShape, Task } from "@/lib/types";
+import type { MemberShape } from "@/lib/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
@@ -33,7 +34,7 @@ import {
 
 type EditTaskModalProps = {
     projectId: string;
-    task: Task;
+    task: Task["task"];
     isOpen: boolean;
     onClose: () => void;
     projectMembers: MemberShape[];
@@ -53,7 +54,7 @@ function EditTaskModal({
         defaultValues: {
             title: task.title,
             description: task.description || "",
-            assigneeId: task.assigneeId || null,
+            assigneeId: task.assignee?.id || null,
             priority: task.priority,
             dueDate: task.dueDate
                 ? new Date(task.dueDate).toISOString().split("T")[0]
@@ -70,6 +71,8 @@ function EditTaskModal({
             assigneeId: data.assigneeId !== "null" ? data.assigneeId : null,
             dueDate: data.dueDate || null,
         };
+
+        // console.log({ projectId, taskId: task.id, payLoad });
 
         updateTaskMutation.mutate(
             { projectId, taskId: task.id, payLoad },

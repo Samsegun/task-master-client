@@ -1,6 +1,6 @@
 import type { Project, ProjectRole } from "@/lib/apiTypes";
 import { formatDate } from "@/lib/utils";
-import { useProjectModals } from "@/providers/ProjectModalsProvider";
+import { useGlobalModals } from "@/providers/GlobalModalsProvider";
 import { MoreVertical, Plus } from "lucide-react";
 import { useMemo } from "react";
 import Button from "../common/Button";
@@ -22,7 +22,7 @@ function MembersTabTable({
     project: Project["project"];
     projectRole: ProjectRole;
 }) {
-    const { openAddMember, handleProjectMember } = useProjectModals();
+    const { openAddMember, handleProjectMember } = useGlobalModals();
 
     const sortedMembersByOwner = useMemo(
         () =>
@@ -44,7 +44,7 @@ function MembersTabTable({
                     <Button
                         variant={"primary"}
                         className={`flex items-center gap-2`}
-                        onClick={openAddMember}>
+                        onClick={() => openAddMember(project.id)}>
                         <Plus size={30} />
 
                         <span>Add Member</span>
@@ -79,11 +79,20 @@ function MembersTabTable({
                                 <TableCell className='p-4'>
                                     <div className='flex items-center gap-3'>
                                         <div className='w-10 h-10 rounded-full bg-brand-button flex items-center justify-center'>
-                                            {member.user.firstName!.charAt(0)}
+                                            {(
+                                                member.user.username?.charAt(
+                                                    0
+                                                ) ??
+                                                member.user?.firstName?.charAt(
+                                                    0
+                                                ) ??
+                                                "?"
+                                            ).toUpperCase()}
                                         </div>
                                         <span className='font-medium'>
-                                            {member.user.firstName}{" "}
-                                            {member.user.lastName}
+                                            {member.user?.username ??
+                                                member.user?.firstName ??
+                                                "Unknown"}
                                         </span>
                                     </div>
                                 </TableCell>
@@ -124,8 +133,11 @@ function MembersTabTable({
                                                                     {
                                                                         userToBeEdited:
                                                                             member,
-                                                                        projectName:
-                                                                            project.name,
+                                                                        project:
+                                                                            {
+                                                                                id: project.id,
+                                                                                name: project.name,
+                                                                            },
                                                                         action: "EDIT",
                                                                         memberRoleToEdit:
                                                                             "OWNER",
@@ -148,8 +160,11 @@ function MembersTabTable({
                                                                     {
                                                                         userToBeEdited:
                                                                             member,
-                                                                        projectName:
-                                                                            project.name,
+                                                                        project:
+                                                                            {
+                                                                                id: project.id,
+                                                                                name: project.name,
+                                                                            },
                                                                         action: "REMOVE",
                                                                     }
                                                                 );

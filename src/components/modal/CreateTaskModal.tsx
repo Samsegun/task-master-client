@@ -35,11 +35,12 @@ type CreateTaskModalProps = {
     projectId: string | undefined;
     projectMembers: {
         role: ProjectRole;
-        joinedAt: string;
+        joinedAt: Date | string;
         user: {
             id: string;
             firstName: string | null;
             lastName: string | null;
+            username: string | null;
         };
     }[];
     openNewTask: boolean;

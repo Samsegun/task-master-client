@@ -69,33 +69,6 @@ export type AuthStatus = {
     };
 };
 
-// user tasks across all projects
-// export type MyTasks = {
-//     success: boolean;
-//     tasks: {
-//         assigneeId: string | null;
-//         completedAt: string | null;
-//         createdAt: string;
-//         creator: {
-//             id: string;
-//             email: string;
-//             username: string | null;
-//             firstName: string | null;
-//             lastName: string | null;
-//         };
-//         creatorId: string;
-//         description: string | null;
-//         dueDate: string | null;
-//         id: string;
-//         priority: TaskPriority;
-//         project: { id: string; name: string };
-//         projectId: string;
-//         status: TaskStatus;
-//         title: string;
-//         updatedAt: string;
-//     }[];
-// };
-
 export type Tasks = {
     success: boolean;
     tasks: Task["task"][];
@@ -115,7 +88,7 @@ export type Task = {
         priority: TaskPriority;
         status: TaskStatus;
         assignee: {
-            id: string;
+            id: string | null;
             firstName: string | null;
             lastName: string | null;
             username: string | null;
@@ -141,6 +114,7 @@ export type Task = {
             }[];
         };
     };
+    userId: string;
 };
 
 export type ProjectMembers = {

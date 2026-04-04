@@ -7,17 +7,17 @@ export type TaskPriority = "LOW" | "MEDIUM" | "HIGH";
 
 export type Statuses = "all" | ProjectStatus | TaskStatus;
 
-export type Task = {
-    id: string;
-    title: string;
-    status: TaskStatus;
-    priority: TaskPriority;
-    description: string | null;
-    dueDate: string | null;
-    assignee: { firstName: string; lastName: string } | null;
-    assigneeId: string | null;
-    creatorId: string;
-};
+// export type Task = {
+//     id: string;
+//     title: string;
+//     status: TaskStatus;
+//     priority: TaskPriority;
+//     description: string | null;
+//     dueDate: string | null;
+//     assignee: { firstName: string; lastName: string } | null;
+//     assigneeId: string | null;
+//     creatorId: string;
+// };
 
 export type Member = {
     id: string;
@@ -29,7 +29,7 @@ export type Member = {
 
 export type MemberShape = {
     role: ProjectRole;
-    joinedAt: string;
+    joinedAt: Date | string;
     user: {
         id: string;
         firstName: string | null;

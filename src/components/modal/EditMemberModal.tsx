@@ -13,9 +13,11 @@ import {
 } from "../ui/dialog";
 
 type EditMemberProps = {
-    editMemberInfo: { userToBeEdited: MemberShape; projectName: string };
+    editMemberInfo: {
+        userToBeEdited: MemberShape;
+        project: { name: string; id: string };
+    };
     memberRoleToEdit: ProjectRole;
-    projectId: string;
     isOpen: boolean;
     onClose: () => void;
 };
@@ -24,18 +26,18 @@ function EditMemberModal({
     isOpen,
     onClose,
     editMemberInfo,
-    projectId,
     memberRoleToEdit,
 }: EditMemberProps) {
     const updateMemberRoleMutation = useUpdateMemberRole();
 
     const {
         userToBeEdited: { user },
+        project: { id },
     } = editMemberInfo;
 
     function onDelete() {
         updateMemberRoleMutation.mutate(
-            { projectId, role: memberRoleToEdit, userIdToUpdate: user.id },
+            { projectId: id, role: memberRoleToEdit, userIdToUpdate: user.id },
             {
                 onSuccess: () => onClose(),
             }

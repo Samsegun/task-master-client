@@ -21,8 +21,6 @@ function MyTasks() {
     if (isError || !myTasks)
         return <div>Something went wrong :( {customErr?.message}</div>;
 
-    console.log(myTasks);
-
     // filter tasks
     let filteredTasks = myTasks;
     if (filterStatus !== "all")

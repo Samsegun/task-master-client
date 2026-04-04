@@ -1,8 +1,8 @@
 import { useGetTasks } from "@/hooks/useTasks";
 import type { ProjectRole } from "@/lib/apiTypes";
-import type { Statuses } from "@/lib/types";
+import type { MemberShape, Statuses } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
-import { useProjectModals } from "@/providers/ProjectModalsProvider";
+import { useGlobalModals } from "@/providers/GlobalModalsProvider";
 import { CheckCircle, Plus } from "lucide-react";
 import { useState } from "react";
 import Button from "../common/Button";
@@ -17,6 +17,7 @@ import TasksTableRowOptions from "./TasksTableRowOptions";
 type TasksTabProps = {
     projectId: string;
     projectRole: ProjectRole;
+    projectMembers?: MemberShape[];
 };
 
 const taskStatus: Statuses[] = ["all", "TODO", "IN_PROGRESS", "DONE"];
@@ -29,11 +30,15 @@ const taskTableHeaders = [
     "",
 ];
 
-function TasksTabTable({ projectId, projectRole }: TasksTabProps) {
+function TasksTabTable({
+    projectId,
+    projectRole,
+    projectMembers,
+}: TasksTabProps) {
     const { isLoading, isError, customErr, tasks, userId } =
         useGetTasks(projectId);
     const [filterStatus, setFilterStatus] = useState<Statuses>("all");
-    const { openCreate, openEdit, openDelete } = useProjectModals();
+    const { openEdit, openDelete, openCreate } = useGlobalModals();
 
     if (isLoading) return <DataLoadingIcon />;
 
@@ -59,7 +64,7 @@ function TasksTabTable({ projectId, projectRole }: TasksTabProps) {
                 <Button
                     variant={"primary"}
                     className={`flex items-center gap-2`}
-                    onClick={() => openCreate()}>
+                    onClick={() => openCreate({ projectId, projectMembers })}>
                     <Plus size={30} />
                     <span>New Task</span>
                 </Button>
@@ -105,18 +110,25 @@ function TasksTabTable({ projectId, projectRole }: TasksTabProps) {
                                 </TableCell>
 
                                 <TableCell>
-                                    {task.assignee ? (
+                                    {task.assignee?.id ? (
                                         <div className='flex items-center gap-2'>
                                             <div
                                                 className='w-8 h-8 rounded-full bg-brand-button flex items-center 
                                         justify-center text-sm'>
-                                                {task.assignee.firstName.charAt(
-                                                    0
-                                                )}
+                                                {(
+                                                    task.assignee?.username?.charAt(
+                                                        0
+                                                    ) ??
+                                                    task.assignee?.firstName?.charAt(
+                                                        0
+                                                    ) ??
+                                                    "?"
+                                                ).toUpperCase()}
                                             </div>
-                                            <span className='text-brand-primary/70'>
-                                                {task.assignee.firstName}{" "}
-                                                {task.assignee.lastName}
+                                            <span className='text-brand-primary/70 capitalize'>
+                                                {task.assignee?.username ??
+                                                    task.assignee?.firstName ??
+                                                    "Unknown"}
                                             </span>
                                         </div>
                                     ) : (
@@ -144,12 +156,16 @@ function TasksTabTable({ projectId, projectRole }: TasksTabProps) {
                                             option: "EDIT" | "DELETE"
                                         ) =>
                                             option === "EDIT"
-                                                ? openEdit(task)
-                                                : openDelete(task)
+                                                ? openEdit({ task })
+                                                : openDelete({
+                                                      task,
+                                                      projectId:
+                                                          task.project.id,
+                                                  })
                                         }
                                         projectRole={projectRole}
-                                        creatorId={task.creatorId}
-                                        userId={userId!}
+                                        creatorId={task.creator.id}
+                                        userId={userId ?? ""}
                                     />
                                 </TableCell>
                             </TableRow>

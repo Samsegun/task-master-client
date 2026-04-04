@@ -1,11 +1,9 @@
 import AddMemberModal from "@/components/modal/AddMemberModal";
 import CreateTaskModal from "@/components/modal/CreateTaskModal";
-import DeleteMemberModal from "@/components/modal/DeleteMemberModal";
 import DeleteTaskModal from "@/components/modal/DeleteTaskModal";
-import EditMemberModal from "@/components/modal/EditMemberModal";
 import EditTaskModal from "@/components/modal/EditTaskModal";
-import type { ProjectRole } from "@/lib/apiTypes";
-import type { MemberShape, Task } from "@/lib/types";
+import type { ProjectRole, Task } from "@/lib/apiTypes";
+import type { MemberShape } from "@/lib/types";
 import { createContext, useContext, useState, type ReactNode } from "react";
 
 type MemberInfo = {
@@ -88,7 +86,7 @@ export const ProjectModalsProvider = ({
                 onClose={() => setAddMemberOpen(false)}
             />
 
-            {editableMember?.userToBeEdited.user && (
+            {/* {editableMember?.userToBeEdited.user && (
                 <EditMemberModal
                     editMemberInfo={editableMember}
                     memberRoleToEdit={editableMember.memberRoleToEdit!}
@@ -105,13 +103,13 @@ export const ProjectModalsProvider = ({
                     isOpen={isRemoveMemberOpen}
                     onClose={() => setRemoveMemberOpen(false)}
                 />
-            )}
+            )} */}
 
             {editTask && (
                 <EditTaskModal
                     projectId={projectId}
                     projectMembers={projectMembers}
-                    task={editTask}
+                    task={editTask.task}
                     isOpen={!!editTask}
                     onClose={() => setEditTask(null)}
                 />
@@ -119,7 +117,7 @@ export const ProjectModalsProvider = ({
 
             {deleteTask && (
                 <DeleteTaskModal
-                    task={{ id: deleteTask.id, title: deleteTask.title }}
+                    task={{ id: deleteTask.task.id, title: deleteTask.task.id }}
                     projectId={projectId}
                     isOpen={!!deleteTask}
                     onClose={() => setDeleteTask(null)}

@@ -1,5 +1,6 @@
 import type { TaskPriority, Tasks, TaskStatus } from "@/lib/apiTypes";
 import { formatDate, isOverdue } from "@/lib/utils";
+import { useGlobalModals } from "@/providers/GlobalModalsProvider";
 import { Calendar, CheckCircle, FolderKanban } from "lucide-react";
 import { useState } from "react";
 import { Fragment } from "react/jsx-runtime";
@@ -22,7 +23,7 @@ function MyTasksTable({
     filterStatus,
     filterPriority,
 }: MyTasksTableProps) {
-    // const { openEdit } = useProjectModals();
+    const { openEdit } = useGlobalModals();
     const [expandedTaskId, setExpandedTaskId] = useState<string | null>(null);
 
     return (
@@ -71,9 +72,6 @@ function MyTasksTable({
                                 <TableRow
                                     key={task.id}
                                     className='border-b border-brand-primary/10 hover:bg-[#2d3f54]'
-                                    // onClick={() =>
-                                    //     navigate(`/projects/${task.project.id}`)
-                                    // }
                                     onClick={() =>
                                         setExpandedTaskId(
                                             expandedTaskId === task.id
@@ -145,14 +143,14 @@ function MyTasksTable({
                                     </TableCell>
                                 </TableRow>
 
-                                {/* expanded Row */}
+                                {/* expanded row */}
                                 {expandedTaskId === task.id && (
                                     <TableRow>
                                         <TableCell
                                             colSpan={6}
                                             className='bg-[#1a2332] p-6'>
                                             <div className='space-y-4'>
-                                                {/* Description */}
+                                                {/* description */}
                                                 {task.description && (
                                                     <div>
                                                         <h4 className='text-sm font-medium text-gray-400 mb-2'>
@@ -164,7 +162,7 @@ function MyTasksTable({
                                                     </div>
                                                 )}
 
-                                                {/* Details Grid */}
+                                                {/* details Grid */}
                                                 <section className='grid grid-cols-2 md:grid-cols-4 gap-4'>
                                                     <div>
                                                         <p className='text-xs text-gray-400 mb-1'>
@@ -220,7 +218,7 @@ function MyTasksTable({
                                                         variant={"primary"}
                                                         onClick={e => {
                                                             e.stopPropagation();
-                                                            // openEdit(task);
+                                                            openEdit({ task });
                                                         }}
                                                         className='bg-blue-600 hover:bg-blue-700'>
                                                         Edit Task
@@ -232,7 +230,7 @@ function MyTasksTable({
                                                             e.stopPropagation();
                                                             setExpandedTaskId(
                                                                 null
-                                                            ); // Collapse
+                                                            );
                                                         }}>
                                                         Close
                                                     </Button>

@@ -8,7 +8,6 @@ import TasksTabTable from "@/components/table/TasksTabTable";
 import { Progress } from "@/components/ui/progress";
 import { useGetProject } from "@/hooks/useProjects";
 import { formatDate } from "@/lib/utils";
-import { ProjectModalsProvider } from "@/providers/ProjectModalsProvider";
 import { ArrowLeft, Settings } from "lucide-react";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
@@ -120,21 +119,18 @@ function ProjectDetails() {
                 </button>
             </section>
 
-            <ProjectModalsProvider
-                projectId={projectId!}
-                projectMembers={userProject.members}>
-                {activeTab === "tasks" ? (
-                    <TasksTabTable
-                        projectId={projectId!}
-                        projectRole={projectRole}
-                    />
-                ) : (
-                    <MembersTabTable
-                        project={userProject}
-                        projectRole={projectRole}
-                    />
-                )}
-            </ProjectModalsProvider>
+            {activeTab === "tasks" ? (
+                <TasksTabTable
+                    projectId={projectId!}
+                    projectRole={projectRole}
+                    projectMembers={userProject.members}
+                />
+            ) : (
+                <MembersTabTable
+                    project={userProject}
+                    projectRole={projectRole}
+                />
+            )}
         </div>
     );
 }

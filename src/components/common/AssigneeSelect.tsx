@@ -8,7 +8,7 @@ import {
     SelectValue,
 } from "../ui/select";
 
-type Props = {
+type AssigneeSelectProps = {
     projectId?: string;
     members: MemberShape[];
     field: {
@@ -19,7 +19,7 @@ type Props = {
     fieldState?: { invalid?: boolean; error?: any };
 };
 
-function AssigneeSelect({ members, field, fieldState }: Props) {
+function AssigneeSelect({ members, field, fieldState }: AssigneeSelectProps) {
     return (
         <Field data-invalid={fieldState?.invalid}>
             <FieldContent>
@@ -41,11 +41,13 @@ function AssigneeSelect({ members, field, fieldState }: Props) {
                     <SelectItem value='null'>Unassigned</SelectItem>
 
                     {members.map(member => (
-                        <SelectItem key={member.user.id} value={member.user.id}>
+                        <SelectItem
+                            key={member.user.id}
+                            value={member.user.id}
+                            className='capitalize'>
                             {member.user.username
                                 ? member.user.username
                                 : `${member.user.firstName} ${member.user.lastName}`}
-                            {/* {member.user.firstName} {member.user.lastName} */}
                         </SelectItem>
                     ))}
                 </SelectContent>
