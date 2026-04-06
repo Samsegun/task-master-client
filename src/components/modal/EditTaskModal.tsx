@@ -7,10 +7,10 @@ import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
 import AssigneeSelect from "../common/AssigneeSelect";
 import Button from "../common/Button";
+import FormContentWrapper from "../common/FormContentWrapper";
 import {
     Dialog,
     DialogClose,
-    DialogContent,
     DialogDescription,
     DialogFooter,
     DialogHeader,
@@ -90,9 +90,7 @@ function EditTaskModal({
     return (
         <Dialog open={isOpen} onOpenChange={closeModal}>
             <form id='update-task' onSubmit={form.handleSubmit(onSubmit)}>
-                <DialogContent
-                    className='bg-brand-modal max-h-[500px] lg:max-h-[732px] overflow-y-auto
-                 rounded-lg border border-nav-border'>
+                <FormContentWrapper>
                     <DialogHeader className='border-b border-brand-primary/10'>
                         <DialogTitle className="text-xl font-bold text-brand-primary'">
                             Edit Task
@@ -330,7 +328,7 @@ function EditTaskModal({
                                 : "Update Task"}
                         </Button>
                     </DialogFooter>
-                </DialogContent>
+                </FormContentWrapper>
             </form>
         </Dialog>
     );

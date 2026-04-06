@@ -2,10 +2,10 @@ import { useUpdateMemberRole } from "@/hooks/useProjects";
 import type { ProjectRole } from "@/lib/apiTypes";
 import type { MemberShape } from "@/lib/types";
 import Button from "../common/Button";
+import FormContentWrapper from "../common/FormContentWrapper";
 import {
     Dialog,
     DialogClose,
-    DialogContent,
     DialogDescription,
     DialogFooter,
     DialogHeader,
@@ -46,9 +46,7 @@ function EditMemberModal({
 
     return (
         <Dialog open={isOpen} onOpenChange={onClose}>
-            <DialogContent
-                className='bg-brand-modal max-h-[500px] lg:max-h-[732px] overflow-y-auto
-                        rounded-lg border border-nav-border'>
+            <FormContentWrapper>
                 <DialogHeader className='border-b border-brand-primary/10'>
                     <DialogTitle className="text-xl font-bold text-brand-primary'">
                         Edit Member Role
@@ -87,7 +85,7 @@ function EditMemberModal({
                             : "Edit Member"}
                     </Button>
                 </DialogFooter>
-            </DialogContent>
+            </FormContentWrapper>
         </Dialog>
     );
 }

@@ -71,7 +71,7 @@ function MyTasksTable({
                             <Fragment key={task.id}>
                                 <TableRow
                                     key={task.id}
-                                    className='border-b border-brand-primary/10 hover:bg-[#2d3f54]'
+                                    className='border-b border-brand-primary/10 hover:bg-[#2d3f54] cursor-pointer'
                                     onClick={() =>
                                         setExpandedTaskId(
                                             expandedTaskId === task.id
