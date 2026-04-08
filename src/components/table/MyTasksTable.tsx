@@ -181,9 +181,9 @@ function MyTasksTable({
                                                             Created
                                                         </p>
                                                         <p className='text-white'>
-                                                            {new Date(
+                                                            {formatDate(
                                                                 task.createdAt
-                                                            ).toLocaleDateString()}
+                                                            )}
                                                         </p>
                                                     </div>
 
@@ -192,9 +192,9 @@ function MyTasksTable({
                                                             Last Updated
                                                         </p>
                                                         <p className='text-white'>
-                                                            {new Date(
-                                                                task.updatedAt
-                                                            ).toLocaleDateString()}
+                                                            {formatDate(
+                                                                task.createdAt
+                                                            )}
                                                         </p>
                                                     </div>
 
@@ -204,9 +204,9 @@ function MyTasksTable({
                                                                 Completed
                                                             </p>
                                                             <p className='text-white'>
-                                                                {new Date(
+                                                                {formatDate(
                                                                     task.completedAt
-                                                                ).toLocaleDateString()}
+                                                                )}
                                                             </p>
                                                         </div>
                                                     )}

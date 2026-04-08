@@ -19,11 +19,38 @@ const registerUserForm = z.object({
             /[@$!%*?&]/,
             "Password must contain at least one special character"
         ),
+    username: z
+        .string()
+        .trim()
+        .min(3, "Username must be at least 3 characters")
+        .max(30, "Username must be at most 30 characters")
+        .regex(
+            /^[a-zA-Z0-9_]+$/,
+            "Username may contain letters, numbers and underscores only"
+        ),
 });
 
+// const loginUserForm = z.object({
+//     email: z.email("Invalid email format"),
+//     password: z.string().trim().nonempty("Password is required"),
+// });
+// user should be able to login with either email or username
 const loginUserForm = z.object({
-    email: z.email("Invalid email format"),
-    password: z.string().trim().nonempty("Password is required"),
+    emailOrusername: z
+        .string()
+        .trim()
+        .refine(
+            value => {
+                const isEmail = z.email().safeParse(value).success;
+                const isUsername = /^[a-zA-Z0-9_]+$/.test(value);
+
+                return isEmail || isUsername;
+            },
+            {
+                message: "Enter a valid email or username",
+            }
+        ),
+    password: z.string().trim(),
 });
 
 const forgotPasswordForm = registerUserForm.omit({

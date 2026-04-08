@@ -1,6 +1,9 @@
 import { Table, TableBody, TableHeader, TableRow } from "@/components/ui/table";
 import { useGetMyTasks } from "@/hooks/useTasks";
 import { formatDate } from "@/lib/utils";
+import { useGlobalModals } from "@/providers/GlobalModalsProvider";
+import { Fragment, useState } from "react";
+import Button from "../common/Button";
 import { DataLoadingIcon } from "../common/LoadingIcon";
 import StatusBadge from "../common/StatusBadge";
 import { TableCell, TableHead } from "./TableUI";
@@ -9,6 +12,8 @@ const headers = ["task", "project", "due date", "status"];
 
 function DashboardTasksTable() {
     const { myTasks, isLoading, isError, customErr } = useGetMyTasks();
+    const [expandedTaskId, setExpandedTaskId] = useState<string | null>(null);
+    const { openEdit } = useGlobalModals();
 
     if (isLoading) {
         return <DataLoadingIcon />;
@@ -38,26 +43,130 @@ function DashboardTasksTable() {
                 </TableHeader>
 
                 <TableBody>
-                    {myTasks.map(t => (
-                        <TableRow
-                            key={t.title}
-                            className='border-b border-brand-primary/10 hover:bg-[#2d3f54]'>
-                            <TableCell className='font-medium capitalize'>
-                                {t.title}
-                            </TableCell>
+                    {myTasks.map(task => (
+                        <Fragment key={task.id}>
+                            <TableRow
+                                key={task.title}
+                                className='border-b border-brand-primary/10 cursor-pointer hover:bg-[#2d3f54]'
+                                onClick={() =>
+                                    setExpandedTaskId(
+                                        expandedTaskId === task.id
+                                            ? null
+                                            : task.id
+                                    )
+                                }>
+                                <TableCell className='font-medium capitalize'>
+                                    {task.title}
+                                </TableCell>
 
-                            <TableCell className='text-brand-primary/70'>
-                                {t.project.name}
-                            </TableCell>
+                                <TableCell className='text-brand-primary/70'>
+                                    {task.project.name}
+                                </TableCell>
 
-                            <TableCell className='text-brand-primary/70'>
-                                {formatDate(t.dueDate)}
-                            </TableCell>
+                                <TableCell className='text-brand-primary/70'>
+                                    {formatDate(task.dueDate)}
+                                </TableCell>
 
-                            <TableCell>
-                                <StatusBadge status={t.status} />
-                            </TableCell>
-                        </TableRow>
+                                <TableCell>
+                                    <StatusBadge status={task.status} />
+                                </TableCell>
+                            </TableRow>
+
+                            {/* expanded row */}
+                            {expandedTaskId === task.id && (
+                                <TableRow>
+                                    <TableCell
+                                        colSpan={6}
+                                        className='bg-[#1a2332] p-6'>
+                                        <div className='space-y-4'>
+                                            {/* description */}
+                                            {task.description && (
+                                                <div>
+                                                    <h4 className='text-sm font-medium text-gray-400 mb-2'>
+                                                        Description
+                                                    </h4>
+                                                    <p className='text-gray-300'>
+                                                        {task.description}
+                                                    </p>
+                                                </div>
+                                            )}
+
+                                            {/* details Grid */}
+                                            <section className='grid grid-cols-2 md:grid-cols-4 gap-4'>
+                                                <div>
+                                                    <p className='text-xs text-gray-400 mb-1'>
+                                                        Creator
+                                                    </p>
+                                                    <p className='text-white'>
+                                                        {task.creator
+                                                            .username ||
+                                                            task.creator
+                                                                .firstName}
+                                                    </p>
+                                                </div>
+
+                                                <div>
+                                                    <p className='text-xs text-gray-400 mb-1'>
+                                                        Created
+                                                    </p>
+                                                    <p className='text-white'>
+                                                        {formatDate(
+                                                            task.createdAt
+                                                        )}
+                                                    </p>
+                                                </div>
+
+                                                <div>
+                                                    <p className='text-xs text-gray-400 mb-1'>
+                                                        Last Updated
+                                                    </p>
+                                                    <p className='text-white'>
+                                                        {formatDate(
+                                                            task.updatedAt
+                                                        )}
+                                                    </p>
+                                                </div>
+
+                                                {task.completedAt && (
+                                                    <div>
+                                                        <p className='text-xs text-gray-400 mb-1'>
+                                                            Completed
+                                                        </p>
+                                                        <p className='text-white'>
+                                                            {formatDate(
+                                                                task.completedAt
+                                                            )}
+                                                        </p>
+                                                    </div>
+                                                )}
+                                            </section>
+
+                                            {/* actions */}
+                                            <div className='flex gap-3 pt-2'>
+                                                <Button
+                                                    variant={"primary"}
+                                                    onClick={e => {
+                                                        e.stopPropagation();
+                                                        openEdit({ task });
+                                                    }}
+                                                    className='bg-blue-600 hover:bg-blue-700'>
+                                                    Edit Task
+                                                </Button>
+
+                                                <Button
+                                                    variant={"secondary"}
+                                                    onClick={e => {
+                                                        e.stopPropagation();
+                                                        setExpandedTaskId(null);
+                                                    }}>
+                                                    Close
+                                                </Button>
+                                            </div>
+                                        </div>
+                                    </TableCell>
+                                </TableRow>
+                            )}
+                        </Fragment>
                     ))}
                 </TableBody>
             </Table>

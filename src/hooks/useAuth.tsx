@@ -1,4 +1,8 @@
-import type { ResetPasswordCredentials, UserCredentials } from "@/lib/apiTypes";
+import type {
+    LoginUserCredentials,
+    RegisterUserCredentials,
+    ResetPasswordCredentials,
+} from "@/lib/apiTypes";
 import {
     checkAuthStatus,
     forgotPassword,
@@ -18,8 +22,8 @@ export const useRegisterUser = () => {
     const navigate = useNavigate();
 
     return useMutation({
-        mutationFn: ({ email, password }: UserCredentials) =>
-            registerUser(email, password),
+        mutationFn: ({ email, password, username }: RegisterUserCredentials) =>
+            registerUser(email, password, username),
         onSuccess: () => {
             navigate("/email-verification-sent");
         },
@@ -35,8 +39,8 @@ export const useSignin = () => {
     const location = useLocation();
 
     return useMutation({
-        mutationFn: ({ email, password }: UserCredentials) =>
-            loginUser(email, password),
+        mutationFn: ({ emailOrusername, password }: LoginUserCredentials) =>
+            loginUser(emailOrusername, password),
         onSuccess: async () => {
             await queryClient.invalidateQueries({
                 queryKey: AUTH_STATUS_QUERY_KEY,
@@ -71,7 +75,9 @@ export const useVerifyEmail = () => {
 
 export const useForgotPassword = () => {
     return useMutation({
-        mutationFn: ({ email }: Omit<UserCredentials, "password">) =>
+        mutationFn: ({
+            email,
+        }: Omit<RegisterUserCredentials, "password" | "username">) =>
             forgotPassword(email),
         onSuccess: response => {
             toast.success(response.data.message);

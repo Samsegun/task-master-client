@@ -47,8 +47,14 @@ export type ForgotPassword = Omit<RegisterUser, "user">;
 
 export type ResetPassword = Omit<RegisterUser, "user">;
 
-export type UserCredentials = {
+export type RegisterUserCredentials = {
     email: string;
+    password: string;
+    username: string;
+};
+
+export type LoginUserCredentials = {
+    emailOrusername: string;
     password: string;
 };
 

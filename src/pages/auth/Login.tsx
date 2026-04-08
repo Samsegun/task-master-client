@@ -22,15 +22,15 @@ function Login() {
     const form = useForm<z.infer<typeof loginUserForm>>({
         resolver: zodResolver(loginUserForm),
         defaultValues: {
-            email: "",
+            emailOrusername: "",
             password: "",
         },
     });
 
     function onSubmit(data: z.infer<typeof loginUserForm>) {
-        const { email, password } = data;
+        const { emailOrusername, password } = data;
 
-        signinMutation.mutate({ email, password });
+        signinMutation.mutate({ emailOrusername, password });
     }
 
     return (
@@ -56,7 +56,7 @@ function Login() {
                 className='mt-8 space-y-6'>
                 <FieldGroup>
                     <Controller
-                        name='email'
+                        name='emailOrusername'
                         control={form.control}
                         render={({ field, fieldState }) => (
                             <Field data-invalid={fieldState.invalid}>

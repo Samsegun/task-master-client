@@ -30,16 +30,21 @@ const AUTH = "/auth";
 const V1 = "/v1";
 
 /* start of auth requests */
-export const registerUser = (email: string, password: string) => {
+export const registerUser = (
+    email: string,
+    password: string,
+    username: string
+) => {
     return axiosInstance.post<RegisterUser>(`${AUTH}/register`, {
         email,
         password,
+        username,
     });
 };
 
-export const loginUser = (email: string, password: string) => {
+export const loginUser = (emailOrusername: string, password: string) => {
     return axiosInstance.post<LoginUser>(`${AUTH}/login`, {
-        email,
+        emailOrusername,
         password,
     });
 };

@@ -25,13 +25,14 @@ function Register() {
         defaultValues: {
             email: "",
             password: "",
+            username: "",
         },
     });
 
     function onSubmit(data: z.infer<typeof registerUserForm>) {
-        const { email, password } = data;
+        const { email, password, username } = data;
 
-        signupMutation.mutate({ email, password });
+        signupMutation.mutate({ email, password, username });
     }
 
     return (

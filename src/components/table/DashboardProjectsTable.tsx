@@ -1,6 +1,7 @@
 import { Table, TableBody, TableHeader, TableRow } from "@/components/ui/table";
 import { useGetProjects } from "@/hooks/useProjects";
 import { formatDate } from "@/lib/utils";
+import { useNavigate } from "react-router";
 import { DataLoadingIcon } from "../common/LoadingIcon";
 import StatusBadge from "../common/StatusBadge";
 import { Progress } from "../ui/progress";
@@ -10,6 +11,7 @@ const headers = ["project", "status", "due date", "progress"];
 
 function DashboardProjectsTable() {
     const { userProjects, isLoading, isError, customErr } = useGetProjects();
+    const navigate = useNavigate();
 
     if (isLoading) {
         return <DataLoadingIcon />;
@@ -41,8 +43,16 @@ function DashboardProjectsTable() {
                 <TableBody>
                     {userProjects.map(project => (
                         <TableRow
-                            key={project.name}
-                            className='border-b border-brand-primary/10 hover:bg-[#2d3f54]'>
+                            key={project.id}
+                            onClick={() => navigate(`/projects/${project.id}`)}
+                            role='link'
+                            tabIndex={0}
+                            onKeyDown={e => {
+                                if (e.key === "Enter" || e.key === " ") {
+                                    navigate(`/projects/${project.id}`);
+                                }
+                            }}
+                            className='border-b border-brand-primary/10 cursor-pointer hover:bg-[#2d3f54]'>
                             <TableCell className='font-medium capitalize'>
                                 {project.name}
                             </TableCell>
