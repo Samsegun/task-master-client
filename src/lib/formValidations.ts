@@ -30,10 +30,6 @@ const registerUserForm = z.object({
         ),
 });
 
-// const loginUserForm = z.object({
-//     email: z.email("Invalid email format"),
-//     password: z.string().trim().nonempty("Password is required"),
-// });
 // user should be able to login with either email or username
 const loginUserForm = z.object({
     emailOrusername: z
@@ -55,10 +51,12 @@ const loginUserForm = z.object({
 
 const forgotPasswordForm = registerUserForm.omit({
     password: true,
+    username: true,
 });
 
 const resetPasswordForm = z.object({
-    token: z.string().trim(),
+    // token: z.string().trim(),
+    email: z.email(),
     password: registerUserForm.shape.password,
 });
 

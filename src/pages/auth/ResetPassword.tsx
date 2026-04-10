@@ -1,4 +1,5 @@
 import Button from "@/components/common/Button";
+import PasswordRequirements from "@/components/common/PasswordRequirements";
 import {
     Field,
     FieldError,
@@ -9,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { useResetPassword } from "@/hooks/useAuth";
 import { resetPasswordForm } from "@/lib/formValidations";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff, Info, X } from "lucide-react";
+import { Eye, EyeOff, Info } from "lucide-react";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
@@ -24,22 +25,29 @@ function ResetPassword() {
     const form = useForm<z.infer<typeof resetPasswordForm>>({
         resolver: zodResolver(resetPasswordForm),
         defaultValues: {
+            email: searchParams.get("email") || "",
             password: "",
         },
     });
 
     const token = searchParams.get("token");
-    const email = searchParams.get("email");
+    const emailFromParams = searchParams.get("email");
 
     async function onSubmit(values: z.infer<typeof resetPasswordForm>) {
         const { password } = values;
 
-        if (!token || !email) {
+        console.log(token, password, emailFromParams);
+
+        if (!token || !emailFromParams) {
             toast.error("Invalid or missing reset link parameters");
             return;
         }
 
-        resetPasswordMutation.mutate({ token, password, email });
+        resetPasswordMutation.mutate({
+            token,
+            password,
+            email: emailFromParams,
+        });
     }
 
     return (
@@ -49,17 +57,40 @@ function ResetPassword() {
             </div>
 
             <form
-                id='forgot-password'
+                id='reset-password'
                 onSubmit={form.handleSubmit(onSubmit)}
                 className='mt-8 space-y-6'>
                 <FieldGroup>
+                    <Controller
+                        name='email'
+                        control={form.control}
+                        render={({ field, fieldState }) => (
+                            <Field data-invalid={fieldState.invalid}>
+                                <FieldLabel htmlFor='register-user-email'>
+                                    Email
+                                </FieldLabel>
+                                <Input
+                                    {...field}
+                                    id='register-user-email'
+                                    aria-invalid={fieldState.invalid}
+                                    placeholder='user@mail.com'
+                                    autoComplete='off'
+                                    disabled
+                                />
+                                {fieldState.invalid && (
+                                    <FieldError errors={[fieldState.error]} />
+                                )}
+                            </Field>
+                        )}
+                    />
+
                     <Controller
                         name='password'
                         control={form.control}
                         render={({ field, fieldState }) => (
                             <Field data-invalid={fieldState.invalid}>
                                 <FieldLabel htmlFor='register-user-password'>
-                                    Password
+                                    New Password
                                 </FieldLabel>
 
                                 <div className='relative'>
@@ -103,31 +134,9 @@ function ResetPassword() {
                         </button>
 
                         {showPasswordReqs && (
-                            <div className='bg-brand-modal font-semibold mt-2 p-4'>
-                                <div className='text-right'>
-                                    <button
-                                        type='button'
-                                        aria-label='Hide password requirements'
-                                        className='hover:cursor-pointer'
-                                        onClick={() =>
-                                            setShowPasswordReqs(false)
-                                        }>
-                                        <X />
-                                    </button>
-                                </div>
-
-                                <div>
-                                    <ul>
-                                        <li>- At least 8 characters</li>
-                                        <li>- An uppercase letter</li>
-                                        <li>- A lowercase letter</li>
-                                        <li>- A number</li>
-                                        <li>
-                                            - At least one special character
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
+                            <PasswordRequirements
+                                setShowPasswordReqs={setShowPasswordReqs}
+                            />
                         )}
                     </div>
                 </FieldGroup>
@@ -136,6 +145,7 @@ function ResetPassword() {
                     type='submit'
                     variant={"primary"}
                     disabled={resetPasswordMutation.isPending}
+                    form='reset-password'
                     className='w-full'>
                     {resetPasswordMutation.isPending ? "Resetting..." : "Reset"}
                 </Button>

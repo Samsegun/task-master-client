@@ -22,7 +22,7 @@ function ForgotPassword() {
         },
     });
 
-    async function onSubmit(values: z.infer<typeof forgotPasswordForm>) {
+    function onSubmit(values: z.infer<typeof forgotPasswordForm>) {
         const { email } = values;
 
         forgotPasswordMutation.mutate({ email });
@@ -64,8 +64,9 @@ function ForgotPassword() {
 
                 <Button
                     type='submit'
-                    variant={"primary"}
                     disabled={forgotPasswordMutation.isPending}
+                    form='forgot-password'
+                    variant={"primary"}
                     className='w-full'>
                     {forgotPasswordMutation.isPending
                         ? "Submitting..."

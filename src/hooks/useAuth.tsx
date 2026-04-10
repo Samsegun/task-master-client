@@ -80,7 +80,7 @@ export const useForgotPassword = () => {
         }: Omit<RegisterUserCredentials, "password" | "username">) =>
             forgotPassword(email),
         onSuccess: response => {
-            toast.success(response.data.message);
+            toast.success(response.data.message, { duration: 8000 });
         },
         onError: (err: any) => {
             toast.error(err.response.data.error.message);

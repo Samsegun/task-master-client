@@ -12,20 +12,24 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import * as z from "zod";
 
 function Login() {
     const [showPassword, setShowPassword] = useState(false);
+    const [searchParams] = useSearchParams();
+
     const signinMutation = useSignin();
 
     const form = useForm<z.infer<typeof loginUserForm>>({
         resolver: zodResolver(loginUserForm),
         defaultValues: {
-            emailOrusername: "",
+            emailOrusername: searchParams.get("email") || "",
             password: "",
         },
     });
+
+    const emailFromParams = searchParams.get("email");
 
     function onSubmit(data: z.infer<typeof loginUserForm>) {
         const { emailOrusername, password } = data;
@@ -69,6 +73,7 @@ function Login() {
                                     aria-invalid={fieldState.invalid}
                                     placeholder='user@mail.com'
                                     autoComplete='off'
+                                    disabled={!!emailFromParams}
                                 />
                                 {fieldState.invalid && (
                                     <FieldError errors={[fieldState.error]} />
@@ -117,12 +122,16 @@ function Login() {
                     />
                 </FieldGroup>
 
+                <p className='-mt-2 text-sm'>
+                    <Link to='/forgot-password'>Forgot password?</Link>
+                </p>
+
                 <Button
                     type='submit'
                     disabled={signinMutation.isPending}
                     form='login-user'
                     variant={"primary"}
-                    className={`w-full mt-4 ${
+                    className={`w-full mt-2 ${
                         signinMutation.isPending && "cursor-not-allowed"
                     }`}>
                     {signinMutation.isPending ? "Signing in..." : "Sign In"}

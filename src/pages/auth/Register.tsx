@@ -1,4 +1,5 @@
 import Button from "@/components/common/Button";
+import PasswordRequirements from "@/components/common/PasswordRequirements";
 import {
     Field,
     FieldError,
@@ -9,7 +10,7 @@ import { Input } from "@/components/ui/input";
 import { useRegisterUser } from "@/hooks/useAuth";
 import { registerUserForm } from "@/lib/formValidations";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff, Info, X } from "lucide-react";
+import { Eye, EyeOff, Info } from "lucide-react";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { Link } from "react-router";
@@ -128,31 +129,9 @@ function Register() {
                         </button>
 
                         {showPasswordReqs && (
-                            <div className='bg-brand-modal font-semibold mt-2 p-4'>
-                                <div className='text-right'>
-                                    <button
-                                        type='button'
-                                        aria-label='Hide password requirements'
-                                        className='hover:cursor-pointer'
-                                        onClick={() =>
-                                            setShowPasswordReqs(false)
-                                        }>
-                                        <X />
-                                    </button>
-                                </div>
-
-                                <div>
-                                    <ul>
-                                        <li>- At least 8 characters</li>
-                                        <li>- An uppercase letter</li>
-                                        <li>- A lowercase letter</li>
-                                        <li>- A number</li>
-                                        <li>
-                                            - At least one special character
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
+                            <PasswordRequirements
+                                setShowPasswordReqs={setShowPasswordReqs}
+                            />
                         )}
                     </div>
                 </FieldGroup>
