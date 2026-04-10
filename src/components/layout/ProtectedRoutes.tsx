@@ -34,18 +34,18 @@ function ProtectedRoutes() {
             <Navbar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
 
             <div
-                className={`min-h-screen mt-18 
-            md:mt-0 p-6 xl:px-10 transition-all duration-300 ease-in-out ${
-                isCollapsed ? "ml-20" : "md:ml-60 xl:ml-64"
-            }`}>
-                <div className='relative max-w-7xl mx-auto lg:px-4 space-y-10 xl:space-y-12'>
+                className={`relative min-h-screen  transition-all duration-300 ease-in-out ${
+                    isCollapsed ? "ml-20" : "md:ml-60 xl:ml-64"
+                }`}>
+                <div>
                     <div
-                        className='hidden md:block sticky top-0 z-50 py-4 px-1 backdrop-blur-md bg-white/5 shadow-sm'
+                        className='sticky hidden md:block left-0 right-0 top-0 z-50 py-4.5
+                         backdrop-blur-md bg-white/4 shadow-sm border-b border-nav-border'
                         style={{
                             WebkitBackdropFilter: "blur(8px)",
                             backdropFilter: "blur(8px)",
                         }}>
-                        <div className='flex justify-between items-center'>
+                        <div className='flex justify-between items-center px-6 xl:px-3 max-w-5xl mx-auto'>
                             <PageTitle>Good morning, Sophia</PageTitle>
 
                             <div className='hidden md:block'>
@@ -88,9 +88,13 @@ function ProtectedRoutes() {
                         </div>
                     </div>
 
-                    <main>
-                        <Outlet />
-                    </main>
+                    <div
+                        className='mt-18 
+            md:mt-0 py-6 px-8'>
+                        <main className='max-w-4xl mx-auto lg:px-8 space-y-10 xl:space-y-12 '>
+                            <Outlet />
+                        </main>
+                    </div>
                 </div>
             </div>
         </div>
