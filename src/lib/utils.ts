@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
+import { z } from "zod";
 import type { TaskStatus } from "./types";
 
 export function cn(...inputs: ClassValue[]) {
@@ -37,4 +38,15 @@ export const formatDate = (dateString: Date | string | null) => {
         day: "numeric",
         year: "numeric",
     });
+};
+
+export const validateEmailFromSearchParams = (
+    searchParams: URLSearchParams
+) => {
+    const rawEmailFromParams = searchParams.get("email");
+    const emailSchema = z.email();
+    const validatedEmail = emailSchema.safeParse(rawEmailFromParams);
+    const defaultEmail = validatedEmail.success ? validatedEmail.data : "";
+
+    return defaultEmail;
 };

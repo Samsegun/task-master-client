@@ -18,7 +18,8 @@ import Navbar from "./Navbar";
 
 function ProtectedRoutes() {
     const [isCollapsed, setIsCollapsed] = useState(false);
-    const { isLoading, isAuthenticated, isError, logout } = useAuthStatus();
+    const { isLoading, isAuthenticated, isError, logout, user } =
+        useAuthStatus();
     const location = useLocation();
 
     if (isLoading) {
@@ -46,14 +47,17 @@ function ProtectedRoutes() {
                             backdropFilter: "blur(8px)",
                         }}>
                         <div className='flex justify-between items-center px-6 xl:px-3 max-w-5xl mx-auto'>
-                            <PageTitle>Good morning, Sophia</PageTitle>
+                            <PageTitle>
+                                Good morning,{" "}
+                                <span className='capitalize'>{user}</span>
+                            </PageTitle>
 
                             <div className='hidden md:block'>
                                 <DropdownMenu>
                                     <DropdownMenuTrigger className='cursor-pointer'>
                                         <div>
                                             <Avatar
-                                                name='Sophia willson'
+                                                name={user || "User"}
                                                 occupation='product manager'
                                                 src='xxxxx'
                                             />
@@ -90,7 +94,7 @@ function ProtectedRoutes() {
 
                     <div
                         className='mt-18 
-            md:mt-0 py-6 px-8'>
+            md:mt-0 py-6 md:py-8 xl:py-10 px-8'>
                         <main className='max-w-4xl mx-auto lg:px-8 space-y-10 xl:space-y-12 '>
                             <Outlet />
                         </main>

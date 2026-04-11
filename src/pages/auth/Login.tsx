@@ -8,6 +8,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useSignin } from "@/hooks/useAuth";
 import { loginUserForm } from "@/lib/formValidations";
+import { validateEmailFromSearchParams } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
@@ -19,17 +20,17 @@ function Login() {
     const [showPassword, setShowPassword] = useState(false);
     const [searchParams] = useSearchParams();
 
+    const emailFromParams = validateEmailFromSearchParams(searchParams);
+
     const signinMutation = useSignin();
 
     const form = useForm<z.infer<typeof loginUserForm>>({
         resolver: zodResolver(loginUserForm),
         defaultValues: {
-            emailOrusername: searchParams.get("email") || "",
+            emailOrusername: emailFromParams || "",
             password: "",
         },
     });
-
-    const emailFromParams = searchParams.get("email");
 
     function onSubmit(data: z.infer<typeof loginUserForm>) {
         const { emailOrusername, password } = data;

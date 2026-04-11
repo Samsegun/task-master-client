@@ -114,13 +114,13 @@ export const useAuthStatus = () => {
         queryFn: checkAuthStatus,
         refetchOnWindowFocus: false,
         retry: false,
-        staleTime: 5 * 60 * 1000, // data fresh for 5 mins
+        staleTime: 5 * 60 * 1000, // 5 mins
     });
 
     const logoutMutation = useMutation({
         mutationFn: logoutUser,
         onSuccess: () => {
-            // clear the user from cache and redirect
+            // clear the user from cache and redirect to login
             queryClient.clear();
             navigate("/login");
         },
@@ -134,7 +134,7 @@ export const useAuthStatus = () => {
     }
 
     return {
-        user,
+        user: user?.data.firstName || user?.data.username,
         isLoading,
         isAuthenticated: !!user,
         isError,
