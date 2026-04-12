@@ -3,6 +3,7 @@ import { Toaster } from "react-hot-toast";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router";
 import "./App.css";
 import AuthRoutes from "./components/layout/AuthRoutes";
+import NotFound from "./components/layout/NotFound";
 import ProtectedRoutes from "./components/layout/ProtectedRoutes";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import Login from "./pages/auth/Login";
@@ -66,6 +67,8 @@ function App() {
                                     element={<VerificationEmailSent />}
                                 />
                             </Route>
+
+                            <Route path='*' element={<NotFound />} />
                         </Routes>
 
                         <Toaster
