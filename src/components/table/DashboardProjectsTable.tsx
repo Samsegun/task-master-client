@@ -1,6 +1,8 @@
 import { Table, TableBody, TableHeader, TableRow } from "@/components/ui/table";
 import { useGetProjects } from "@/hooks/useProjects";
 import { formatDate } from "@/lib/utils";
+import { useCreateProjectModal } from "@/providers/CreateProjectProvider";
+import { FolderKanban } from "lucide-react";
 import { useNavigate } from "react-router";
 import { DataLoadingIcon } from "../common/LoadingIcon";
 import StatusBadge from "../common/StatusBadge";
@@ -12,6 +14,7 @@ const headers = ["project", "status", "due date", "progress"];
 function DashboardProjectsTable() {
     const { userProjects, isLoading, isError, customErr } = useGetProjects();
     const navigate = useNavigate();
+    const { openCreateProject } = useCreateProjectModal();
 
     if (isLoading) {
         return <DataLoadingIcon />;
@@ -41,6 +44,31 @@ function DashboardProjectsTable() {
                 </TableHeader>
 
                 <TableBody>
+                    {userProjects.length === 0 && (
+                        <TableRow className='hover:bg-brand-bg'>
+                            <TableCell colSpan={5} className='p-16 text-center'>
+                                <FolderKanban
+                                    className='mx-auto text-brand-gray mb-4'
+                                    size={64}
+                                />
+
+                                <h3 className='text-xl font-semibold text-brand-gray mb-2'>
+                                    No projects found
+                                </h3>
+
+                                <p className='text-brand-gray'>
+                                    Create your{" "}
+                                    <button
+                                        className='text-white cursor-pointer'
+                                        onClick={openCreateProject}>
+                                        first project
+                                    </button>{" "}
+                                    to get started
+                                </p>
+                            </TableCell>
+                        </TableRow>
+                    )}
+
                     {userProjects.map(project => (
                         <TableRow
                             key={project.id}

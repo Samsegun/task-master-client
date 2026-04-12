@@ -2,6 +2,7 @@ import { Table, TableBody, TableHeader, TableRow } from "@/components/ui/table";
 import { useGetMyTasks } from "@/hooks/useTasks";
 import { formatDate } from "@/lib/utils";
 import { useGlobalModals } from "@/providers/GlobalModalsProvider";
+import { CheckCircle } from "lucide-react";
 import { Fragment, useState } from "react";
 import Button from "../common/Button";
 import { DataLoadingIcon } from "../common/LoadingIcon";
@@ -43,6 +44,25 @@ function DashboardTasksTable() {
                 </TableHeader>
 
                 <TableBody>
+                    {myTasks.length === 0 && (
+                        <TableRow className='hover:bg-brand-bg'>
+                            <TableCell colSpan={5} className='p-16 text-center'>
+                                <CheckCircle
+                                    className='mx-auto text-brand-gray mb-4'
+                                    size={64}
+                                />
+
+                                <h3 className='text-xl font-semibold text-brand-gray mb-2'>
+                                    No tasks found
+                                </h3>
+
+                                <p className='text-brand-gray'>
+                                    You have no tasks assigned
+                                </p>
+                            </TableCell>
+                        </TableRow>
+                    )}
+
                     {myTasks.map(task => (
                         <Fragment key={task.id}>
                             <TableRow

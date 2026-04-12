@@ -89,7 +89,7 @@ function MembersTabTable({
                                                 "?"
                                             ).toUpperCase()}
                                         </div>
-                                        <span className='font-medium'>
+                                        <span className='font-medium capitalize'>
                                             {member.user?.username ??
                                                 member.user?.firstName ??
                                                 "Unknown"}

@@ -60,13 +60,6 @@ function Projects() {
                 ))}
             </section>
 
-            {/* {openNewProject && (
-                <CreateProjectModal
-                    openNewProject={openNewProject}
-                    setOpenNewProject={setOpenNewProject}
-                />
-            )} */}
-
             {/* empty state */}
             {filteredProjects!.length === 0 && (
                 <div className='text-center py-16'>

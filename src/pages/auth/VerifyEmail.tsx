@@ -22,7 +22,7 @@ function VerifyEmail() {
         <div className='text-center'>
             <h1 className='text-3xl font-extrabold'>Verify your Email</h1>
 
-            <section className='flex justify-center mt-10'>
+            <section className='flex justify-center mt-5'>
                 <Button
                     className=''
                     disabled={verifyEmailMutation.isPending}

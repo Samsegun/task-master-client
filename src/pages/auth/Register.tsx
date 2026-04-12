@@ -33,6 +33,8 @@ function Register() {
     function onSubmit(data: z.infer<typeof registerUserForm>) {
         const { email, password, username } = data;
 
+        // console.log({ email, password, username });
+
         signupMutation.mutate({ email, password, username });
     }
 
@@ -47,7 +49,7 @@ function Register() {
                         className='font-medium text-brand-link text-sm
                          hover:text-brand-link/90'>
                         <Link to={"/login"}>
-                            log in if you already have an account{" "}
+                            Log in if you already have an account{" "}
                         </Link>
                     </span>
                 </p>
@@ -73,6 +75,28 @@ function Register() {
                                     aria-invalid={fieldState.invalid}
                                     placeholder='user@mail.com'
                                     autoComplete='off'
+                                />
+                                {fieldState.invalid && (
+                                    <FieldError errors={[fieldState.error]} />
+                                )}
+                            </Field>
+                        )}
+                    />
+                    <Controller
+                        name='username'
+                        control={form.control}
+                        render={({ field, fieldState }) => (
+                            <Field data-invalid={fieldState.invalid}>
+                                <FieldLabel htmlFor='register-username'>
+                                    Username
+                                </FieldLabel>
+                                <Input
+                                    {...field}
+                                    id='register-username'
+                                    aria-invalid={fieldState.invalid}
+                                    placeholder='user123'
+                                    autoComplete='off'
+                                    // className='px-4 py-5'
                                 />
                                 {fieldState.invalid && (
                                     <FieldError errors={[fieldState.error]} />
@@ -143,7 +167,7 @@ function Register() {
                     variant={"primary"}
                     className='w-full mt-4'>
                     {signupMutation.isPending
-                        ? "Creating account"
+                        ? "Creating account..."
                         : "Create account"}
                 </Button>
             </form>

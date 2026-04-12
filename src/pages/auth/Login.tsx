@@ -49,7 +49,7 @@ function Login() {
                         className='font-medium text-brand-link text-sm
                          hover:text-brand-link/90'>
                         <Link to={"/register"}>
-                            create account if you don't have one
+                            create an account if you don't have one
                         </Link>
                     </span>
                 </p>

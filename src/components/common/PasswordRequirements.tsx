@@ -17,7 +17,7 @@ function PasswordRequirements({
                 </button>
             </div>
 
-            <div className='italic font-bold text-sm tracking-wide'>
+            <div className='font-bold text-sm italic tracking-wide'>
                 <ul>
                     <li>- At least 8 characters</li>
                     <li>- An uppercase letter</li>
