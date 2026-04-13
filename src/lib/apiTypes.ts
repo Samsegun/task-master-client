@@ -241,3 +241,21 @@ export type DeleteTask = {
     success: boolean;
     message: string;
 };
+
+export type UpdateUserProfile = {
+    success: boolean;
+    data: {
+        id: string;
+        email: string;
+        username: string;
+        role: Role;
+        isVerified: boolean;
+        firstName: string | null;
+        lastName: string | null;
+    };
+};
+
+export type UpdateUserPassword = {
+    success: boolean;
+    message: string;
+};

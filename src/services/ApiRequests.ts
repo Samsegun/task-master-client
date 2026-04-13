@@ -22,6 +22,8 @@ import type {
     ResetPassword,
     Tasks,
     UpdateTask,
+    UpdateUserPassword,
+    UpdateUserProfile,
     VerifyEmail,
 } from "../lib/apiTypes";
 import axiosInstance from "./AxiosConfig";
@@ -76,6 +78,28 @@ export const checkAuthStatus = () => {
     return axiosInstance.get<AuthStatus>(`${V1}/users/me`);
 };
 /* end of auth requests */
+
+/* start of user profile requests*/
+export const updateUserProfile = (profileDetailsToBeUpdated: {
+    firstName?: string;
+    lastName?: string;
+    username?: string;
+}) => {
+    return axiosInstance.patch<UpdateUserProfile>(`${V1}/users/me`, {
+        ...profileDetailsToBeUpdated,
+    });
+};
+
+export const updateUserPassword = (userPasswords: {
+    currentPassword: string;
+    newPassword: string;
+}) => {
+    return axiosInstance.patch<UpdateUserPassword>(`${V1}/users/me/password`, {
+        ...userPasswords,
+    });
+};
+
+/* end of user profile requests*/
 
 /* start of project requests */
 export const getProjects = (params?: GetDataParams) => {
