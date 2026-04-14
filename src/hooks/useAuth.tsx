@@ -114,7 +114,7 @@ export const useAuthStatus = () => {
         queryFn: checkAuthStatus,
         refetchOnWindowFocus: false,
         retry: false,
-        staleTime: 5 * 60 * 1000, // 5 mins
+        staleTime: 15 * 60 * 1000, // 15 mins
     });
 
     const logoutMutation = useMutation({
@@ -134,7 +134,7 @@ export const useAuthStatus = () => {
     }
 
     return {
-        user: user?.data.firstName || user?.data.username,
+        user: user?.data,
         isLoading,
         isAuthenticated: !!user,
         isError,

@@ -49,7 +49,9 @@ function ProtectedRoutes() {
                         <div className='flex justify-between items-center px-6 xl:px-3 max-w-5xl mx-auto'>
                             <PageTitle>
                                 Good morning,{" "}
-                                <span className='capitalize'>{user}</span>
+                                <span className='capitalize'>
+                                    {user?.username}
+                                </span>
                             </PageTitle>
 
                             <div className='hidden md:block'>
@@ -57,7 +59,7 @@ function ProtectedRoutes() {
                                     <DropdownMenuTrigger className='cursor-pointer'>
                                         <div>
                                             <Avatar
-                                                name={user || "User"}
+                                                name={user?.username || "User"}
                                                 occupation='product manager'
                                                 src='xxxxx'
                                             />

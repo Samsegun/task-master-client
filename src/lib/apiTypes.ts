@@ -73,6 +73,7 @@ export type AuthStatus = {
         role: Role;
         isVerified: boolean;
         firstName: string;
+        lasttName: string;
     };
 };
 

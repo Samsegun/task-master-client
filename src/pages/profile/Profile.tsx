@@ -1,17 +1,19 @@
 import PageTitle from "@/components/common/PageTitle";
+import UserProfileUpdateForm from "@/components/common/UserProfileUpdateForm";
 
 function Profile() {
     return (
-        <div className='space-y-10 xl:space-y-12'>
-            {/* header */}
-            <div className='mb-8'>
+        <div className='space-y-10'>
+            <div>
                 <PageTitle>Profile</PageTitle>
-
-                <p className='text-brand-gray mt-2'>User Profile</p>
             </div>
 
-            <section>
-                <p>user profile content goes here</p>
+            <section className='space-y-3'>
+                <h2 className='md:text-lg xl:text-xl font-medium tracking-wide'>
+                    Update User Data
+                </h2>
+
+                <UserProfileUpdateForm />
             </section>
         </div>
     );

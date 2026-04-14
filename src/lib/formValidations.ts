@@ -88,6 +88,21 @@ const addProjectMember = z.object({
     role: AddMemberSchema.default("MEMBER"),
 });
 
+const updateProfile = z.object({
+    email: z.email(),
+    firstName: z.string().max(30).optional(),
+    lastName: z.string().max(30).optional(),
+    username: z
+        .string()
+        .min(3)
+        .max(30)
+        .regex(
+            /^[a-zA-Z0-9_]+$/,
+            "Username must consist of alphanumeric characters and underscores"
+        ),
+    // .optional(),
+});
+
 export {
     addProjectMember,
     createProject,
@@ -97,4 +112,5 @@ export {
     loginUserForm,
     registerUserForm,
     resetPasswordForm,
+    updateProfile,
 };
