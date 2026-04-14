@@ -103,6 +103,11 @@ const updateProfile = z.object({
     // .optional(),
 });
 
+const updatePassword = z.object({
+    currentPassword: z.string().nonempty("Current password is required"),
+    newPassword: registerUserForm.shape.password,
+});
+
 export {
     addProjectMember,
     createProject,
@@ -112,5 +117,6 @@ export {
     loginUserForm,
     registerUserForm,
     resetPasswordForm,
+    updatePassword,
     updateProfile,
 };

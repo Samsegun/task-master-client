@@ -7,7 +7,11 @@ import * as z from "zod";
 import { Field, FieldError, FieldGroup, FieldLabel } from "../ui/field";
 import { Input } from "../ui/input";
 import Button from "./Button";
-import { InputWrapper, LabelInputWrapper } from "./UserUpdateInputWrappers";
+import {
+    FormWrapper,
+    InputWrapper,
+    LabelInputWrapper,
+} from "./UserUpdateInputWrappers";
 
 type UpdateProfileFormData = z.input<typeof updateProfile>;
 
@@ -32,7 +36,7 @@ function UserProfileUpdateForm() {
     }
 
     return (
-        <div className='bg-brand-modal p-4 md:p-6 lg:py-6 lg:px-10 rounded-lg border border-nav-border'>
+        <FormWrapper>
             <form
                 id='update-user-profile'
                 onSubmit={form.handleSubmit(onSubmit)}>
@@ -176,7 +180,7 @@ function UserProfileUpdateForm() {
                     </Button>
                 </div>
             </form>
-        </div>
+        </FormWrapper>
     );
 }
 
