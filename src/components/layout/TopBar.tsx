@@ -11,7 +11,9 @@ function TopBar() {
     const { logout } = useAuthStatus();
 
     return (
-        <Header className='block md:hidden bg-brand-bg fixed top-0 left-0 right-0 z-50'>
+        <Header
+            className='block md:hidden fixed top-0 left-0 right-0 z-50 
+        backdrop-blur-md bg-white/4'>
             <div>
                 <Link to={"/dashboard"} className='flex items-center'>
                     <Logo />
