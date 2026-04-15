@@ -114,6 +114,7 @@ function UserPasswordUpdateForm() {
                 {/* show passwords icon */}
                 <button
                     type='button'
+                    title={`${showPassword ? "Hide" : "Show"} paswwords`}
                     onClick={() => setShowPassword(!showPassword)}
                     className='absolute top-0 right-0 flex items-center text-sm
                                          text-brand-gray hover:cursor-pointer hover:text-brand-gray/80 '>

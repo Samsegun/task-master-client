@@ -1,19 +1,8 @@
 import { useAuthStatus } from "@/hooks/useAuth";
-import { LogOutIcon } from "lucide-react";
 import { useState } from "react";
-import { Link, Navigate, Outlet, useLocation } from "react-router";
-import Avatar from "../common/Avatar";
-import Button from "../common/Button";
+import { Navigate, Outlet, useLocation } from "react-router";
+import DesktopHeaderMenu from "../common/DesktopHeaderMenu";
 import LoadingIcon from "../common/LoadingIcon";
-import PageTitle from "../common/PageTitle";
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
 import Navbar from "./Navbar";
 
 function ProtectedRoutes() {
@@ -46,52 +35,10 @@ function ProtectedRoutes() {
                             WebkitBackdropFilter: "blur(8px)",
                             backdropFilter: "blur(8px)",
                         }}>
-                        <div className='flex justify-between items-center px-6 xl:px-3 max-w-5xl mx-auto'>
-                            <PageTitle>
-                                Good morning,{" "}
-                                <span className='capitalize'>
-                                    {user?.username}
-                                </span>
-                            </PageTitle>
-
-                            <div className='hidden md:block'>
-                                <DropdownMenu>
-                                    <DropdownMenuTrigger className='cursor-pointer'>
-                                        <div>
-                                            <Avatar
-                                                name={user?.username || "User"}
-                                                occupation='product manager'
-                                                src='xxxxx'
-                                            />
-                                        </div>
-                                    </DropdownMenuTrigger>
-
-                                    <DropdownMenuContent>
-                                        <DropdownMenuLabel>
-                                            My Account
-                                        </DropdownMenuLabel>
-                                        <DropdownMenuSeparator />
-                                        <DropdownMenuItem>
-                                            <Link
-                                                to={"/profile"}
-                                                className='flex basis-full'>
-                                                Profile
-                                            </Link>
-                                        </DropdownMenuItem>
-
-                                        <DropdownMenuItem>
-                                            <Button
-                                                onClick={() => logout.mutate()}
-                                                variant={"transparent"}
-                                                className='hover:text-red-500 flex gap-2'>
-                                                <span>Logout</span>{" "}
-                                                <LogOutIcon />
-                                            </Button>
-                                        </DropdownMenuItem>
-                                    </DropdownMenuContent>
-                                </DropdownMenu>
-                            </div>
-                        </div>
+                        <DesktopHeaderMenu
+                            user={user}
+                            logout={() => logout.mutate()}
+                        />
                     </div>
 
                     <div
