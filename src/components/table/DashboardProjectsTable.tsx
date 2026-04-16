@@ -4,8 +4,8 @@ import { formatDate } from "@/lib/utils";
 import { useCreateProjectModal } from "@/providers/CreateProjectProvider";
 import { FolderKanban } from "lucide-react";
 import { useNavigate } from "react-router";
-import { DataLoadingIcon } from "../common/LoadingIcon";
 import StatusBadge from "../common/StatusBadge";
+import TableRowSkeleton from "../LoadingSkeletons/TableRowSkeleton";
 import { Progress } from "../ui/progress";
 import { TableCell, TableHead } from "./TableUI";
 
@@ -16,13 +16,7 @@ function DashboardProjectsTable() {
     const navigate = useNavigate();
     const { openCreateProject } = useCreateProjectModal();
 
-    if (isLoading) {
-        return <DataLoadingIcon />;
-    }
-
-    if (isError || !userProjects) {
-        return <div>Something went wrong :( {customErr?.message}</div>;
-    }
+    if (isError) return <div>Something went wrong :( {customErr?.message}</div>;
 
     return (
         <div
@@ -44,7 +38,9 @@ function DashboardProjectsTable() {
                 </TableHeader>
 
                 <TableBody>
-                    {userProjects.length === 0 && (
+                    {isLoading ? (
+                        <TableRowSkeleton rows={3} />
+                    ) : userProjects!.length === 0 ? (
                         <TableRow className='hover:bg-brand-bg'>
                             <TableCell colSpan={5} className='p-16 text-center'>
                                 <FolderKanban
@@ -67,42 +63,44 @@ function DashboardProjectsTable() {
                                 </p>
                             </TableCell>
                         </TableRow>
-                    )}
-
-                    {userProjects.map(project => (
-                        <TableRow
-                            key={project.id}
-                            onClick={() => navigate(`/projects/${project.id}`)}
-                            role='link'
-                            tabIndex={0}
-                            onKeyDown={e => {
-                                if (e.key === "Enter" || e.key === " ") {
-                                    navigate(`/projects/${project.id}`);
+                    ) : (
+                        userProjects!.map(project => (
+                            <TableRow
+                                key={project.id}
+                                onClick={() =>
+                                    navigate(`/projects/${project.id}`)
                                 }
-                            }}
-                            className='border-b border-brand-primary/10 cursor-pointer hover:bg-[#2d3f54]'>
-                            <TableCell className='font-medium capitalize'>
-                                {project.name}
-                            </TableCell>
+                                role='link'
+                                tabIndex={0}
+                                onKeyDown={e => {
+                                    if (e.key === "Enter" || e.key === " ") {
+                                        navigate(`/projects/${project.id}`);
+                                    }
+                                }}
+                                className='border-b border-brand-primary/10 cursor-pointer hover:bg-[#2d3f54]'>
+                                <TableCell className='font-medium capitalize'>
+                                    {project.name}
+                                </TableCell>
 
-                            <TableCell className='text-brand-primary/70 '>
-                                <StatusBadge status={project.status} />
-                            </TableCell>
+                                <TableCell className='text-brand-primary/70 '>
+                                    <StatusBadge status={project.status} />
+                                </TableCell>
 
-                            <TableCell className='text-brand-primary/70 '>
-                                {formatDate(project.dueDate)}
-                            </TableCell>
+                                <TableCell className='text-brand-primary/70 '>
+                                    {formatDate(project.dueDate)}
+                                </TableCell>
 
-                            <TableCell className='w-52 flex flex-col lg:flex-row justify-between items-center gap-2'>
-                                <Progress
-                                    value={project.progress}
-                                    className='bg-brand-button/30
-                                     [&>div]:bg-brand-button lg:basis-3/4'
-                                />
-                                <span>{project.progress}%</span>
-                            </TableCell>
-                        </TableRow>
-                    ))}
+                                <TableCell className='w-52 flex flex-col lg:flex-row justify-between items-center gap-2'>
+                                    <Progress
+                                        value={project.progress}
+                                        className='bg-brand-button/30
+                                         [&>div]:bg-brand-button lg:basis-3/4'
+                                    />
+                                    <span>{project.progress}%</span>
+                                </TableCell>
+                            </TableRow>
+                        ))
+                    )}
                 </TableBody>
             </Table>
         </div>
