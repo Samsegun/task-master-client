@@ -7,18 +7,6 @@ export type TaskPriority = "LOW" | "MEDIUM" | "HIGH";
 
 export type Statuses = "all" | ProjectStatus | TaskStatus;
 
-// export type Task = {
-//     id: string;
-//     title: string;
-//     status: TaskStatus;
-//     priority: TaskPriority;
-//     description: string | null;
-//     dueDate: string | null;
-//     assignee: { firstName: string; lastName: string } | null;
-//     assigneeId: string | null;
-//     creatorId: string;
-// };
-
 export type Member = {
     id: string;
     name: string;
@@ -72,4 +60,9 @@ export type TaskDetails = {
 export type AddMemberDetails = {
     email: string;
     role?: ProjectRole;
+};
+
+export type TableRowSkeletonProps = {
+    rows?: number;
+    columns?: number;
 };

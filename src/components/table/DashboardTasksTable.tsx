@@ -6,7 +6,7 @@ import { CheckCircle } from "lucide-react";
 import { Fragment, useState } from "react";
 import Button from "../common/Button";
 import StatusBadge from "../common/StatusBadge";
-import TableRowSkeleton from "../LoadingSkeletons/TableRowSkeleton";
+import DashboardTableRowSkeleton from "../LoadingSkeletons/DashboardTableRowSkeleton";
 import { TableCell, TableHead } from "./TableUI";
 
 const headers = ["task", "project", "due date", "status"];
@@ -40,7 +40,7 @@ function DashboardTasksTable() {
                 <TableBody>
                     {isLoading ? (
                         // skeleton loaders
-                        <TableRowSkeleton rows={3} />
+                        <DashboardTableRowSkeleton rows={3} />
                     ) : myTasks!.length === 0 ? (
                         <TableRow className='hover:bg-brand-bg'>
                             <TableCell colSpan={5} className='p-16 text-center'>

@@ -5,7 +5,7 @@ import { useCreateProjectModal } from "@/providers/CreateProjectProvider";
 import { FolderKanban } from "lucide-react";
 import { useNavigate } from "react-router";
 import StatusBadge from "../common/StatusBadge";
-import TableRowSkeleton from "../LoadingSkeletons/TableRowSkeleton";
+import DashboardTableRowSkeleton from "../LoadingSkeletons/DashboardTableRowSkeleton";
 import { Progress } from "../ui/progress";
 import { TableCell, TableHead } from "./TableUI";
 
@@ -39,7 +39,7 @@ function DashboardProjectsTable() {
 
                 <TableBody>
                     {isLoading ? (
-                        <TableRowSkeleton rows={3} />
+                        <DashboardTableRowSkeleton rows={3} />
                     ) : userProjects!.length === 0 ? (
                         <TableRow className='hover:bg-brand-bg'>
                             <TableCell colSpan={5} className='p-16 text-center'>

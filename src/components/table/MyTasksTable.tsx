@@ -7,6 +7,7 @@ import { Fragment } from "react/jsx-runtime";
 import Button from "../common/Button";
 import StatusBadge from "../common/StatusBadge";
 import StatusIcon from "../common/StatusIcon";
+import { MyTasksTableSkeletons } from "../LoadingSkeletons/TasksSkeletons";
 import { Table, TableBody, TableHeader, TableRow } from "../ui/table";
 import { TableCell, TableHead } from "./TableUI";
 
@@ -14,6 +15,7 @@ interface MyTasksTableProps {
     filteredTasks: Tasks["tasks"];
     filterStatus: TaskStatus | "all";
     filterPriority: TaskPriority | "all";
+    isLoading: boolean;
 }
 
 const tableHeaders = ["tasks", "project", "priority", "due date", "status"];
@@ -22,6 +24,7 @@ function MyTasksTable({
     filteredTasks,
     filterStatus,
     filterPriority,
+    isLoading,
 }: MyTasksTableProps) {
     const { openEdit } = useGlobalModals();
     const [expandedTaskId, setExpandedTaskId] = useState<string | null>(null);
@@ -46,7 +49,9 @@ function MyTasksTable({
                 </TableHeader>
 
                 <TableBody>
-                    {filteredTasks.length === 0 ? (
+                    {isLoading ? (
+                        <MyTasksTableSkeletons />
+                    ) : filteredTasks.length === 0 ? (
                         <TableRow className='hover:bg-brand-bg'>
                             <TableCell colSpan={5} className='p-16 text-center'>
                                 <CheckCircle

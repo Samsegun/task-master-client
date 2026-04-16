@@ -1,6 +1,6 @@
-import { DataLoadingIcon } from "@/components/common/LoadingIcon";
 import PageTitle from "@/components/common/PageTitle";
 import { Stats, StatsTitle } from "@/components/common/ProjectStats";
+import StatValue from "@/components/common/StatValue";
 import MyTasksTable from "@/components/table/MyTasksTable";
 import { useGetMyTasks } from "@/hooks/useTasks";
 import type { TaskPriority, TaskStatus } from "@/lib/apiTypes";
@@ -16,26 +16,31 @@ function MyTasks() {
         "all"
     );
 
-    if (isLoading) return <DataLoadingIcon />;
+    if (isError) return <div>Something went wrong :( {customErr?.message}</div>;
 
-    if (isError || !myTasks)
-        return <div>Something went wrong :( {customErr?.message}</div>;
+    // filter tasks when tasks load
+    let filteredTasks = myTasks || [];
+    let todoTasks = [];
+    let inProgressTasks = [];
+    let completedTasks = [];
 
-    // filter tasks
-    let filteredTasks = myTasks;
-    if (filterStatus !== "all")
-        filteredTasks = filteredTasks.filter(t => t.status === filterStatus);
+    if (myTasks) {
+        filteredTasks = myTasks;
 
-    if (filterPriority !== "all")
-        filteredTasks = filteredTasks.filter(
-            t => t.priority === filterPriority
-        );
+        if (filterStatus !== "all")
+            filteredTasks = filteredTasks.filter(
+                t => t.status === filterStatus
+            );
 
-    const todoTasks = filteredTasks.filter(t => t.status === "TODO");
-    const inProgressTasks = filteredTasks.filter(
-        t => t.status === "IN_PROGRESS"
-    );
-    const doneTasks = filteredTasks.filter(t => t.status === "DONE");
+        if (filterPriority !== "all")
+            filteredTasks = filteredTasks.filter(
+                t => t.priority === filterPriority
+            );
+
+        todoTasks = filteredTasks.filter(t => t.status === "TODO");
+        inProgressTasks = filteredTasks.filter(t => t.status === "IN_PROGRESS");
+        completedTasks = filteredTasks.filter(t => t.status === "DONE");
+    }
 
     function clearFilters() {
         setFilterStatus("all");
@@ -58,28 +63,40 @@ function MyTasks() {
                 <Stats>
                     <StatsTitle>Total Tasks</StatsTitle>
 
-                    <p className='text-2xl font-bold'>{filteredTasks.length}</p>
+                    <StatValue
+                        isLoading={isLoading}
+                        value={filteredTasks.length}
+                    />
                 </Stats>
 
                 <Stats>
                     <StatsTitle>To Do</StatsTitle>
-                    <p className='text-2xl font-bold text-task-todo'>
-                        {todoTasks.length}
-                    </p>
+
+                    <StatValue
+                        isLoading={isLoading}
+                        value={todoTasks.length}
+                        className={"text-task-todo"}
+                    />
                 </Stats>
 
                 <Stats>
                     <StatsTitle>In Progress</StatsTitle>
-                    <p className='text-2xl font-bold text-task-progress'>
-                        {inProgressTasks.length}
-                    </p>
+
+                    <StatValue
+                        isLoading={isLoading}
+                        value={inProgressTasks.length}
+                        className={"text-task-progress"}
+                    />
                 </Stats>
 
                 <Stats>
                     <StatsTitle>Completed</StatsTitle>
-                    <p className='text-2xl font-bold text-task-completed'>
-                        {doneTasks.length}
-                    </p>
+
+                    <StatValue
+                        isLoading={isLoading}
+                        value={completedTasks.length}
+                        className={"text-task-completed"}
+                    />
                 </Stats>
             </section>
 
@@ -129,9 +146,10 @@ function MyTasks() {
 
             {/* tasks table */}
             <MyTasksTable
-                filteredTasks={filteredTasks}
+                filteredTasks={filteredTasks!}
                 filterPriority={filterPriority}
                 filterStatus={filterStatus}
+                isLoading={isLoading}
             />
         </div>
     );
