@@ -1,3 +1,4 @@
+import { getGreeting } from "@/lib/utils";
 import { LogOutIcon } from "lucide-react";
 import { useNavigate } from "react-router";
 import {
@@ -43,7 +44,7 @@ function DesktopHeaderMenu({
     return (
         <div className='flex justify-between items-center px-6 xl:px-3 max-w-5xl mx-auto'>
             <PageTitle>
-                Good morning,{" "}
+                Good {getGreeting()},{" "}
                 <span className='capitalize'>{user?.username}</span>
             </PageTitle>
 
