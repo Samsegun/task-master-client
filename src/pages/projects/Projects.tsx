@@ -1,8 +1,8 @@
 import Button from "@/components/common/Button";
-import { DataLoadingIcon } from "@/components/common/LoadingIcon";
 import PageTitle from "@/components/common/PageTitle";
 import ProjectCard from "@/components/common/ProjectCard";
 import Tabs from "@/components/common/Tabs";
+import { ProjectsSkeleton } from "@/components/LoadingSkeletons/AppSkeletons";
 import { useGetProjects } from "@/hooks/useProjects";
 import type { Statuses } from "@/lib/types";
 import { useCreateProjectModal } from "@/providers/CreateProjectProvider";
@@ -18,18 +18,18 @@ function Projects() {
     const [activeTab, setActiveTab] = useState<Statuses>("all");
     const { openCreateProject } = useCreateProjectModal();
 
-    if (isLoading) {
-        return <DataLoadingIcon />;
-    }
-
-    if (isError || !userProjects) {
+    if (isError) {
         return <div>Something went wrong :( {error?.message}</div>;
     }
 
-    const filteredProjects =
-        activeTab === "all"
-            ? userProjects
-            : userProjects.filter(p => p.status === activeTab);
+    let filteredProjects = userProjects || [];
+
+    if (userProjects) {
+        filteredProjects =
+            activeTab === "all"
+                ? userProjects
+                : userProjects.filter(p => p.status === activeTab);
+    }
 
     return (
         <div>
@@ -38,6 +38,7 @@ function Projects() {
 
                 <Button
                     variant={"primary"}
+                    disabled={isLoading}
                     className={`flex items-center gap-2`}
                     onClick={() => openCreateProject()}>
                     <Plus size={30} />
@@ -55,28 +56,29 @@ function Projects() {
             <section
                 className='mt-6 md:mt-10 grid grid-cols-1 md:grid-cols-2
              lg:grid-cols-3 gap-8 md:gap-6'>
-                {filteredProjects!.map(project => (
-                    <ProjectCard key={project.id} project={project} />
-                ))}
+                {isLoading ? (
+                    <ProjectsSkeleton />
+                ) : filteredProjects!.length === 0 ? (
+                    <div className='text-center py-16'>
+                        <FolderKanban
+                            className='mx-auto text-brand-gray/80 mb-4'
+                            size={64}
+                        />
+                        <h3 className='text-xl font-semibold text-brand-gray mb-2'>
+                            No projects found
+                        </h3>
+                        <p className='text-brand-gray'>
+                            {activeTab === "all"
+                                ? "Create your first project to get started"
+                                : `No ${activeTab.toLowerCase()} projects`}
+                        </p>
+                    </div>
+                ) : (
+                    filteredProjects!.map(project => (
+                        <ProjectCard key={project.id} project={project} />
+                    ))
+                )}
             </section>
-
-            {/* empty state */}
-            {filteredProjects!.length === 0 && (
-                <div className='text-center py-16'>
-                    <FolderKanban
-                        className='mx-auto text-brand-gray/80 mb-4'
-                        size={64}
-                    />
-                    <h3 className='text-xl font-semibold text-brand-gray mb-2'>
-                        No projects found
-                    </h3>
-                    <p className='text-brand-gray'>
-                        {activeTab === "all"
-                            ? "Create your first project to get started"
-                            : `No ${activeTab.toLowerCase()} projects`}
-                    </p>
-                </div>
-            )}
         </div>
     );
 }

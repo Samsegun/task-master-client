@@ -9,7 +9,7 @@ import Button from "../common/Button";
 import StatusBadge from "../common/StatusBadge";
 import StatusIcon from "../common/StatusIcon";
 import Tabs from "../common/Tabs";
-import { ProjectTasksTableSkeletons } from "../LoadingSkeletons/TasksSkeletons";
+import { ProjectTasksTableSkeletons } from "../LoadingSkeletons/AppSkeletons";
 import { Table, TableBody, TableHeader, TableRow } from "../ui/table";
 import { TableCell, TableHead } from "./TableUI";
 import TasksTableRowOptions from "./TasksTableRowOptions";

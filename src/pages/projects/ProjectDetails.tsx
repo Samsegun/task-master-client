@@ -2,7 +2,7 @@ import Button from "@/components/common/Button";
 import ProjectDetailsTitles from "@/components/common/ProjectDetailTitles";
 import { Stats, StatsTitle } from "@/components/common/ProjectStats";
 import StatusBadge from "@/components/common/StatusBadge";
-import { StatSkeleton } from "@/components/LoadingSkeletons/TasksSkeletons";
+import { StatSkeleton } from "@/components/LoadingSkeletons/AppSkeletons";
 import MembersTabTable from "@/components/table/MembersTabTable";
 import TasksTabTable from "@/components/table/TasksTabTable";
 import { Progress } from "@/components/ui/progress";

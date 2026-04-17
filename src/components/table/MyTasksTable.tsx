@@ -7,7 +7,7 @@ import { Fragment } from "react/jsx-runtime";
 import Button from "../common/Button";
 import StatusBadge from "../common/StatusBadge";
 import StatusIcon from "../common/StatusIcon";
-import { MyTasksTableSkeletons } from "../LoadingSkeletons/TasksSkeletons";
+import { MyTasksTableSkeletons } from "../LoadingSkeletons/AppSkeletons";
 import { Table, TableBody, TableHeader, TableRow } from "../ui/table";
 import { TableCell, TableHead } from "./TableUI";
 

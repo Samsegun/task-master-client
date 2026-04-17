@@ -1,5 +1,5 @@
 import type { JSX } from "react";
-import { StatSkeleton } from "../LoadingSkeletons/TasksSkeletons";
+import { StatSkeleton } from "../LoadingSkeletons/AppSkeletons";
 
 function StatValue({
     isLoading,
