@@ -65,12 +65,12 @@ function Login() {
                         control={form.control}
                         render={({ field, fieldState }) => (
                             <Field data-invalid={fieldState.invalid}>
-                                <FieldLabel htmlFor='register-user-email'>
-                                    Email
+                                <FieldLabel htmlFor='login-user-email'>
+                                    Email or Username
                                 </FieldLabel>
                                 <Input
                                     {...field}
-                                    id='register-user-email'
+                                    id='login-user-email'
                                     aria-invalid={fieldState.invalid}
                                     placeholder='user@mail.com'
                                     autoComplete='off'
@@ -88,14 +88,14 @@ function Login() {
                         control={form.control}
                         render={({ field, fieldState }) => (
                             <Field data-invalid={fieldState.invalid}>
-                                <FieldLabel htmlFor='register-user-password'>
+                                <FieldLabel htmlFor='login-user-password'>
                                     Password
                                 </FieldLabel>
 
                                 <div className='relative'>
                                     <Input
                                         {...field}
-                                        id='register-user-password'
+                                        id='login-user-password'
                                         aria-invalid={fieldState.invalid}
                                         placeholder='password'
                                         type={

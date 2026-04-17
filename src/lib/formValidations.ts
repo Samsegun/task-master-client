@@ -46,7 +46,7 @@ const loginUserForm = z.object({
                 message: "Enter a valid email or username",
             }
         ),
-    password: z.string().trim(),
+    password: z.string().trim().min(1, "Password is required"),
 });
 
 const forgotPasswordForm = registerUserForm.omit({
