@@ -1,3 +1,4 @@
+import type { JSX } from "react";
 import { StatSkeleton } from "../LoadingSkeletons/TasksSkeletons";
 
 function StatValue({
@@ -6,7 +7,7 @@ function StatValue({
     className,
 }: {
     isLoading: boolean;
-    value: number;
+    value: number | JSX.Element;
     className?: string;
 }) {
     return isLoading ? (

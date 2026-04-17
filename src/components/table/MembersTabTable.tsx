@@ -13,15 +13,14 @@ import {
 import { Table, TableBody, TableHeader, TableRow } from "../ui/table";
 import { TableCell, TableHead } from "./TableUI";
 
-const membersTableHeaders = ["name", "joined", "role", ""];
-
-function MembersTabTable({
-    project,
-    projectRole,
-}: {
+type MembersTabTableProps = {
     project: Project["project"];
     projectRole: ProjectRole;
-}) {
+};
+
+const membersTableHeaders = ["name", "joined", "role", ""];
+
+function MembersTabTable({ project, projectRole }: MembersTabTableProps) {
     const { openAddMember, handleProjectMember } = useGlobalModals();
 
     const sortedMembersByOwner = useMemo(

@@ -6,10 +6,10 @@ import { useGlobalModals } from "@/providers/GlobalModalsProvider";
 import { CheckCircle, Plus } from "lucide-react";
 import { useState } from "react";
 import Button from "../common/Button";
-import { DataLoadingIcon } from "../common/LoadingIcon";
 import StatusBadge from "../common/StatusBadge";
 import StatusIcon from "../common/StatusIcon";
 import Tabs from "../common/Tabs";
+import { ProjectTasksTableSkeletons } from "../LoadingSkeletons/TasksSkeletons";
 import { Table, TableBody, TableHeader, TableRow } from "../ui/table";
 import { TableCell, TableHead } from "./TableUI";
 import TasksTableRowOptions from "./TasksTableRowOptions";
@@ -40,17 +40,17 @@ function TasksTabTable({
     const [filterStatus, setFilterStatus] = useState<Statuses>("all");
     const { openEdit, openDelete, openCreate } = useGlobalModals();
 
-    if (isLoading) return <DataLoadingIcon />;
-
-    if (isError || !tasks)
-        return <div>Something went wrong :( {customErr?.message}</div>;
+    if (isError) return <div>Something went wrong :( {customErr?.message}</div>;
 
     // filter tasks
-    let filteredTasks = tasks;
-    filteredTasks =
-        filterStatus === "all"
-            ? filteredTasks
-            : filteredTasks.filter(t => t.status === filterStatus);
+    let filteredTasks = tasks || [];
+
+    if (tasks) {
+        filteredTasks =
+            filterStatus === "all"
+                ? filteredTasks
+                : filteredTasks.filter(t => t.status === filterStatus);
+    }
 
     return (
         <section>
@@ -64,6 +64,7 @@ function TasksTabTable({
                 <Button
                     variant={"primary"}
                     className={`flex items-center gap-2`}
+                    disabled={isLoading}
                     onClick={() => openCreate({ projectId, projectMembers })}>
                     <Plus size={30} />
                     <span>New Task</span>
@@ -78,120 +79,121 @@ function TasksTabTable({
                     "border border-brand-primary/10"
                 }`}>
                 <Table>
-                    {filteredTasks.length !== 0 && (
-                        <TableHeader>
-                            <TableRow
-                                className='bg-brand-table-header border-b 
+                    <TableHeader>
+                        <TableRow
+                            className='bg-brand-table-header border-b 
          border-brand-primary/10 hover:bg-brand-table-header'>
-                                {taskTableHeaders.map(header => (
-                                    <TableHead
-                                        key={header}
-                                        className='lg:first:rounded-tl-xl lg:last:rounded-tr-xl'>
-                                        {header}
-                                    </TableHead>
-                                ))}
-                            </TableRow>
-                        </TableHeader>
-                    )}
+                            {taskTableHeaders.map(header => (
+                                <TableHead
+                                    key={header}
+                                    className='lg:first:rounded-tl-xl lg:last:rounded-tr-xl'>
+                                    {header}
+                                </TableHead>
+                            ))}
+                        </TableRow>
+                    </TableHeader>
 
                     <TableBody>
-                        {filteredTasks.map(task => (
-                            <TableRow
-                                key={task.id}
-                                className='border-b border-brand-primary/10 hover:bg-[#2d3f54]'>
-                                <TableCell>
-                                    <div className='flex items-center gap-3'>
-                                        {StatusIcon(task.status)}
+                        {isLoading ? (
+                            <ProjectTasksTableSkeletons />
+                        ) : filteredTasks.length === 0 ? (
+                            <div className='text-center py-16 bg-[#263447] rounded-lg border border-brand-gray/50'>
+                                <CheckCircle
+                                    className='mx-auto text-brand-gray mb-4'
+                                    size={64}
+                                />
+                                <h3 className='text-xl font-semibold text-brand-gray mb-2'>
+                                    No tasks found
+                                </h3>
+                                <p className='text-brand-gray'>
+                                    {filterStatus === "all"
+                                        ? "Create your first task to get started"
+                                        : `No ${filterStatus
+                                              .toLowerCase()
+                                              .replace("_", " ")} tasks`}
+                                </p>
+                            </div>
+                        ) : (
+                            filteredTasks.map(task => (
+                                <TableRow
+                                    key={task.id}
+                                    className='border-b border-brand-primary/10 hover:bg-[#2d3f54]'>
+                                    <TableCell>
+                                        <div className='flex items-center gap-3'>
+                                            {StatusIcon(task.status)}
 
-                                        <span className='font-medium capitalize'>
-                                            {task.title}
-                                        </span>
-                                    </div>
-                                </TableCell>
-
-                                <TableCell>
-                                    {task.assignee?.id ? (
-                                        <div className='flex items-center gap-2'>
-                                            <div
-                                                className='w-8 h-8 rounded-full bg-brand-button flex items-center 
-                                        justify-center text-sm'>
-                                                {(
-                                                    task.assignee?.username?.charAt(
-                                                        0
-                                                    ) ??
-                                                    task.assignee?.firstName?.charAt(
-                                                        0
-                                                    ) ??
-                                                    "?"
-                                                ).toUpperCase()}
-                                            </div>
-                                            <span className='text-brand-primary/70 capitalize'>
-                                                {task.assignee?.username ??
-                                                    task.assignee?.firstName ??
-                                                    "Unknown"}
+                                            <span className='font-medium capitalize'>
+                                                {task.title}
                                             </span>
                                         </div>
-                                    ) : (
-                                        <span className='text-brand-gray'>
-                                            Unassigned
-                                        </span>
-                                    )}
-                                </TableCell>
+                                    </TableCell>
 
-                                <TableCell>
-                                    <StatusBadge status={task.priority} />
-                                </TableCell>
+                                    <TableCell>
+                                        {task.assignee?.id ? (
+                                            <div className='flex items-center gap-2'>
+                                                <div
+                                                    className='w-8 h-8 rounded-full bg-brand-button flex items-center 
+                                        justify-center text-sm'>
+                                                    {(
+                                                        task.assignee?.username?.charAt(
+                                                            0
+                                                        ) ??
+                                                        task.assignee?.firstName?.charAt(
+                                                            0
+                                                        ) ??
+                                                        "?"
+                                                    ).toUpperCase()}
+                                                </div>
+                                                <span className='text-brand-primary/70 capitalize'>
+                                                    {task.assignee?.username ??
+                                                        task.assignee
+                                                            ?.firstName ??
+                                                        "Unknown"}
+                                                </span>
+                                            </div>
+                                        ) : (
+                                            <span className='text-brand-gray'>
+                                                Unassigned
+                                            </span>
+                                        )}
+                                    </TableCell>
 
-                                <TableCell className='text-brand-primary/70'>
-                                    {formatDate(task.dueDate)}
-                                </TableCell>
+                                    <TableCell>
+                                        <StatusBadge status={task.priority} />
+                                    </TableCell>
 
-                                <TableCell>
-                                    <StatusBadge status={task.status} />
-                                </TableCell>
+                                    <TableCell className='text-brand-primary/70'>
+                                        {formatDate(task.dueDate)}
+                                    </TableCell>
 
-                                <TableCell>
-                                    <TasksTableRowOptions
-                                        onEditClick={(
-                                            option: "EDIT" | "DELETE"
-                                        ) =>
-                                            option === "EDIT"
-                                                ? openEdit({ task })
-                                                : openDelete({
-                                                      task,
-                                                      projectId:
-                                                          task.project.id,
-                                                  })
-                                        }
-                                        projectRole={projectRole}
-                                        creatorId={task.creator.id}
-                                        userId={userId ?? ""}
-                                    />
-                                </TableCell>
-                            </TableRow>
-                        ))}
+                                    <TableCell>
+                                        <StatusBadge status={task.status} />
+                                    </TableCell>
+
+                                    <TableCell>
+                                        <TasksTableRowOptions
+                                            onEditClick={(
+                                                option: "EDIT" | "DELETE"
+                                            ) =>
+                                                option === "EDIT"
+                                                    ? openEdit({ task })
+                                                    : openDelete({
+                                                          task,
+                                                          projectId:
+                                                              task.project.id,
+                                                      })
+                                            }
+                                            projectRole={projectRole}
+                                            creatorId={task.creator.id}
+                                            userId={userId ?? ""}
+                                        />
+                                    </TableCell>
+                                </TableRow>
+                            ))
+                        )}
                     </TableBody>
                 </Table>
             </div>
-
-            {filteredTasks.length === 0 && (
-                <div className='text-center py-16 bg-[#263447] rounded-lg border border-brand-gray/50'>
-                    <CheckCircle
-                        className='mx-auto text-brand-gray mb-4'
-                        size={64}
-                    />
-                    <h3 className='text-xl font-semibold text-brand-gray mb-2'>
-                        No tasks found
-                    </h3>
-                    <p className='text-brand-gray'>
-                        {filterStatus === "all"
-                            ? "Create your first task to get started"
-                            : `No ${filterStatus
-                                  .toLowerCase()
-                                  .replace("_", " ")} tasks`}
-                    </p>
-                </div>
-            )}
         </section>
     );
 }

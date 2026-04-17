@@ -1,8 +1,8 @@
 import Button from "@/components/common/Button";
-import { DataLoadingIcon } from "@/components/common/LoadingIcon";
-import PageTitle from "@/components/common/PageTitle";
+import ProjectDetailsTitles from "@/components/common/ProjectDetailTitles";
 import { Stats, StatsTitle } from "@/components/common/ProjectStats";
 import StatusBadge from "@/components/common/StatusBadge";
+import { StatSkeleton } from "@/components/LoadingSkeletons/TasksSkeletons";
 import MembersTabTable from "@/components/table/MembersTabTable";
 import TasksTabTable from "@/components/table/TasksTabTable";
 import { Progress } from "@/components/ui/progress";
@@ -20,20 +20,16 @@ function ProjectDetails() {
     const [activeTab, setActiveTab] = useState<"tasks" | "members">("tasks");
     const navigate = useNavigate();
 
-    if (isLoading) return <DataLoadingIcon />;
+    if (isError) return <div>Something went wrong :( {customErr?.message}</div>;
 
-    if (isError || !userProject)
-        return <div>Something went wrong :( {customErr?.message}</div>;
-
-    const {
-        name,
-        description,
-        dueDate,
-        progress,
-        status,
-        totalMembers,
-        projectRole,
-    } = userProject;
+    const name = userProject?.name || "Loading...";
+    const description = userProject?.description || "Loading description...";
+    const dueDate = userProject?.dueDate || null;
+    const progress = userProject?.progress || 0;
+    const status = userProject?.status || "TODO";
+    const totalMembers = userProject?.totalMembers || 0;
+    const projectRole = userProject?.projectRole || "MEMBER";
+    const projectMembers = userProject?.members || [];
 
     return (
         <div>
@@ -48,12 +44,11 @@ function ProjectDetails() {
                 </Button>
 
                 <div className='mt-6 flex justify-between items-start'>
-                    <div>
-                        <PageTitle className=' mb-2 capitalize'>
-                            {name}
-                        </PageTitle>
-                        <p className='text-brand-gray'>{description}</p>
-                    </div>
+                    <ProjectDetailsTitles
+                        isLoading={isLoading}
+                        name={name}
+                        description={description}
+                    />
 
                     <Button
                         variant={"transparent"}
@@ -68,32 +63,50 @@ function ProjectDetails() {
                 <Stats>
                     <StatsTitle>Status</StatsTitle>
 
-                    <p className='text-lg font-semibold'>
-                        <StatusBadge status={status} />
-                    </p>
+                    {isLoading ? (
+                        <StatSkeleton />
+                    ) : (
+                        <p className='text-lg font-semibold'>
+                            <StatusBadge status={status} />
+                        </p>
+                    )}
                 </Stats>
 
                 <Stats>
                     <StatsTitle>Progress</StatsTitle>
 
-                    <p className='text-lg font-semibold'>{progress}%</p>
+                    {isLoading ? (
+                        <StatSkeleton />
+                    ) : (
+                        <>
+                            <p className='text-lg font-semibold'>{progress}%</p>
 
-                    <Progress
-                        value={progress}
-                        className='bg-brand-button/30 [&>div]:bg-brand-button'
-                    />
+                            <Progress
+                                value={progress}
+                                className='bg-brand-button/30 [&>div]:bg-brand-button'
+                            />
+                        </>
+                    )}
                 </Stats>
 
                 <Stats>
                     <StatsTitle>Due Date</StatsTitle>
-                    <p className='text-lg font-semibold'>
-                        {formatDate(dueDate)}
-                    </p>
+                    {isLoading ? (
+                        <StatSkeleton />
+                    ) : (
+                        <p className='text-lg font-semibold'>
+                            {formatDate(dueDate)}
+                        </p>
+                    )}
                 </Stats>
 
                 <Stats>
                     <StatsTitle>Members</StatsTitle>
-                    <p className='text-lg font-semibold'>{totalMembers}</p>
+                    {isLoading ? (
+                        <StatSkeleton />
+                    ) : (
+                        <p className='text-lg font-semibold'>{totalMembers}</p>
+                    )}
                 </Stats>
             </section>
 
@@ -123,11 +136,11 @@ function ProjectDetails() {
                 <TasksTabTable
                     projectId={projectId!}
                     projectRole={projectRole}
-                    projectMembers={userProject.members}
+                    projectMembers={projectMembers}
                 />
             ) : (
                 <MembersTabTable
-                    project={userProject}
+                    project={userProject!}
                     projectRole={projectRole}
                 />
             )}
