@@ -23,7 +23,7 @@ function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
             {/* header */}
             <header
                 className='p-4  
-            border-b border-nav-border'>
+            '>
                 <div
                     className={`container mx-auto flex 
             items-center gap-2 ${
