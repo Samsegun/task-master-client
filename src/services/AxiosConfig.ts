@@ -1,4 +1,4 @@
-import { queryClient } from "@/App";
+import { queryClient } from "@/main";
 import axios, {
     AxiosError,
     type AxiosRequestConfig,
