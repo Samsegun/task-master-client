@@ -23,7 +23,7 @@ function ProjectDetails() {
     if (isError) return <div>Something went wrong :( {customErr?.message}</div>;
 
     const name = userProject?.name || "Loading...";
-    const description = userProject?.description || "Loading description...";
+    const description = userProject?.description || "";
     const dueDate = userProject?.dueDate || null;
     const progress = userProject?.progress || 0;
     const status = userProject?.status || "TODO";
