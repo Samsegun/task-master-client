@@ -1,9 +1,9 @@
-import { queryClient } from "@/main";
 import axios, {
     AxiosError,
     type AxiosRequestConfig,
     type AxiosResponse,
 } from "axios";
+import { queryClient } from "../lib/QueryClient";
 
 interface CustomAxiosRequestConfig extends AxiosRequestConfig {
     _retry?: boolean;

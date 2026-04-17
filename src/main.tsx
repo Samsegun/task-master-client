@@ -1,16 +1,20 @@
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { ErrorBoundary } from "react-error-boundary";
 import App from "./App.tsx";
 import ErrorFallback from "./components/common/ErrorFallBack.tsx";
 import "./index.css";
-import { CreateProjectModalProvider } from "./providers/CreateProjectProvider.tsx";
-import { GlobalModalsProvider } from "./providers/GlobalModalsProvider.tsx";
+import AppProviders from "./providers/AppProviders.tsx";
 
-export const queryClient = new QueryClient();
+const container = document.getElementById("root");
+if (!container)
+    throw new Error(
+        "Root container not found. Ensure there is a div with id 'root' in your index.html."
+    );
 
-createRoot(document.getElementById("root")!).render(
+const root = createRoot(container);
+
+root.render(
     <StrictMode>
         <ErrorBoundary
             fallbackRender={({ error, resetErrorBoundary }) => (
@@ -21,13 +25,9 @@ createRoot(document.getElementById("root")!).render(
                     />
                 </div>
             )}>
-            <QueryClientProvider client={queryClient}>
-                <GlobalModalsProvider>
-                    <CreateProjectModalProvider>
-                        <App />
-                    </CreateProjectModalProvider>
-                </GlobalModalsProvider>
-            </QueryClientProvider>
+            <AppProviders>
+                <App />
+            </AppProviders>
         </ErrorBoundary>
     </StrictMode>
 );

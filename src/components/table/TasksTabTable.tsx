@@ -97,22 +97,28 @@ function TasksTabTable({
                         {isLoading ? (
                             <ProjectTasksTableSkeletons />
                         ) : filteredTasks.length === 0 ? (
-                            <div className='text-center py-16 bg-[#263447] rounded-lg border border-brand-gray/50'>
-                                <CheckCircle
-                                    className='mx-auto text-brand-gray mb-4'
-                                    size={64}
-                                />
-                                <h3 className='text-xl font-semibold text-brand-gray mb-2'>
-                                    No tasks found
-                                </h3>
-                                <p className='text-brand-gray'>
-                                    {filterStatus === "all"
-                                        ? "Create your first task to get started"
-                                        : `No ${filterStatus
-                                              .toLowerCase()
-                                              .replace("_", " ")} tasks`}
-                                </p>
-                            </div>
+                            <TableRow
+                                className='rounded-lg 
+                            border border-brand-gray/50 hover:bg-transparent'>
+                                <TableCell
+                                    colSpan={6}
+                                    className='py-16 text-center'>
+                                    <CheckCircle
+                                        className='mx-auto text-brand-gray mb-4'
+                                        size={64}
+                                    />
+                                    <h3 className='text-xl font-semibold text-brand-gray mb-2'>
+                                        No tasks found
+                                    </h3>
+                                    <p className='text-brand-gray'>
+                                        {filterStatus === "all"
+                                            ? "Create your first task to get started"
+                                            : `No ${filterStatus
+                                                  .toLowerCase()
+                                                  .replace("_", " ")} tasks`}
+                                    </p>
+                                </TableCell>
+                            </TableRow>
                         ) : (
                             filteredTasks.map(task => (
                                 <TableRow

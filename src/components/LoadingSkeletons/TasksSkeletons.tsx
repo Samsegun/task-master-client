@@ -11,7 +11,7 @@ function MyTasksTableSkeletons({
     return Array.from({ length: rows }).map((_, rowIndex) => (
         <TableRow
             key={rowIndex}
-            className='border-b border-brand-primary/10 hover:bg-transparent'>
+            className='border-b border-brand-primary/10 hover:bg-brand-table-header'>
             <TableCell key={"first-cell"} className='p-4 space-y-2'>
                 <Skeleton className=' h-4 w-28 max-w-[150px] bg-brand-table-header' />
                 <Skeleton className=' h-4 w-32 max-w-[150px] bg-brand-table-header' />
@@ -33,7 +33,7 @@ function ProjectTasksTableSkeletons({
     return Array.from({ length: rows }).map((_, rowIndex) => (
         <TableRow
             key={rowIndex}
-            className='border-b border-brand-primary/10 hover:bg-transparent'>
+            className='border-b border-brand-primary/10 hover:bg-brand-table-header'>
             <TableCell key={"first-cell"}>
                 <Skeleton className=' h-4 w-24 max-w-[150px] bg-brand-table-header' />
             </TableCell>
