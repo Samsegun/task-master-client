@@ -1,11 +1,11 @@
 import { useAuthStatus } from "@/hooks/useAuth";
 import { useState } from "react";
-import { Navigate, Outlet, useLocation } from "react-router";
+import { Navigate, Outlet, ScrollRestoration, useLocation } from "react-router";
 import DesktopHeaderMenu from "../common/DesktopHeaderMenu";
 import LoadingIcon from "../common/LoadingIcon";
 import Navbar from "./Navbar";
 
-function ProtectedRoutes() {
+function RootLayout() {
     const [isCollapsed, setIsCollapsed] = useState(false);
     const { isLoading, isAuthenticated, isError, logout, user } =
         useAuthStatus();
@@ -21,6 +21,8 @@ function ProtectedRoutes() {
 
     return (
         <div>
+            <ScrollRestoration />
+
             <Navbar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
 
             <div
@@ -54,4 +56,4 @@ function ProtectedRoutes() {
     );
 }
 
-export default ProtectedRoutes;
+export default RootLayout;

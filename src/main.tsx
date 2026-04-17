@@ -9,7 +9,7 @@ import AppProviders from "./providers/AppProviders.tsx";
 const container = document.getElementById("root");
 if (!container)
     throw new Error(
-        "Root container not found. Ensure there is a div with id 'root' in your index.html."
+        "Root container not found. Ensure there is a div with id 'root' in index.html."
     );
 
 const root = createRoot(container);
