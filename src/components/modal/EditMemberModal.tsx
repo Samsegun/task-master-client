@@ -57,7 +57,7 @@ function EditMemberModal({
                     </DialogDescription>
                 </DialogHeader>
 
-                <p className='font-semibold ml-4 italic text-center tracking-wide'>
+                <p className='font-semibold italic text-center'>
                     This action will make "{user.firstName}" the OWNER of this
                     project and demote you to "MEMBER" ?
                 </p>

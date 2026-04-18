@@ -53,7 +53,7 @@ function DeleteMemberModal({
                     </DialogDescription>
                 </DialogHeader>
 
-                <p className='font-semibold ml-4 italic text-center tracking-wide'>
+                <p className='font-semibold italic text-center'>
                     This action will remove "{user.firstName}" from "{name}" ?
                 </p>
 

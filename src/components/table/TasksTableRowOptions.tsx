@@ -29,7 +29,7 @@ function TasksTableRowOptions({
                     <MoreVertical size={20} className='text-brand-gray' />
                 </DropdownMenuTrigger>
 
-                <DropdownMenuContent>
+                <DropdownMenuContent className='bg-brand-sidebar border-nav-border text-brand-primary'>
                     <DropdownMenuItem
                         className='cursor-pointer'
                         onClick={() => onEditClick("EDIT")}>

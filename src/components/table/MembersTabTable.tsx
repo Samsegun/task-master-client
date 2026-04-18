@@ -115,14 +115,16 @@ function MembersTabTable({ project, projectRole }: MembersTabTableProps) {
                                     {projectRole === "OWNER" &&
                                         member.role !== "OWNER" && (
                                             <DropdownMenu>
-                                                <DropdownMenuTrigger className='p-1 hover:bg-brand-gray/50 rounded transition-colors cursor-pointer'>
+                                                <DropdownMenuTrigger
+                                                    className='p-1 hover:bg-brand-gray/50 rounded
+                                                 transition-colors cursor-pointer'>
                                                     <MoreVertical
                                                         size={20}
                                                         className='text-brand-gray'
                                                     />
                                                 </DropdownMenuTrigger>
 
-                                                <DropdownMenuContent>
+                                                <DropdownMenuContent className='bg-brand-sidebar border-nav-border text-brand-primary'>
                                                     {member.role ===
                                                         "MEMBER" && (
                                                         <DropdownMenuItem
