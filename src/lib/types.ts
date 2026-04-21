@@ -1,4 +1,4 @@
-import type { ProjectRole } from "./apiTypes";
+import type { ProjectRole, Task } from "./apiTypes";
 
 export type ProjectStatus = "ACTIVE" | "COMPLETED" | "ARCHIVED";
 
@@ -24,6 +24,17 @@ export type MemberShape = {
         lastName: string | null;
         username: string | null;
     };
+};
+
+export type EditPayload = {
+    task: Task["task"];
+};
+
+export type MemberInfo = {
+    userToBeEdited: MemberShape;
+    project: { name: string; id: string };
+    action: "EDIT" | "REMOVE";
+    memberRoleToEdit?: ProjectRole;
 };
 
 export type GetDataParams = {

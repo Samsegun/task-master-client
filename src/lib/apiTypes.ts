@@ -192,6 +192,11 @@ export type CreateProject = {
     };
 };
 
+export type DeleteProject = {
+    success: boolean;
+    message: string;
+};
+
 export type AddProjectMember = {
     success: boolean;
     user: {

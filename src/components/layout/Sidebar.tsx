@@ -1,5 +1,5 @@
+import { useCreateProjectModal } from "@/hooks/useProjectModals";
 import { navLinks, navLinksBaseClasses } from "@/lib/navLinks";
-import { useCreateProjectModal } from "@/providers/CreateProjectProvider";
 import { PanelLeft, PanelRight, Plus } from "lucide-react";
 import { Link, NavLink } from "react-router";
 import Button from "../common/Button";

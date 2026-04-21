@@ -1,7 +1,7 @@
 import { Table, TableBody, TableHeader, TableRow } from "@/components/ui/table";
+import { useCreateProjectModal } from "@/hooks/useProjectModals";
 import { useGetProjects } from "@/hooks/useProjects";
 import { formatDate } from "@/lib/utils";
-import { useCreateProjectModal } from "@/providers/CreateProjectProvider";
 import { FolderKanban } from "lucide-react";
 import { useNavigate } from "react-router";
 import StatusBadge from "../common/StatusBadge";

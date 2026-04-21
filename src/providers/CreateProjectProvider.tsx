@@ -1,21 +1,8 @@
 import CreateProjectModal from "@/components/modal/CreateProjectModal";
-import { createContext, useContext, useState, type ReactNode } from "react";
+import { CreateProjectModalContext } from "@/hooks/useProjectModals";
+import { useState, type ReactNode } from "react";
 
-type ContextType = {
-    openCreateProject: () => void;
-    closeCreateProject: () => void;
-    isCreateProjectOpen: boolean;
-};
-
-const CreateProjectModalContext = createContext<ContextType | undefined>(
-    undefined
-);
-
-export function CreateProjectModalProvider({
-    children,
-}: {
-    children: ReactNode;
-}) {
+function CreateProjectModalProvider({ children }: { children: ReactNode }) {
     const [isCreateProjectOpen, setIsCreateProjectOpen] = useState(false);
 
     const openCreateProject = () => setIsCreateProjectOpen(true);
@@ -37,11 +24,4 @@ export function CreateProjectModalProvider({
     );
 }
 
-export function useCreateProjectModal() {
-    const ctx = useContext(CreateProjectModalContext);
-    if (!ctx)
-        throw new Error(
-            "useCreateProjectModal must be used within CreateProjectModalProvider"
-        );
-    return ctx;
-}
+export default CreateProjectModalProvider;

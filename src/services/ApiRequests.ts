@@ -9,6 +9,7 @@ import type {
     AuthStatus,
     CreateProject,
     CreateTask,
+    DeleteProject,
     DeleteTask,
     ForgotPassword,
     LoginUser,
@@ -122,6 +123,11 @@ export const getProject = (projectId: string) => {
 export const createProject = (payLoad: ProjectDetails) => {
     return axiosInstance.post<CreateProject>(`${V1}/projects`, payLoad);
 };
+
+export const deleteProject = (projectId: string) => {
+    return axiosInstance.delete<DeleteProject>(`${V1}/projects/${projectId}`);
+};
+
 /* end of project requests */
 
 /* start of task requests */

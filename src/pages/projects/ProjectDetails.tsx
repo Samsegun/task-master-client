@@ -5,10 +5,18 @@ import StatusBadge from "@/components/common/StatusBadge";
 import { StatSkeleton } from "@/components/LoadingSkeletons/AppSkeletons";
 import MembersTabTable from "@/components/table/MembersTabTable";
 import TasksTabTable from "@/components/table/TasksTabTable";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Progress } from "@/components/ui/progress";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useGlobalModals } from "@/hooks/useGlobalModals";
 import { useGetProject } from "@/hooks/useProjects";
 import { formatDate } from "@/lib/utils";
-import { ArrowLeft, Settings } from "lucide-react";
+import { ArrowLeft, MoreVertical } from "lucide-react";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
 
@@ -16,6 +24,7 @@ function ProjectDetails() {
     const { projectId } = useParams();
     const { isLoading, isError, customErr, userProject } =
         useGetProject(projectId);
+    const { openDeleteProject } = useGlobalModals();
 
     const [activeTab, setActiveTab] = useState<"tasks" | "members">("tasks");
     const navigate = useNavigate();
@@ -50,11 +59,44 @@ function ProjectDetails() {
                         description={description}
                     />
 
-                    <Button
+                    {isLoading ? (
+                        <Skeleton className='h-8 w-2 bg-brand-table-header' />
+                    ) : (
+                        projectRole === "OWNER" && (
+                            <DropdownMenu>
+                                <DropdownMenuTrigger className=' hover:bg-brand-gray/30 p-2 rounded-md cursor-pointer transition-colors'>
+                                    <MoreVertical size={25} />
+                                </DropdownMenuTrigger>
+
+                                <DropdownMenuContent className='bg-brand-sidebar border-nav-border text-brand-primary space-y-2'>
+                                    <DropdownMenuItem className='cursor-pointer'>
+                                        <span>Mark as Archived</span>
+                                    </DropdownMenuItem>
+
+                                    <DropdownMenuItem className='cursor-pointer'>
+                                        <span>Leave Project</span>
+                                    </DropdownMenuItem>
+
+                                    <DropdownMenuItem
+                                        className='cursor-pointer text-destructive'
+                                        onClick={() =>
+                                            openDeleteProject({
+                                                projectId: userProject!.id,
+                                                projectName: name,
+                                            })
+                                        }>
+                                        <span>Delete Project</span>
+                                    </DropdownMenuItem>
+                                </DropdownMenuContent>
+                            </DropdownMenu>
+                        )
+                    )}
+
+                    {/* <Button
                         variant={"transparent"}
                         className='bg-brand-gray/40 hover:bg-brand-gray/30 p-2 transition-colors'>
                         <Settings size={20} />
-                    </Button>
+                    </Button> */}
                 </div>
             </div>
 

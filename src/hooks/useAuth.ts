@@ -28,7 +28,9 @@ export const useRegisterUser = () => {
             navigate("/email-verification-sent");
         },
         onError: (err: any) => {
-            toast.error(err.response.data.error.message);
+            toast.error(
+                err.response.data.error.message || "Something went wrong"
+            );
         },
     });
 };
@@ -50,7 +52,9 @@ export const useSignin = () => {
             navigate(from, { replace: true });
         },
         onError: (err: any) => {
-            toast.error(err.response.data.error.message);
+            toast.error(
+                err.response.data.error.message || "Something went wrong"
+            );
         },
     });
 };
@@ -68,7 +72,9 @@ export const useVerifyEmail = () => {
             });
         },
         onError: (err: any) => {
-            toast.error(err.response.data.error.message);
+            toast.error(
+                err.response.data.error.message || "Something went wrong"
+            );
         },
     });
 };
@@ -83,7 +89,9 @@ export const useForgotPassword = () => {
             toast.success(response.data.message, { duration: 8000 });
         },
         onError: (err: any) => {
-            toast.error(err.response.data.error.message);
+            toast.error(
+                err.response.data.error.message || "Something went wrong"
+            );
         },
     });
 };
@@ -100,7 +108,9 @@ export const useResetPassword = () => {
             navigate(`/login?email=${encodeURIComponent(variables.email)}`);
         },
         onError: (err: any) => {
-            toast.error(err.response.data.error.message);
+            toast.error(
+                err.response.data.error.message || "Something went wrong"
+            );
         },
     });
 };

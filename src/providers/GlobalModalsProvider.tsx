@@ -1,47 +1,16 @@
-import { createContext, useContext, useState, type ReactNode } from "react";
-// import { useQueryClient } from "@tanstack/react-query";
 import AddMemberModal from "@/components/modal/AddMemberModal";
 import CreateTaskModal from "@/components/modal/CreateTaskModal";
-import DeleteTaskModal from "@/components/modal/DeleteTaskModal";
-import EditTaskModal from "@/components/modal/EditTaskModal";
-import type { MemberShape } from "@/lib/types";
-// import { getProjectMembers } from "@/services/ApiRequests";
 import DeleteMemberModal from "@/components/modal/DeleteMemberModal";
+import DeleteProjectModal from "@/components/modal/DeleteProjectModal";
+import DeleteTaskModal from "@/components/modal/DeleteTaskModal";
 import EditMemberModal from "@/components/modal/EditMemberModal";
-import type { ProjectRole, Task } from "@/lib/apiTypes";
+import EditTaskModal from "@/components/modal/EditTaskModal";
+import { GlobalModalsContext } from "@/hooks/useGlobalModals";
+import type { Task } from "@/lib/apiTypes";
+import type { EditPayload, MemberInfo, MemberShape } from "@/lib/types";
+import { useState, type ReactNode } from "react";
 
-type EditPayload = {
-    //   projectId: string;
-    task: Task["task"];
-    //   projectMembers?: MemberShape[] | null;
-};
-
-type MemberInfo = {
-    userToBeEdited: MemberShape;
-    project: { name: string; id: string };
-    action: "EDIT" | "REMOVE";
-    memberRoleToEdit?: ProjectRole;
-};
-
-type GlobalModalsContextType = {
-    openCreate: (opts: {
-        projectId: string;
-        projectMembers?: MemberShape[];
-    }) => void;
-    //   openEdit: (opts: EditPayload) => Promise<void>;
-    openEdit: (opts: EditPayload) => void;
-    openDelete: (opts: { projectId: string; task: Task["task"] }) => void;
-    openAddMember: (projectId: string) => void;
-    handleProjectMember: (memberInfo: MemberInfo) => void;
-};
-
-const GlobalModalsContext = createContext<GlobalModalsContextType | undefined>(
-    undefined
-);
-
-export const GlobalModalsProvider = ({ children }: { children: ReactNode }) => {
-    //   const qc = useQueryClient();
-
+function GlobalModalsProvider({ children }: { children: ReactNode }) {
     const [createState, setCreateState] = useState<{
         projectId: string;
         projectMembers?: MemberShape[];
@@ -52,6 +21,10 @@ export const GlobalModalsProvider = ({ children }: { children: ReactNode }) => {
     const [deleteState, setDeleteState] = useState<{
         projectId: string;
         task: Task["task"];
+    } | null>(null);
+    const [deleteProject, setDeleteProject] = useState<{
+        projectId: string;
+        projectName: string;
     } | null>(null);
     const [addMemberProjectId, setAddMemberProjectId] = useState<string | null>(
         null
@@ -74,6 +47,10 @@ export const GlobalModalsProvider = ({ children }: { children: ReactNode }) => {
         setDeleteState({ ...opts, task: opts.task });
     const openAddMember = (projectId: string) =>
         setAddMemberProjectId(projectId);
+    const openDeleteProject = (project: {
+        projectId: string;
+        projectName: string;
+    }) => setDeleteProject(project);
 
     const handleProjectMember = (memberInfo: MemberInfo) => {
         if (memberInfo.action === "REMOVE") {
@@ -93,6 +70,7 @@ export const GlobalModalsProvider = ({ children }: { children: ReactNode }) => {
                 openCreate,
                 openEdit,
                 openDelete,
+                openDeleteProject,
                 openAddMember,
                 handleProjectMember,
             }}>
@@ -130,6 +108,14 @@ export const GlobalModalsProvider = ({ children }: { children: ReactNode }) => {
                 />
             )}
 
+            {deleteProject && (
+                <DeleteProjectModal
+                    project={deleteProject}
+                    isOpen={true}
+                    onClose={() => setDeleteProject(null)}
+                />
+            )}
+
             {addMemberProjectId && (
                 <AddMemberModal
                     projectId={addMemberProjectId}
@@ -142,7 +128,6 @@ export const GlobalModalsProvider = ({ children }: { children: ReactNode }) => {
                 <EditMemberModal
                     editMemberInfo={editableMember}
                     memberRoleToEdit={editableMember.memberRoleToEdit!}
-                    // projectId={projectId}
                     isOpen={isEditMemberOpen}
                     onClose={() => setEditMemberOpen(false)}
                 />
@@ -150,7 +135,6 @@ export const GlobalModalsProvider = ({ children }: { children: ReactNode }) => {
 
             {editableMember?.userToBeEdited.user && (
                 <DeleteMemberModal
-                    // projectId={projectId}
                     deleteMemberInfo={editableMember}
                     isOpen={isRemoveMemberOpen}
                     onClose={() => setRemoveMemberOpen(false)}
@@ -158,13 +142,6 @@ export const GlobalModalsProvider = ({ children }: { children: ReactNode }) => {
             )}
         </GlobalModalsContext.Provider>
     );
-};
+}
 
-export const useGlobalModals = () => {
-    const ctx = useContext(GlobalModalsContext);
-    if (!ctx)
-        throw new Error(
-            "useGlobalModals must be used inside GlobalModalsProvider"
-        );
-    return ctx;
-};
+export default GlobalModalsProvider;

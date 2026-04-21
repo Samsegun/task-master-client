@@ -1,7 +1,7 @@
 import { Table, TableBody, TableHeader, TableRow } from "@/components/ui/table";
+import { useGlobalModals } from "@/hooks/useGlobalModals";
 import { useGetMyTasks } from "@/hooks/useTasks";
 import { formatDate } from "@/lib/utils";
-import { useGlobalModals } from "@/providers/GlobalModalsProvider";
 import { CheckCircle } from "lucide-react";
 import { Fragment, useState } from "react";
 import Button from "../common/Button";

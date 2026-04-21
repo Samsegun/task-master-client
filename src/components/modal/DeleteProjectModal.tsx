@@ -1,4 +1,4 @@
-import { useDeleteTask } from "@/hooks/useTasks";
+import { useDeleteProject } from "@/hooks/useProjects";
 import Button from "../common/Button";
 import {
     Dialog,
@@ -11,23 +11,17 @@ import {
 } from "../ui/dialog";
 
 type DeleteModalProps = {
-    task: { id: string; title: string };
-    projectId: string;
+    project: { projectId: string; projectName: string };
     isOpen: boolean;
     onClose: () => void;
 };
 
-function DeleteTaskModal({
-    task,
-    projectId,
-    isOpen,
-    onClose,
-}: DeleteModalProps) {
-    const deleteTaskMutation = useDeleteTask();
+function DeleteProjectModal({ project, isOpen, onClose }: DeleteModalProps) {
+    const deleteProjectMutation = useDeleteProject();
 
     function onDelete() {
-        deleteTaskMutation.mutate(
-            { projectId, taskId: task.id },
+        deleteProjectMutation.mutate(
+            { projectId: project.projectId },
             {
                 onSuccess: () => onClose(),
             }
@@ -39,23 +33,24 @@ function DeleteTaskModal({
             <DialogContent className='bg-brand-modal rounded-lg border border-nav-border space-y-4'>
                 <DialogHeader className='border-b border-brand-primary/10'>
                     <DialogTitle className="text-xl font-bold text-brand-primary'">
-                        Delete Task
+                        Delete Project
                     </DialogTitle>
 
                     <DialogDescription className='sr-only'>
-                        Delete specific task from this project
+                        Delete project permanently
                     </DialogDescription>
                 </DialogHeader>
 
                 <p className='font-semibold ml-4 italic text-center tracking-wide'>
-                    This action will delete "{task.title}" from tasks?
+                    This action will delete "{project.projectName}" from
+                    projects?
                 </p>
 
                 <DialogFooter className='flex gap-3'>
                     <DialogClose asChild>
                         <button
                             type='button'
-                            disabled={deleteTaskMutation.isPending}
+                            disabled={deleteProjectMutation.isPending}
                             className='flex-1 bg-[#1a2332] hover:bg-[#0f1729] cursor-pointer
                                                      disabled:opacity-50 text-brand-primary py-2 rounded-lg
                                          transition-colors border border-brand-gray'>
@@ -65,13 +60,13 @@ function DeleteTaskModal({
 
                     <Button
                         type='submit'
-                        disabled={deleteTaskMutation.isPending}
+                        disabled={deleteProjectMutation.isPending}
                         onClick={onDelete}
                         variant={"destructive"}
                         className='flex-1'>
-                        {deleteTaskMutation.isPending
-                            ? "Deleting Task..."
-                            : "Delete Task"}
+                        {deleteProjectMutation.isPending
+                            ? "Deleting Project..."
+                            : "Delete Project"}
                     </Button>
                 </DialogFooter>
             </DialogContent>
@@ -79,4 +74,4 @@ function DeleteTaskModal({
     );
 }
 
-export default DeleteTaskModal;
+export default DeleteProjectModal;

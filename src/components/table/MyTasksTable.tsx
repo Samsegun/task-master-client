@@ -1,6 +1,6 @@
+import { useGlobalModals } from "@/hooks/useGlobalModals";
 import type { TaskPriority, Tasks, TaskStatus } from "@/lib/apiTypes";
 import { formatDate, isOverdue } from "@/lib/utils";
-import { useGlobalModals } from "@/providers/GlobalModalsProvider";
 import { Calendar, CheckCircle, FolderKanban } from "lucide-react";
 import { useState } from "react";
 import { Fragment } from "react/jsx-runtime";

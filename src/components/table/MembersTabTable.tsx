@@ -1,6 +1,6 @@
+import { useGlobalModals } from "@/hooks/useGlobalModals";
 import type { Project, ProjectRole } from "@/lib/apiTypes";
 import { formatDate } from "@/lib/utils";
-import { useGlobalModals } from "@/providers/GlobalModalsProvider";
 import { MoreVertical, Plus } from "lucide-react";
 import { useMemo } from "react";
 import Button from "../common/Button";

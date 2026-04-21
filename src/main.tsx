@@ -1,10 +1,11 @@
+import { QueryClientProvider } from "@tanstack/react-query";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { ErrorBoundary } from "react-error-boundary";
 import App from "./App.tsx";
 import ErrorFallback from "./components/common/ErrorFallBack.tsx";
 import "./index.css";
-import AppProviders from "./providers/AppProviders.tsx";
+import { queryClient } from "./lib/QueryClient.ts";
 
 const container = document.getElementById("root");
 if (!container)
@@ -25,9 +26,9 @@ root.render(
                     />
                 </div>
             )}>
-            <AppProviders>
+            <QueryClientProvider client={queryClient}>
                 <App />
-            </AppProviders>
+            </QueryClientProvider>
         </ErrorBoundary>
     </StrictMode>
 );

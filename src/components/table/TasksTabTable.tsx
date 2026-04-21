@@ -1,8 +1,8 @@
+import { useGlobalModals } from "@/hooks/useGlobalModals";
 import { useGetTasks } from "@/hooks/useTasks";
 import type { ProjectRole } from "@/lib/apiTypes";
 import type { MemberShape, Statuses } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
-import { useGlobalModals } from "@/providers/GlobalModalsProvider";
 import { CheckCircle, Plus } from "lucide-react";
 import { useState } from "react";
 import Button from "../common/Button";

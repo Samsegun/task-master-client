@@ -8,6 +8,7 @@ import type { AddMemberDetails, ProjectDetails } from "@/lib/types";
 import {
     addProjectMember,
     createProject,
+    deleteProject,
     getProject,
     getProjectMembers,
     getProjects,
@@ -16,6 +17,7 @@ import {
 } from "@/services/ApiRequests";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router";
 
 export const useGetProjects = (opts?: { limit?: number }) => {
     const limit = opts?.limit ?? 3;
@@ -124,7 +126,38 @@ export const useCreateProject = () => {
             toast.success("Project created");
         },
         onError: (err: any) => {
-            toast.error(err.response.data.error.message);
+            toast.error(
+                err.response.data.error.message || "Failed to create project"
+            );
+        },
+    });
+};
+
+export const useDeleteProject = () => {
+    const queryClient = useQueryClient();
+    const navigate = useNavigate();
+
+    return useMutation({
+        mutationFn: ({ projectId }: { projectId: string }) =>
+            deleteProject(projectId),
+        onSuccess: async (_data, variables) => {
+            const { projectId } = variables;
+
+            navigate("/projects");
+
+            await queryClient.invalidateQueries({
+                queryKey: ["projects"],
+            });
+            await queryClient.invalidateQueries({
+                queryKey: ["project", projectId],
+            });
+
+            toast.success("Project deleted");
+        },
+        onError: (err: any) => {
+            toast.error(
+                err.response.data.error.message || "Failed to delete project"
+            );
         },
     });
 };

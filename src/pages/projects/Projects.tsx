@@ -3,9 +3,9 @@ import PageTitle from "@/components/common/PageTitle";
 import ProjectCard from "@/components/common/ProjectCard";
 import Tabs from "@/components/common/Tabs";
 import { ProjectsSkeleton } from "@/components/LoadingSkeletons/AppSkeletons";
+import { useCreateProjectModal } from "@/hooks/useProjectModals";
 import { useGetProjects } from "@/hooks/useProjects";
 import type { Statuses } from "@/lib/types";
-import { useCreateProjectModal } from "@/providers/CreateProjectProvider";
 import { FolderKanban, Plus } from "lucide-react";
 import { useState } from "react";
 
