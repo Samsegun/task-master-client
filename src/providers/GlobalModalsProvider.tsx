@@ -6,9 +6,15 @@ import DeleteTaskModal from "@/components/modal/DeleteTaskModal";
 import EditMemberModal from "@/components/modal/EditMemberModal";
 import EditTaskModal from "@/components/modal/EditTaskModal";
 import LeaveProjectModal from "@/components/modal/LeaveProjectModal";
+import MarkProjectArchive from "@/components/modal/MarkProject";
 import { GlobalModalsContext } from "@/hooks/useGlobalModals";
 import type { Task } from "@/lib/apiTypes";
-import type { EditPayload, MemberInfo, MemberShape } from "@/lib/types";
+import type {
+    EditPayload,
+    MemberInfo,
+    MemberShape,
+    ProjectStatus,
+} from "@/lib/types";
 import { useState, type ReactNode } from "react";
 
 function GlobalModalsProvider({ children }: { children: ReactNode }) {
@@ -31,6 +37,11 @@ function GlobalModalsProvider({ children }: { children: ReactNode }) {
         projectId: string;
         projectName: string;
     } | null>(null);
+    const [markProject, setMarkProject] = useState<{
+        projectId: string;
+        projectName: string;
+        projectStatus: ProjectStatus;
+    } | null>(null);
     const [addMemberProjectId, setAddMemberProjectId] = useState<string | null>(
         null
     );
@@ -48,18 +59,28 @@ function GlobalModalsProvider({ children }: { children: ReactNode }) {
     };
 
     const openEdit = (opts: EditPayload) => setEditState(opts.task);
+
     const openDelete = (opts: { projectId: string; task: Task["task"] }) =>
         setDeleteState({ ...opts, task: opts.task });
+
     const openAddMember = (projectId: string) =>
         setAddMemberProjectId(projectId);
+
     const openDeleteProject = (project: {
         projectId: string;
         projectName: string;
     }) => setDeleteProject(project);
+
     const openLeaveProject = (project: {
         projectId: string;
         projectName: string;
     }) => setLeaveProject(project);
+
+    const openMarkProject = (project: {
+        projectId: string;
+        projectName: string;
+        projectStatus: ProjectStatus;
+    }) => setMarkProject(project);
 
     const handleProjectMember = (memberInfo: MemberInfo) => {
         if (memberInfo.action === "REMOVE") {
@@ -81,6 +102,7 @@ function GlobalModalsProvider({ children }: { children: ReactNode }) {
                 openDelete,
                 openDeleteProject,
                 openLeaveProject,
+                openMarkProject,
                 openAddMember,
                 handleProjectMember,
             }}>
@@ -131,6 +153,14 @@ function GlobalModalsProvider({ children }: { children: ReactNode }) {
                     project={leaveProject}
                     isOpen={true}
                     onClose={() => setLeaveProject(null)}
+                />
+            )}
+
+            {markProject && (
+                <MarkProjectArchive
+                    project={markProject}
+                    isOpen={true}
+                    onClose={() => setMarkProject(null)}
                 />
             )}
 

@@ -192,6 +192,19 @@ export type CreateProject = {
     };
 };
 
+export type UpdateProject = {
+    success: true;
+    project: {
+        id: string;
+        name: string;
+        description: string;
+        status: ProjectStatus;
+        ownerId: string;
+        createdAt: string;
+        updatedAt: string;
+    };
+};
+
 // same as leave-project endpoint
 export type DeleteOrLeaveProject = {
     success: boolean;

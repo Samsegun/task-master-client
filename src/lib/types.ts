@@ -63,6 +63,12 @@ export type ProjectDetails = {
     description?: string;
 };
 
+export type ProjectUpdateDetails = {
+    name?: string;
+    description?: string;
+    status?: ProjectStatus;
+};
+
 export type TaskDetails = {
     title: string;
     description?: string;

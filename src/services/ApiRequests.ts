@@ -2,6 +2,7 @@ import type {
     AddMemberDetails,
     GetDataParams,
     ProjectDetails,
+    ProjectUpdateDetails,
     TaskDetails,
 } from "@/lib/types";
 import type {
@@ -22,6 +23,7 @@ import type {
     RegisterUser,
     ResetPassword,
     Tasks,
+    UpdateProject,
     UpdateTask,
     UpdateUserPassword,
     UpdateUserProfile,
@@ -122,6 +124,16 @@ export const getProject = (projectId: string) => {
 
 export const createProject = (payLoad: ProjectDetails) => {
     return axiosInstance.post<CreateProject>(`${V1}/projects`, payLoad);
+};
+
+export const updateProject = (
+    projectId: string,
+    payLoad: ProjectUpdateDetails
+) => {
+    return axiosInstance.patch<UpdateProject>(
+        `${V1}/projects/${projectId}`,
+        payLoad
+    );
 };
 
 export const leaveProject = (projectId: string) => {

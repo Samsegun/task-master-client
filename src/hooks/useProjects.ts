@@ -4,7 +4,11 @@ import type {
     ProjectRole,
     Projects,
 } from "@/lib/apiTypes";
-import type { AddMemberDetails, ProjectDetails } from "@/lib/types";
+import type {
+    AddMemberDetails,
+    ProjectDetails,
+    ProjectUpdateDetails,
+} from "@/lib/types";
 import {
     addProjectMember,
     createProject,
@@ -15,6 +19,7 @@ import {
     leaveProject,
     removeProjectMember,
     updateMemberRole,
+    updateProject,
 } from "@/services/ApiRequests";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
@@ -129,6 +134,38 @@ export const useCreateProject = () => {
         onError: (err: any) => {
             toast.error(
                 err.response.data.error.message || "Failed to create project"
+            );
+        },
+    });
+};
+
+export const useUpdateProject = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: ({
+            projectId,
+            payLoad,
+        }: {
+            projectId: string;
+            payLoad: ProjectUpdateDetails;
+        }) => updateProject(projectId, payLoad),
+        onSuccess: async (_data, variables) => {
+            const projectId = variables.projectId;
+
+            await queryClient.invalidateQueries({
+                queryKey: ["projects"],
+            });
+
+            await queryClient.invalidateQueries({
+                queryKey: ["project", projectId],
+            });
+
+            toast.success("Project updated");
+        },
+        onError: (err: any) => {
+            toast.error(
+                err.response.data.error.message || "Failed to update project"
             );
         },
     });
