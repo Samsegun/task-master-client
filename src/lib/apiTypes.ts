@@ -192,7 +192,8 @@ export type CreateProject = {
     };
 };
 
-export type DeleteProject = {
+// same as leave-project endpoint
+export type DeleteOrLeaveProject = {
     success: boolean;
     message: string;
 };

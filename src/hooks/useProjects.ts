@@ -12,6 +12,7 @@ import {
     getProject,
     getProjectMembers,
     getProjects,
+    leaveProject,
     removeProjectMember,
     updateMemberRole,
 } from "@/services/ApiRequests";
@@ -140,6 +141,30 @@ export const useDeleteProject = () => {
     return useMutation({
         mutationFn: ({ projectId }: { projectId: string }) =>
             deleteProject(projectId),
+        onSuccess: async () => {
+            await queryClient.invalidateQueries({
+                queryKey: ["projects"],
+            });
+
+            navigate("/projects");
+
+            toast.success("Project deleted");
+        },
+        onError: (err: any) => {
+            toast.error(
+                err.response.data.error.message || "Failed to delete project"
+            );
+        },
+    });
+};
+
+export const useLeaveProject = () => {
+    const queryClient = useQueryClient();
+    const navigate = useNavigate();
+
+    return useMutation({
+        mutationFn: ({ projectId }: { projectId: string }) =>
+            leaveProject(projectId),
         onSuccess: async (_data, variables) => {
             const { projectId } = variables;
 
