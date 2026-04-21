@@ -91,12 +91,6 @@ function ProjectDetails() {
                             </DropdownMenu>
                         )
                     )}
-
-                    {/* <Button
-                        variant={"transparent"}
-                        className='bg-brand-gray/40 hover:bg-brand-gray/30 p-2 transition-colors'>
-                        <Settings size={20} />
-                    </Button> */}
                 </div>
             </div>
 
@@ -155,6 +149,7 @@ function ProjectDetails() {
             <section className='flex gap-4 mb-6 text-brand-gray border-b border-brand-gray'>
                 <button
                     onClick={() => setActiveTab("tasks")}
+                    disabled={isLoading}
                     className={`px-4 py-2 transition-colors hover:cursor-pointer ${
                         activeTab === "tasks"
                             ? "text-brand-button border-b-2 border-brand-button"
@@ -165,6 +160,7 @@ function ProjectDetails() {
 
                 <button
                     onClick={() => setActiveTab("members")}
+                    disabled={isLoading}
                     className={`px-4 py-2 transition-colors hover:cursor-pointer ${
                         activeTab === "members"
                             ? "text-brand-button border-b-2 border-brand-button"
