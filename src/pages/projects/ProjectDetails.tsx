@@ -29,7 +29,7 @@ function ProjectDetails() {
     const description = userProject?.description || "";
     const dueDate = userProject?.dueDate || null;
     const progress = userProject?.progress || 0;
-    const status = userProject?.status || "TODO";
+    const status = userProject?.status || "ACTIVE";
     const totalMembers = userProject?.totalMembers || 0;
     const projectRole = userProject?.projectRole || "MEMBER";
     const projectMembers = userProject?.members || [];
@@ -61,6 +61,8 @@ function ProjectDetails() {
                                 projectId: id,
                                 projectName: name,
                                 projectRole,
+                                projectStatus: status,
+                                projectDescription: description,
                             }}
                         />
                     )}

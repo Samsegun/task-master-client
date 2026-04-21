@@ -27,6 +27,12 @@ type GlobalModalsContextType = {
         projectName: string;
         projectStatus: ProjectStatus;
     }) => void;
+    openEditProject: (project: {
+        projectId: string;
+        projectName: string;
+        projectStatus: ProjectStatus;
+        projectDescription?: string;
+    }) => void;
     openAddMember: (projectId: string) => void;
     handleProjectMember: (memberInfo: MemberInfo) => void;
 };

@@ -1,5 +1,6 @@
 import { useGlobalModals } from "@/hooks/useGlobalModals";
 import type { ProjectRole } from "@/lib/apiTypes";
+import type { ProjectStatus } from "@/lib/types";
 import { MoreVertical } from "lucide-react";
 import {
     DropdownMenu,
@@ -17,6 +18,8 @@ type ProjectOptionsProps = {
         projectId: string;
         projectName: string;
         projectRole: ProjectRole;
+        projectStatus: ProjectStatus;
+        projectDescription?: string;
     };
 };
 
@@ -25,10 +28,20 @@ function ProjectOptions({
 }: {
     userProjectDetails: ProjectOptionsProps["userProjectDetails"];
 }) {
-    const { openLeaveProject, openDeleteProject, openMarkProject } =
-        useGlobalModals();
+    const {
+        openLeaveProject,
+        openDeleteProject,
+        openMarkProject,
+        openEditProject,
+    } = useGlobalModals();
 
-    const { projectId, projectName, projectRole } = userProjectDetails;
+    const {
+        projectId,
+        projectName,
+        projectRole,
+        projectStatus,
+        projectDescription,
+    } = userProjectDetails;
     const modalParams = {
         projectId,
         projectName,
@@ -42,51 +55,66 @@ function ProjectOptions({
 
             <DropdownMenuContent className='bg-brand-sidebar border-nav-border text-brand-primary space-y-2'>
                 {projectRole === "OWNER" && (
-                    <DropdownMenuSub>
-                        <DropdownMenuSubTrigger>
-                            Mark Project
-                        </DropdownMenuSubTrigger>
-                        <DropdownMenuPortal>
-                            <DropdownMenuSubContent className='bg-brand-sidebar border-nav-border text-brand-primary space-y-2'>
-                                <DropdownMenuItem
-                                    className='cursor-pointer'
-                                    onClick={() =>
-                                        openMarkProject({
-                                            ...modalParams,
-                                            projectStatus: "COMPLETED",
-                                        })
-                                    }>
-                                    <span>Mark as Completed</span>
-                                </DropdownMenuItem>
+                    <>
+                        <DropdownMenuItem
+                            className='cursor-pointer'
+                            onClick={() =>
+                                openEditProject({
+                                    projectId,
+                                    projectName,
+                                    projectStatus,
+                                    projectDescription,
+                                })
+                            }>
+                            <span>Edit Project</span>
+                        </DropdownMenuItem>
 
-                                <DropdownMenuItem
-                                    className='cursor-pointer'
-                                    onClick={() =>
-                                        openMarkProject({
-                                            ...modalParams,
-                                            projectStatus: "ARCHIVED",
-                                        })
-                                    }>
-                                    <span>Mark as Archived</span>
-                                </DropdownMenuItem>
+                        <DropdownMenuSub>
+                            <DropdownMenuSubTrigger>
+                                Mark Project
+                            </DropdownMenuSubTrigger>
+                            <DropdownMenuPortal>
+                                <DropdownMenuSubContent className='bg-brand-sidebar border-nav-border text-brand-primary space-y-2'>
+                                    <DropdownMenuItem
+                                        className='cursor-pointer'
+                                        onClick={() =>
+                                            openMarkProject({
+                                                ...modalParams,
+                                                projectStatus: "COMPLETED",
+                                            })
+                                        }>
+                                        <span>Mark as Completed</span>
+                                    </DropdownMenuItem>
 
-                                <DropdownMenuItem
-                                    className='cursor-pointer'
-                                    onClick={() =>
-                                        openMarkProject({
-                                            ...modalParams,
-                                            projectStatus: "ACTIVE",
-                                        })
-                                    }>
-                                    <span>Mark as Active</span>
-                                </DropdownMenuItem>
-                            </DropdownMenuSubContent>
-                        </DropdownMenuPortal>
-                    </DropdownMenuSub>
+                                    <DropdownMenuItem
+                                        className='cursor-pointer'
+                                        onClick={() =>
+                                            openMarkProject({
+                                                ...modalParams,
+                                                projectStatus: "ARCHIVED",
+                                            })
+                                        }>
+                                        <span>Mark as Archived</span>
+                                    </DropdownMenuItem>
+
+                                    <DropdownMenuItem
+                                        className='cursor-pointer'
+                                        onClick={() =>
+                                            openMarkProject({
+                                                ...modalParams,
+                                                projectStatus: "ACTIVE",
+                                            })
+                                        }>
+                                        <span>Mark as Active</span>
+                                    </DropdownMenuItem>
+                                </DropdownMenuSubContent>
+                            </DropdownMenuPortal>
+                        </DropdownMenuSub>
+                    </>
                 )}
 
                 <DropdownMenuItem
-                    className='cursor-pointer'
+                    className='cursor-pointer text-destructive'
                     onClick={() => openLeaveProject(modalParams)}>
                     <span>Leave Project</span>
                 </DropdownMenuItem>

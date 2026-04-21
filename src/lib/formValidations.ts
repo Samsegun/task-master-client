@@ -4,6 +4,7 @@ import * as z from "zod";
 const TaskPrioritySchema = z.enum(["LOW", "MEDIUM", "HIGH"]);
 const TaskStatusSchema = z.enum(["TODO", "IN_PROGRESS", "DONE"]);
 const AddMemberSchema = z.enum(["OWNER", "MEMBER"]);
+const ProjectStatusSchema = z.enum(["ACTIVE", "COMPLETED", "ARCHIVED"]);
 
 // auth
 const registerUserForm = z.object({
@@ -83,11 +84,19 @@ const createProject = z.object({
     name: z.string().min(3).max(100),
     description: z.string().max(500).optional(),
 });
+
 const addProjectMember = z.object({
     email: z.email("Invalid email format"),
     role: AddMemberSchema.default("MEMBER"),
 });
 
+const updateProjectForm = z.object({
+    name: z.string().min(3).max(100).optional(),
+    description: z.string().max(500).optional(),
+    status: ProjectStatusSchema.optional(),
+});
+
+// user profile
 const updateProfile = z.object({
     email: z.email(),
     firstName: z.string().max(30).optional(),
@@ -100,7 +109,6 @@ const updateProfile = z.object({
             /^[a-zA-Z0-9_]+$/,
             "Username must consist of alphanumeric characters and underscores"
         ),
-    // .optional(),
 });
 
 const updatePassword = z.object({
@@ -119,4 +127,5 @@ export {
     resetPasswordForm,
     updatePassword,
     updateProfile,
+    updateProjectForm,
 };

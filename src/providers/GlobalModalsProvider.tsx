@@ -4,6 +4,7 @@ import DeleteMemberModal from "@/components/modal/DeleteMemberModal";
 import DeleteProjectModal from "@/components/modal/DeleteProjectModal";
 import DeleteTaskModal from "@/components/modal/DeleteTaskModal";
 import EditMemberModal from "@/components/modal/EditMemberModal";
+import EditProjectModal from "@/components/modal/EditProjectModal";
 import EditTaskModal from "@/components/modal/EditTaskModal";
 import LeaveProjectModal from "@/components/modal/LeaveProjectModal";
 import MarkProjectArchive from "@/components/modal/MarkProject";
@@ -41,6 +42,12 @@ function GlobalModalsProvider({ children }: { children: ReactNode }) {
         projectId: string;
         projectName: string;
         projectStatus: ProjectStatus;
+    } | null>(null);
+    const [editProject, setEditProject] = useState<{
+        projectId: string;
+        projectName: string;
+        projectStatus: ProjectStatus;
+        projectDescription?: string;
     } | null>(null);
     const [addMemberProjectId, setAddMemberProjectId] = useState<string | null>(
         null
@@ -82,6 +89,13 @@ function GlobalModalsProvider({ children }: { children: ReactNode }) {
         projectStatus: ProjectStatus;
     }) => setMarkProject(project);
 
+    const openEditProject = (project: {
+        projectId: string;
+        projectName: string;
+        projectStatus: ProjectStatus;
+        projectDescription?: string;
+    }) => setEditProject(project);
+
     const handleProjectMember = (memberInfo: MemberInfo) => {
         if (memberInfo.action === "REMOVE") {
             setRemoveMemberOpen(true);
@@ -103,6 +117,7 @@ function GlobalModalsProvider({ children }: { children: ReactNode }) {
                 openDeleteProject,
                 openLeaveProject,
                 openMarkProject,
+                openEditProject,
                 openAddMember,
                 handleProjectMember,
             }}>
@@ -137,6 +152,14 @@ function GlobalModalsProvider({ children }: { children: ReactNode }) {
                     projectId={deleteState.projectId}
                     isOpen={true}
                     onClose={() => setDeleteState(null)}
+                />
+            )}
+
+            {editProject && (
+                <EditProjectModal
+                    project={editProject}
+                    isOpen={true}
+                    onClose={() => setEditProject(null)}
                 />
             )}
 
