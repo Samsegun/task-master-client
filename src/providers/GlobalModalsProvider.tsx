@@ -5,6 +5,7 @@ import DeleteProjectModal from "@/components/modal/DeleteProjectModal";
 import DeleteTaskModal from "@/components/modal/DeleteTaskModal";
 import EditMemberModal from "@/components/modal/EditMemberModal";
 import EditTaskModal from "@/components/modal/EditTaskModal";
+import LeaveProjectModal from "@/components/modal/LeaveProjectModal";
 import { GlobalModalsContext } from "@/hooks/useGlobalModals";
 import type { Task } from "@/lib/apiTypes";
 import type { EditPayload, MemberInfo, MemberShape } from "@/lib/types";
@@ -23,6 +24,10 @@ function GlobalModalsProvider({ children }: { children: ReactNode }) {
         task: Task["task"];
     } | null>(null);
     const [deleteProject, setDeleteProject] = useState<{
+        projectId: string;
+        projectName: string;
+    } | null>(null);
+    const [leaveProject, setLeaveProject] = useState<{
         projectId: string;
         projectName: string;
     } | null>(null);
@@ -51,6 +56,10 @@ function GlobalModalsProvider({ children }: { children: ReactNode }) {
         projectId: string;
         projectName: string;
     }) => setDeleteProject(project);
+    const openLeaveProject = (project: {
+        projectId: string;
+        projectName: string;
+    }) => setLeaveProject(project);
 
     const handleProjectMember = (memberInfo: MemberInfo) => {
         if (memberInfo.action === "REMOVE") {
@@ -71,6 +80,7 @@ function GlobalModalsProvider({ children }: { children: ReactNode }) {
                 openEdit,
                 openDelete,
                 openDeleteProject,
+                openLeaveProject,
                 openAddMember,
                 handleProjectMember,
             }}>
@@ -113,6 +123,14 @@ function GlobalModalsProvider({ children }: { children: ReactNode }) {
                     project={deleteProject}
                     isOpen={true}
                     onClose={() => setDeleteProject(null)}
+                />
+            )}
+
+            {leaveProject && (
+                <LeaveProjectModal
+                    project={leaveProject}
+                    isOpen={true}
+                    onClose={() => setLeaveProject(null)}
                 />
             )}
 

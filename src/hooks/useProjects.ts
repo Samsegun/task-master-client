@@ -165,19 +165,16 @@ export const useLeaveProject = () => {
     return useMutation({
         mutationFn: ({ projectId }: { projectId: string }) =>
             leaveProject(projectId),
-        onSuccess: async (_data, variables) => {
-            const { projectId } = variables;
-
+        onSuccess: async () => {
             navigate("/projects");
 
             await queryClient.invalidateQueries({
                 queryKey: ["projects"],
             });
-            await queryClient.invalidateQueries({
-                queryKey: ["project", projectId],
-            });
 
-            toast.success("Project deleted");
+            navigate("/projects");
+
+            toast.success("Project exit successful");
         },
         onError: (err: any) => {
             toast.error(
