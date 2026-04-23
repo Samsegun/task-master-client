@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+
 import CreateProjectModalProvider from "./CreateProjectProvider";
 import GlobalModalsProvider from "./GlobalModalsProvider";
 

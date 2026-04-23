@@ -16,7 +16,7 @@ import Tasks from "@/pages/tasks/Tasks";
 import { createRoutesFromElements, Navigate, Route } from "react-router";
 import RouterErrorFallback from "./RouterErrorFallback";
 
-export const AppRoutes = createRoutesFromElements(
+const AppRoutes = createRoutesFromElements(
     <Route element={<ProvidersLayout />} errorElement={<RouterErrorFallback />}>
         <Route element={<RootLayout />}>
             <Route index element={<Navigate to='dashboard' />} />
@@ -43,3 +43,5 @@ export const AppRoutes = createRoutesFromElements(
         <Route path='*' element={<NotFound />} />
     </Route>
 );
+
+export default AppRoutes;
