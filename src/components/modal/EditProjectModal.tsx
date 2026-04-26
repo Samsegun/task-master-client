@@ -1,6 +1,6 @@
 import { useUpdateProject } from "@/hooks/useProjects";
 import { updateProjectForm } from "@/lib/formValidations";
-import type { ProjectStatus } from "@/lib/types";
+import { useModalStore } from "@/store/useModalStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
@@ -17,42 +17,34 @@ import {
 import { Field, FieldError, FieldGroup, FieldLabel } from "../ui/field";
 import { Input } from "../ui/input";
 
-type EditProjectProps = {
-    project: {
-        projectId: string;
-        projectName: string;
-        projectStatus: ProjectStatus;
-        projectDescription?: string;
-    };
-    isOpen: boolean;
-    onClose: () => void;
-};
-
 type UpdateProjectFormData = z.input<typeof updateProjectForm>;
 
-function EditProjectModal({ project, isOpen, onClose }: EditProjectProps) {
+function EditProjectModal() {
+    const updateProjectMutation = useUpdateProject();
+    const { closeModal, data } = useModalStore();
+
     const form = useForm<UpdateProjectFormData>({
         resolver: zodResolver(updateProjectForm),
         defaultValues: {
-            description: project.projectDescription || "",
-            name: project.projectName || "",
-            status: project.projectStatus || "",
+            description: data?.projectDescription || "",
+            name: data?.projectName || "",
+            status: data?.projectStatus || "ACTIVE",
         },
     });
 
-    const updateProjectMutation = useUpdateProject();
+    function onSubmit(formData: UpdateProjectFormData) {
+        if (!data?.projectId) return;
 
-    function onSubmit(data: UpdateProjectFormData) {
         updateProjectMutation.mutate(
-            { projectId: project.projectId, payLoad: data },
+            { projectId: data.projectId, payLoad: formData },
             {
-                onSuccess: () => onClose(),
+                onSuccess: () => closeModal(),
             }
         );
     }
 
     return (
-        <Dialog open={isOpen} onOpenChange={onClose}>
+        <Dialog open={true} onOpenChange={closeModal}>
             <form id='update-project' onSubmit={form.handleSubmit(onSubmit)}>
                 <FormContentWrapper>
                     <DialogHeader className='border-b border-brand-primary/10'>

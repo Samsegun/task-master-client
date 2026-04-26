@@ -1,6 +1,7 @@
 import { useGlobalModals } from "@/hooks/useGlobalModals";
 import type { ProjectRole } from "@/lib/apiTypes";
 import type { ProjectStatus } from "@/lib/types";
+import { useModalStore } from "@/store/useModalStore";
 import { MoreVertical } from "lucide-react";
 import {
     DropdownMenu,
@@ -28,12 +29,9 @@ function ProjectOptions({
 }: {
     userProjectDetails: ProjectOptionsProps["userProjectDetails"];
 }) {
-    const {
-        openLeaveProject,
-        openDeleteProject,
-        openMarkProject,
-        openEditProject,
-    } = useGlobalModals();
+    const { openLeaveProject, openDeleteProject, openMarkProject } =
+        useGlobalModals();
+    const openModal = useModalStore(state => state.openModal);
 
     const {
         projectId,
@@ -59,7 +57,7 @@ function ProjectOptions({
                         <DropdownMenuItem
                             className='cursor-pointer'
                             onClick={() =>
-                                openEditProject({
+                                openModal("editProject", {
                                     projectId,
                                     projectName,
                                     projectStatus,

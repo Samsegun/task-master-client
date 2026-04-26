@@ -4,7 +4,6 @@ import DeleteMemberModal from "@/components/modal/DeleteMemberModal";
 import DeleteProjectModal from "@/components/modal/DeleteProjectModal";
 import DeleteTaskModal from "@/components/modal/DeleteTaskModal";
 import EditMemberModal from "@/components/modal/EditMemberModal";
-import EditProjectModal from "@/components/modal/EditProjectModal";
 import EditTaskModal from "@/components/modal/EditTaskModal";
 import LeaveProjectModal from "@/components/modal/LeaveProjectModal";
 import MarkProjectArchive from "@/components/modal/MarkProject";
@@ -155,13 +154,13 @@ function GlobalModalsProvider({ children }: { children: ReactNode }) {
                 />
             )}
 
-            {editProject && (
+            {/* {editProject && (
                 <EditProjectModal
                     project={editProject}
                     isOpen={true}
                     onClose={() => setEditProject(null)}
                 />
-            )}
+            )} */}
 
             {deleteProject && (
                 <DeleteProjectModal
