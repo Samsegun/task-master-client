@@ -1,4 +1,5 @@
 import { useLeaveProject } from "@/hooks/useProjects";
+import { useModalStore } from "@/store/useModalStore";
 import Button from "../common/Button";
 import {
     Dialog,
@@ -10,26 +11,23 @@ import {
     DialogTitle,
 } from "../ui/dialog";
 
-type LeaveModalProps = {
-    project: { projectId: string; projectName: string };
-    isOpen: boolean;
-    onClose: () => void;
-};
-
-function LeaveProjectModal({ project, isOpen, onClose }: LeaveModalProps) {
+function LeaveProjectModal() {
     const leaveProjectMutation = useLeaveProject();
+    const { closeModal, data } = useModalStore();
 
     function onDelete() {
+        if (!data?.projectId) return;
+
         leaveProjectMutation.mutate(
-            { projectId: project.projectId },
+            { projectId: data.projectId },
             {
-                onSuccess: () => onClose(),
+                onSuccess: () => closeModal(),
             }
         );
     }
 
     return (
-        <Dialog open={isOpen} onOpenChange={onClose}>
+        <Dialog open={true} onOpenChange={closeModal}>
             <DialogContent className='bg-brand-modal rounded-lg border border-nav-border space-y-4'>
                 <DialogHeader className='border-b border-brand-primary/10'>
                     <DialogTitle className="text-xl font-bold text-brand-primary'">
@@ -42,7 +40,7 @@ function LeaveProjectModal({ project, isOpen, onClose }: LeaveModalProps) {
                 </DialogHeader>
 
                 <p className='font-semibold ml-4 italic text-center tracking-wide'>
-                    This action will exit you from "{project.projectName}"?
+                    This action will exit you from "{data?.projectName}"?
                 </p>
 
                 <DialogFooter className='flex gap-3'>
@@ -58,7 +56,7 @@ function LeaveProjectModal({ project, isOpen, onClose }: LeaveModalProps) {
                     </DialogClose>
 
                     <Button
-                        type='submit'
+                        type='button'
                         disabled={leaveProjectMutation.isPending}
                         onClick={onDelete}
                         variant={"destructive"}

@@ -29,8 +29,7 @@ function ProjectOptions({
 }: {
     userProjectDetails: ProjectOptionsProps["userProjectDetails"];
 }) {
-    const { openLeaveProject, openDeleteProject, openMarkProject } =
-        useGlobalModals();
+    const { openDeleteProject, openMarkProject } = useGlobalModals();
     const openModal = useModalStore(state => state.openModal);
 
     const {
@@ -113,7 +112,9 @@ function ProjectOptions({
 
                 <DropdownMenuItem
                     className='cursor-pointer text-destructive'
-                    onClick={() => openLeaveProject(modalParams)}>
+                    onClick={() =>
+                        openModal("leaveProject", { ...modalParams })
+                    }>
                     <span>Leave Project</span>
                 </DropdownMenuItem>
 

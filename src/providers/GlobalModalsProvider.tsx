@@ -5,7 +5,6 @@ import DeleteProjectModal from "@/components/modal/DeleteProjectModal";
 import DeleteTaskModal from "@/components/modal/DeleteTaskModal";
 import EditMemberModal from "@/components/modal/EditMemberModal";
 import EditTaskModal from "@/components/modal/EditTaskModal";
-import LeaveProjectModal from "@/components/modal/LeaveProjectModal";
 import MarkProjectArchive from "@/components/modal/MarkProject";
 import { GlobalModalsContext } from "@/hooks/useGlobalModals";
 import type { Task } from "@/lib/apiTypes";
@@ -170,13 +169,13 @@ function GlobalModalsProvider({ children }: { children: ReactNode }) {
                 />
             )}
 
-            {leaveProject && (
+            {/* {leaveProject && (
                 <LeaveProjectModal
                     project={leaveProject}
                     isOpen={true}
                     onClose={() => setLeaveProject(null)}
                 />
-            )}
+            )} */}
 
             {markProject && (
                 <MarkProjectArchive
