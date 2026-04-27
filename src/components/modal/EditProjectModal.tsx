@@ -21,22 +21,22 @@ type UpdateProjectFormData = z.input<typeof updateProjectForm>;
 
 function EditProjectModal() {
     const updateProjectMutation = useUpdateProject();
-    const { closeModal, data } = useModalStore();
+    const { closeModal, modalData } = useModalStore();
 
     const form = useForm<UpdateProjectFormData>({
         resolver: zodResolver(updateProjectForm),
         defaultValues: {
-            description: data?.projectDescription || "",
-            name: data?.projectName || "",
-            status: data?.projectStatus || "ACTIVE",
+            description: modalData?.projectDescription || "",
+            name: modalData?.projectName || "",
+            status: modalData?.projectStatus || "ACTIVE",
         },
     });
 
     function onSubmit(formData: UpdateProjectFormData) {
-        if (!data?.projectId) return;
+        if (!modalData?.projectId) return;
 
         updateProjectMutation.mutate(
-            { projectId: data.projectId, payLoad: formData },
+            { projectId: modalData.projectId, payLoad: formData },
             {
                 onSuccess: () => closeModal(),
             }

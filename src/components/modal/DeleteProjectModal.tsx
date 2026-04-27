@@ -1,4 +1,5 @@
 import { useDeleteProject } from "@/hooks/useProjects";
+import { useModalStore } from "@/store/useModalStore";
 import Button from "../common/Button";
 import {
     Dialog,
@@ -10,26 +11,23 @@ import {
     DialogTitle,
 } from "../ui/dialog";
 
-type DeleteModalProps = {
-    project: { projectId: string; projectName: string };
-    isOpen: boolean;
-    onClose: () => void;
-};
-
-function DeleteProjectModal({ project, isOpen, onClose }: DeleteModalProps) {
+function DeleteProjectModal() {
     const deleteProjectMutation = useDeleteProject();
+    const { modalData, closeModal } = useModalStore();
 
     function onDelete() {
+        if (!modalData?.projectId) return;
+
         deleteProjectMutation.mutate(
-            { projectId: project.projectId },
+            { projectId: modalData.projectId },
             {
-                onSuccess: () => onClose(),
+                onSuccess: () => closeModal(),
             }
         );
     }
 
     return (
-        <Dialog open={isOpen} onOpenChange={onClose}>
+        <Dialog open={true} onOpenChange={closeModal}>
             <DialogContent className='bg-brand-modal rounded-lg border border-nav-border space-y-4'>
                 <DialogHeader className='border-b border-brand-primary/10'>
                     <DialogTitle className="text-xl font-bold text-brand-primary'">
@@ -42,7 +40,7 @@ function DeleteProjectModal({ project, isOpen, onClose }: DeleteModalProps) {
                 </DialogHeader>
 
                 <p className='font-semibold ml-4 italic text-center tracking-wide'>
-                    This action will delete "{project.projectName}" from
+                    This action will delete "{modalData?.projectName}" from
                     projects?
                 </p>
 

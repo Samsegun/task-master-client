@@ -1,7 +1,6 @@
 import { useUpdateTask } from "@/hooks/useTasks";
-import type { Task } from "@/lib/apiTypes";
 import { editTaskForm } from "@/lib/formValidations";
-import type { MemberShape } from "@/lib/types";
+import { useModalStore } from "@/store/useModalStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
@@ -32,63 +31,50 @@ import {
     SelectValue,
 } from "../ui/select";
 
-type EditTaskModalProps = {
-    projectId: string;
-    task: Task["task"];
-    isOpen: boolean;
-    onClose: () => void;
-    projectMembers: MemberShape[];
-};
-
 type UpdateTaskFormData = z.input<typeof editTaskForm>;
 
-function EditTaskModal({
-    projectId,
-    task,
-    isOpen,
-    onClose,
-    projectMembers,
-}: EditTaskModalProps) {
+function EditTaskModal() {
+    const updateTaskMutation = useUpdateTask();
+    const { modalData, closeModal } = useModalStore();
+
     const form = useForm<UpdateTaskFormData>({
         resolver: zodResolver(editTaskForm),
         defaultValues: {
-            title: task.title,
-            description: task.description || "",
-            assigneeId: task.assignee?.id || null,
-            priority: task.priority,
-            dueDate: task.dueDate
-                ? new Date(task.dueDate).toISOString().split("T")[0]
+            title: modalData?.task?.title || "",
+            description: modalData?.task?.description || "",
+            assigneeId: modalData?.task?.assignee?.id || "",
+            priority: modalData?.task?.priority || "MEDIUM",
+            dueDate: modalData?.task?.dueDate
+                ? new Date(modalData?.task?.dueDate).toISOString().split("T")[0]
                 : null,
-            status: task.status,
+            status: modalData?.task?.status || "IN_PROGRESS",
         },
     });
 
-    const updateTaskMutation = useUpdateTask();
+    function onSubmit(formData: UpdateTaskFormData) {
+        if (!modalData?.task?.project.id || !modalData?.task?.id) return;
 
-    function onSubmit(data: UpdateTaskFormData) {
         const payLoad = {
-            ...data,
-            assigneeId: data.assigneeId !== "null" ? data.assigneeId : null,
-            dueDate: data.dueDate || null,
+            ...formData,
+            assigneeId:
+                formData.assigneeId !== "null" ? formData.assigneeId : null,
+            dueDate: formData.dueDate || null,
         };
 
-        // console.log({ projectId, taskId: task.id, payLoad });
-
         updateTaskMutation.mutate(
-            { projectId, taskId: task.id, payLoad },
+            {
+                projectId: modalData?.task?.project.id,
+                taskId: modalData.task?.id,
+                payLoad,
+            },
             {
                 onSuccess: () => closeModal(),
             }
         );
     }
 
-    function closeModal() {
-        form.reset();
-        onClose();
-    }
-
     return (
-        <Dialog open={isOpen} onOpenChange={closeModal}>
+        <Dialog open={true} onOpenChange={closeModal}>
             <form id='update-task' onSubmit={form.handleSubmit(onSubmit)}>
                 <FormContentWrapper>
                     <DialogHeader className='border-b border-brand-primary/10'>
@@ -295,8 +281,7 @@ function EditTaskModal({
                             control={form.control}
                             render={({ field, fieldState }) => (
                                 <AssigneeSelect
-                                    projectId={projectId}
-                                    members={projectMembers}
+                                    members={modalData.projectMembers!}
                                     field={field}
                                     fieldState={fieldState}
                                 />

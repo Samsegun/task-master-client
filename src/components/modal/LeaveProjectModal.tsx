@@ -13,13 +13,13 @@ import {
 
 function LeaveProjectModal() {
     const leaveProjectMutation = useLeaveProject();
-    const { closeModal, data } = useModalStore();
+    const { closeModal, modalData } = useModalStore();
 
     function onDelete() {
-        if (!data?.projectId) return;
+        if (!modalData?.projectId) return;
 
         leaveProjectMutation.mutate(
-            { projectId: data.projectId },
+            { projectId: modalData.projectId },
             {
                 onSuccess: () => closeModal(),
             }
@@ -40,7 +40,7 @@ function LeaveProjectModal() {
                 </DialogHeader>
 
                 <p className='font-semibold ml-4 italic text-center tracking-wide'>
-                    This action will exit you from "{data?.projectName}"?
+                    This action will exit you from "{modalData?.projectName}"?
                 </p>
 
                 <DialogFooter className='flex gap-3'>

@@ -1,6 +1,6 @@
 import { useCreateTask } from "@/hooks/useTasks";
-import type { ProjectRole } from "@/lib/apiTypes";
 import { createTaskForm } from "@/lib/formValidations";
+import { useModalStore } from "@/store/useModalStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
@@ -31,31 +31,11 @@ import {
     SelectValue,
 } from "../ui/select";
 
-type CreateTaskModalProps = {
-    projectId: string | undefined;
-    projectMembers: {
-        role: ProjectRole;
-        joinedAt: Date | string;
-        user: {
-            id: string;
-            firstName: string | null;
-            lastName: string | null;
-            username: string | null;
-        };
-    }[];
-    openNewTask: boolean;
-    setOpenNewTask: (open: boolean) => void;
-};
-
 type CreateTaskFormData = z.input<typeof createTaskForm>;
 
-function CreateTaskModal({
-    projectId,
-    projectMembers,
-    openNewTask,
-    setOpenNewTask,
-}: CreateTaskModalProps) {
+function CreateTaskModal() {
     const createTaskMutation = useCreateTask();
+    const { modalData, closeModal } = useModalStore();
 
     const form = useForm<CreateTaskFormData>({
         resolver: zodResolver(createTaskForm),
@@ -68,25 +48,28 @@ function CreateTaskModal({
         },
     });
 
-    function onSubmit(data: CreateTaskFormData) {
+    function onSubmit(formData: CreateTaskFormData) {
+        if (!modalData?.projectId) return;
+
         const payLoad = {
-            ...data,
-            assigneeId: data.assigneeId !== "null" ? data.assigneeId : null,
+            ...formData,
+            assigneeId:
+                formData.assigneeId !== "null" ? formData.assigneeId : null,
         };
 
         createTaskMutation.mutate(
-            { payLoad, projectId: projectId },
+            { payLoad, projectId: modalData.projectId },
             {
                 onSuccess: () => {
                     form.reset();
-                    setOpenNewTask(false);
+                    closeModal();
                 },
             }
         );
     }
 
     return (
-        <Dialog open={openNewTask} onOpenChange={setOpenNewTask}>
+        <Dialog open={true} onOpenChange={closeModal}>
             <form
                 id='create-task'
                 onSubmit={form.handleSubmit(onSubmit)}
@@ -249,8 +232,8 @@ function CreateTaskModal({
                             control={form.control}
                             render={({ field, fieldState }) => (
                                 <AssigneeSelect
-                                    projectId={projectId}
-                                    members={projectMembers}
+                                    // members={projectMembers}
+                                    members={modalData?.projectMembers!}
                                     field={field}
                                     fieldState={fieldState}
                                 />

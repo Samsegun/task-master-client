@@ -29,7 +29,7 @@ function ProjectOptions({
 }: {
     userProjectDetails: ProjectOptionsProps["userProjectDetails"];
 }) {
-    const { openDeleteProject, openMarkProject } = useGlobalModals();
+    const { openMarkProject } = useGlobalModals();
     const openModal = useModalStore(state => state.openModal);
 
     const {
@@ -121,7 +121,10 @@ function ProjectOptions({
                 {projectRole === "OWNER" && (
                     <DropdownMenuItem
                         className='cursor-pointer text-destructive'
-                        onClick={() => openDeleteProject(modalParams)}>
+                        // onClick={() => openDeleteProject(modalParams)}
+                        onClick={() =>
+                            openModal("deleteProject", { ...modalParams })
+                        }>
                         <span>Delete Project</span>
                     </DropdownMenuItem>
                 )}

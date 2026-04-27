@@ -1,11 +1,11 @@
 import { useModalStore } from "@/store/useModalStore";
-// import CreateTaskModal from "./CreateTaskModal"
+import CreateTaskModal from "./CreateTaskModal";
+import DeleteTaskModal from "./DeleteTaskModal";
 import EditProjectModal from "./EditProjectModal";
-// import DeleteTaskModal from "./DeleteTaskModal"
 // import DeleteMemberModal from "./DeleteMemberModal"
-// import EditTaskModal from "./EditTaskModal"
+import EditTaskModal from "./EditTaskModal";
 // import CreateProjectModal from "./CreateProjectModal"
-// import DeleteProjectModal from "./DeleteProjectModal"
+import DeleteProjectModal from "./DeleteProjectModal";
 import LeaveProjectModal from "./LeaveProjectModal";
 
 function ModalRegistry() {
@@ -13,13 +13,14 @@ function ModalRegistry() {
 
     return (
         <>
-            {/* {type === "editProject" && <CreateTaskModal />} */}
+            {type === "createTask" && <CreateTaskModal />}
             {type === "editProject" && <EditProjectModal />}
             {type === "leaveProject" && <LeaveProjectModal />}
-            {/* {type === "editProject" && <DeleteTaskModal />}
-            {type === "deleteProject" && <DeleteProjectModal />}
-            {type === "createProject" && <CreateProjectModal />}
             {type === "editTask" && <EditTaskModal />}
+            {type === "deleteTask" && <DeleteTaskModal />}
+            {type === "deleteProject" && <DeleteProjectModal />}
+            {/* {type === "editProject" && <DeleteTaskModal />}
+            {type === "createProject" && <CreateProjectModal />}
             {type === "deleteTask" && < DeleteMemberModal/>} */}
         </>
     );

@@ -1,10 +1,6 @@
 import AddMemberModal from "@/components/modal/AddMemberModal";
-import CreateTaskModal from "@/components/modal/CreateTaskModal";
 import DeleteMemberModal from "@/components/modal/DeleteMemberModal";
-import DeleteProjectModal from "@/components/modal/DeleteProjectModal";
-import DeleteTaskModal from "@/components/modal/DeleteTaskModal";
 import EditMemberModal from "@/components/modal/EditMemberModal";
-import EditTaskModal from "@/components/modal/EditTaskModal";
 import MarkProjectArchive from "@/components/modal/MarkProject";
 import { GlobalModalsContext } from "@/hooks/useGlobalModals";
 import type { Task } from "@/lib/apiTypes";
@@ -122,16 +118,16 @@ function GlobalModalsProvider({ children }: { children: ReactNode }) {
             {children}
 
             {/* single mounted modal instances */}
-            {createState && (
+            {/* {createState && (
                 <CreateTaskModal
                     projectId={createState.projectId}
                     projectMembers={createState.projectMembers ?? []}
                     openNewTask={true}
                     setOpenNewTask={v => !v && setCreateState(null)}
                 />
-            )}
+            )} */}
 
-            {editState && (
+            {/* {editState && (
                 <EditTaskModal
                     projectId={editState.project.id}
                     projectMembers={editState.project.members ?? []}
@@ -139,9 +135,9 @@ function GlobalModalsProvider({ children }: { children: ReactNode }) {
                     isOpen={true}
                     onClose={() => setEditState(null)}
                 />
-            )}
+            )} */}
 
-            {deleteState && (
+            {/* {deleteState && (
                 <DeleteTaskModal
                     task={{
                         id: deleteState.task.id,
@@ -151,7 +147,7 @@ function GlobalModalsProvider({ children }: { children: ReactNode }) {
                     isOpen={true}
                     onClose={() => setDeleteState(null)}
                 />
-            )}
+            )} */}
 
             {/* {editProject && (
                 <EditProjectModal
@@ -161,13 +157,13 @@ function GlobalModalsProvider({ children }: { children: ReactNode }) {
                 />
             )} */}
 
-            {deleteProject && (
+            {/* {deleteProject && (
                 <DeleteProjectModal
                     project={deleteProject}
                     isOpen={true}
                     onClose={() => setDeleteProject(null)}
                 />
-            )}
+            )} */}
 
             {/* {leaveProject && (
                 <LeaveProjectModal

@@ -9,7 +9,7 @@ import {
 } from "../ui/select";
 
 type AssigneeSelectProps = {
-    projectId?: string;
+    // projectId?: string;
     members: MemberShape[];
     field: {
         name: string;

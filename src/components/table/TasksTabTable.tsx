@@ -1,8 +1,8 @@
-import { useGlobalModals } from "@/hooks/useGlobalModals";
 import { useGetTasks } from "@/hooks/useTasks";
 import type { ProjectRole } from "@/lib/apiTypes";
 import type { MemberShape, Statuses } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
+import { useModalStore } from "@/store/useModalStore";
 import { CheckCircle, Plus } from "lucide-react";
 import { useState } from "react";
 import Button from "../common/Button";
@@ -38,7 +38,7 @@ function TasksTabTable({
     const { isLoading, isError, customErr, tasks, userId } =
         useGetTasks(projectId);
     const [filterStatus, setFilterStatus] = useState<Statuses>("all");
-    const { openEdit, openDelete, openCreate } = useGlobalModals();
+    const openModal = useModalStore(state => state.openModal);
 
     if (isError) return <div>Something went wrong :( {customErr?.message}</div>;
 
@@ -65,7 +65,9 @@ function TasksTabTable({
                     variant={"primary"}
                     className={`flex items-center gap-2`}
                     disabled={isLoading}
-                    onClick={() => openCreate({ projectId, projectMembers })}>
+                    onClick={() =>
+                        openModal("createTask", { projectId, projectMembers })
+                    }>
                     <Plus size={30} />
                     <span>New Task</span>
                 </Button>
@@ -178,17 +180,7 @@ function TasksTabTable({
 
                                     <TableCell>
                                         <TasksTableRowOptions
-                                            onEditClick={(
-                                                option: "EDIT" | "DELETE"
-                                            ) =>
-                                                option === "EDIT"
-                                                    ? openEdit({ task })
-                                                    : openDelete({
-                                                          task,
-                                                          projectId:
-                                                              task.project.id,
-                                                      })
-                                            }
+                                            modalData={{ task, projectMembers }}
                                             projectRole={projectRole}
                                             creatorId={task.creator.id}
                                             userId={userId ?? ""}

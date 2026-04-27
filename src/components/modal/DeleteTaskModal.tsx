@@ -1,4 +1,5 @@
 import { useDeleteTask } from "@/hooks/useTasks";
+import { useModalStore } from "@/store/useModalStore";
 import Button from "../common/Button";
 import {
     Dialog,
@@ -10,32 +11,23 @@ import {
     DialogTitle,
 } from "../ui/dialog";
 
-type DeleteModalProps = {
-    task: { id: string; title: string };
-    projectId: string;
-    isOpen: boolean;
-    onClose: () => void;
-};
-
-function DeleteTaskModal({
-    task,
-    projectId,
-    isOpen,
-    onClose,
-}: DeleteModalProps) {
+function DeleteTaskModal() {
     const deleteTaskMutation = useDeleteTask();
+    const { closeModal, modalData } = useModalStore();
 
     function onDelete() {
+        if (!modalData?.projectId || !modalData?.task?.id) return;
+
         deleteTaskMutation.mutate(
-            { projectId, taskId: task.id },
+            { projectId: modalData.projectId, taskId: modalData.task.id },
             {
-                onSuccess: () => onClose(),
+                onSuccess: () => closeModal(),
             }
         );
     }
 
     return (
-        <Dialog open={isOpen} onOpenChange={onClose}>
+        <Dialog open={true} onOpenChange={closeModal}>
             <DialogContent className='bg-brand-modal rounded-lg border border-nav-border space-y-4'>
                 <DialogHeader className='border-b border-brand-primary/10'>
                     <DialogTitle className="text-xl font-bold text-brand-primary'">
@@ -48,7 +40,8 @@ function DeleteTaskModal({
                 </DialogHeader>
 
                 <p className='font-semibold ml-4 italic text-center tracking-wide'>
-                    This action will delete "{task.title}" from tasks?
+                    This action will delete "{modalData?.task?.title}" from
+                    tasks?
                 </p>
 
                 <DialogFooter className='flex gap-3'>
