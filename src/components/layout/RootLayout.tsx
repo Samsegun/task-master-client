@@ -3,7 +3,6 @@ import { useState } from "react";
 import { Navigate, Outlet, ScrollRestoration, useLocation } from "react-router";
 import DesktopHeaderMenu from "../common/DesktopHeaderMenu";
 import LoadingIcon from "../common/LoadingIcon";
-import ModalRegistry from "../modal/ModalRegistry";
 import Navbar from "./Navbar";
 
 function RootLayout() {
@@ -25,7 +24,7 @@ function RootLayout() {
             <ScrollRestoration />
 
             <Navbar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
-            <ModalRegistry />
+            {/* <ModalRegistry /> */}
 
             <div
                 className={`relative min-h-screen  transition-all duration-300 ease-in-out ${

@@ -1,5 +1,5 @@
 import { useRemoveProjectMember } from "@/hooks/useProjects";
-import type { MemberShape } from "@/lib/types";
+import { useModalStore } from "@/store/useModalStore";
 import Button from "../common/Button";
 import {
     Dialog,
@@ -11,37 +11,28 @@ import {
     DialogTitle,
 } from "../ui/dialog";
 
-type DeleteMemberProps = {
-    deleteMemberInfo: {
-        userToBeEdited: MemberShape;
-        project: { name: string; id: string };
-    };
-    isOpen: boolean;
-    onClose: () => void;
-};
-
-function DeleteMemberModal({
-    deleteMemberInfo,
-    isOpen,
-    onClose,
-}: DeleteMemberProps) {
+function DeleteMemberModal() {
+    const { modalData, closeModal } = useModalStore();
     const deleteMemberMutation = useRemoveProjectMember();
-    const {
-        project: { id, name },
-        userToBeEdited: { user },
-    } = deleteMemberInfo;
+
+    const { projectId, projectName, memberInfo } = modalData;
+
+    if (!projectId || !projectName || !memberInfo)
+        return <div>Something went wrong :(</div>;
 
     function onDelete() {
+        if (!projectId || !projectName || !memberInfo) return;
+
         deleteMemberMutation.mutate(
-            { projectId: id, userIdToRemove: user.id },
+            { projectId, userIdToRemove: memberInfo.user.id },
             {
-                onSuccess: () => onClose(),
+                onSuccess: () => closeModal(),
             }
         );
     }
 
     return (
-        <Dialog open={isOpen} onOpenChange={onClose}>
+        <Dialog open={true} onOpenChange={closeModal}>
             <DialogContent className='bg-brand-modal rounded-lg border border-nav-border space-y-4'>
                 <DialogHeader className='border-b border-brand-primary/10'>
                     <DialogTitle className="text-xl font-bold text-brand-primary'">
@@ -54,7 +45,9 @@ function DeleteMemberModal({
                 </DialogHeader>
 
                 <p className='font-semibold italic text-center'>
-                    This action will remove "{user.firstName}" from "{name}" ?
+                    This action will remove "
+                    {memberInfo.user.username || memberInfo.user.firstName}"
+                    from "{projectName}" ?
                 </p>
 
                 <DialogFooter className='flex gap-3'>

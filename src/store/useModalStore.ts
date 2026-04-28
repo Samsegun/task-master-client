@@ -12,7 +12,8 @@ type ModalType =
     | "leaveProject"
     | "markProject"
     | "addMember"
-    | "editMember";
+    | "editProjectMember"
+    | "removeProjectMember";
 
 interface ModalData {
     // task modals

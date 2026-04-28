@@ -1,4 +1,3 @@
-import { useGlobalModals } from "@/hooks/useGlobalModals";
 import type { ProjectRole } from "@/lib/apiTypes";
 import type { ProjectStatus } from "@/lib/types";
 import { useModalStore } from "@/store/useModalStore";
@@ -24,12 +23,17 @@ type ProjectOptionsProps = {
     };
 };
 
+const markLabels: { label: string; value: ProjectStatus }[] = [
+    { label: "Mark as Completed", value: "COMPLETED" },
+    { label: "Mark as Archived", value: "ARCHIVED" },
+    { label: "Mark as Active", value: "ACTIVE" },
+];
+
 function ProjectOptions({
     userProjectDetails,
 }: {
     userProjectDetails: ProjectOptionsProps["userProjectDetails"];
 }) {
-    const { openMarkProject } = useGlobalModals();
     const openModal = useModalStore(state => state.openModal);
 
     const {
@@ -72,38 +76,19 @@ function ProjectOptions({
                             </DropdownMenuSubTrigger>
                             <DropdownMenuPortal>
                                 <DropdownMenuSubContent className='bg-brand-sidebar border-nav-border text-brand-primary space-y-2'>
-                                    <DropdownMenuItem
-                                        className='cursor-pointer'
-                                        onClick={() =>
-                                            openMarkProject({
-                                                ...modalParams,
-                                                projectStatus: "COMPLETED",
-                                            })
-                                        }>
-                                        <span>Mark as Completed</span>
-                                    </DropdownMenuItem>
-
-                                    <DropdownMenuItem
-                                        className='cursor-pointer'
-                                        onClick={() =>
-                                            openMarkProject({
-                                                ...modalParams,
-                                                projectStatus: "ARCHIVED",
-                                            })
-                                        }>
-                                        <span>Mark as Archived</span>
-                                    </DropdownMenuItem>
-
-                                    <DropdownMenuItem
-                                        className='cursor-pointer'
-                                        onClick={() =>
-                                            openMarkProject({
-                                                ...modalParams,
-                                                projectStatus: "ACTIVE",
-                                            })
-                                        }>
-                                        <span>Mark as Active</span>
-                                    </DropdownMenuItem>
+                                    {markLabels.map(mark => (
+                                        <DropdownMenuItem
+                                            key={mark.value}
+                                            className='cursor-pointer'
+                                            onClick={() =>
+                                                openModal("markProject", {
+                                                    ...modalParams,
+                                                    projectStatus: mark.value,
+                                                })
+                                            }>
+                                            <span>{mark.label}</span>
+                                        </DropdownMenuItem>
+                                    ))}
                                 </DropdownMenuSubContent>
                             </DropdownMenuPortal>
                         </DropdownMenuSub>
@@ -121,7 +106,6 @@ function ProjectOptions({
                 {projectRole === "OWNER" && (
                     <DropdownMenuItem
                         className='cursor-pointer text-destructive'
-                        // onClick={() => openDeleteProject(modalParams)}
                         onClick={() =>
                             openModal("deleteProject", { ...modalParams })
                         }>

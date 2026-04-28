@@ -1,6 +1,5 @@
 import { useUpdateMemberRole } from "@/hooks/useProjects";
-import type { ProjectRole } from "@/lib/apiTypes";
-import type { MemberShape } from "@/lib/types";
+import { useModalStore } from "@/store/useModalStore";
 import Button from "../common/Button";
 import FormContentWrapper from "../common/FormContentWrapper";
 import {
@@ -12,40 +11,32 @@ import {
     DialogTitle,
 } from "../ui/dialog";
 
-type EditMemberProps = {
-    editMemberInfo: {
-        userToBeEdited: MemberShape;
-        project: { name: string; id: string };
-    };
-    memberRoleToEdit: ProjectRole;
-    isOpen: boolean;
-    onClose: () => void;
-};
-
-function EditMemberModal({
-    isOpen,
-    onClose,
-    editMemberInfo,
-    memberRoleToEdit,
-}: EditMemberProps) {
+function EditMemberModal() {
     const updateMemberRoleMutation = useUpdateMemberRole();
+    const { modalData, closeModal } = useModalStore();
 
-    const {
-        userToBeEdited: { user },
-        project: { id },
-    } = editMemberInfo;
+    const { projectId, projectName, memberInfo, projectRole } = modalData;
+
+    if (!projectId || !projectName || !memberInfo || !projectRole)
+        return <div>Something went wrong :(</div>;
 
     function onDelete() {
+        if (!projectId || !projectName || !memberInfo || !projectRole) return;
+
         updateMemberRoleMutation.mutate(
-            { projectId: id, role: memberRoleToEdit, userIdToUpdate: user.id },
             {
-                onSuccess: () => onClose(),
+                projectId,
+                role: projectRole,
+                userIdToUpdate: memberInfo.user.id,
+            },
+            {
+                onSuccess: () => closeModal(),
             }
         );
     }
 
     return (
-        <Dialog open={isOpen} onOpenChange={onClose}>
+        <Dialog open={true} onOpenChange={closeModal}>
             <FormContentWrapper>
                 <DialogHeader className='border-b border-brand-primary/10'>
                     <DialogTitle className="text-xl font-bold text-brand-primary'">
@@ -58,8 +49,9 @@ function EditMemberModal({
                 </DialogHeader>
 
                 <p className='font-semibold italic text-center'>
-                    This action will make "{user.firstName}" the OWNER of this
-                    project and demote you to "MEMBER" ?
+                    This action will make "
+                    {memberInfo.user.username || memberInfo.user.firstName}" the
+                    OWNER of this project and demote you to "MEMBER" ?
                 </p>
 
                 <DialogFooter className='flex gap-3'>

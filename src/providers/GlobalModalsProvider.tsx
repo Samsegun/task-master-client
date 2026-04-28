@@ -1,7 +1,3 @@
-import AddMemberModal from "@/components/modal/AddMemberModal";
-import DeleteMemberModal from "@/components/modal/DeleteMemberModal";
-import EditMemberModal from "@/components/modal/EditMemberModal";
-import MarkProjectArchive from "@/components/modal/MarkProject";
 import { GlobalModalsContext } from "@/hooks/useGlobalModals";
 import type { Task } from "@/lib/apiTypes";
 import type {
@@ -173,38 +169,38 @@ function GlobalModalsProvider({ children }: { children: ReactNode }) {
                 />
             )} */}
 
-            {markProject && (
+            {/* {markProject && (
                 <MarkProjectArchive
                     project={markProject}
                     isOpen={true}
                     onClose={() => setMarkProject(null)}
                 />
-            )}
+            )} */}
 
-            {addMemberProjectId && (
+            {/* {addMemberProjectId && (
                 <AddMemberModal
                     projectId={addMemberProjectId}
                     isOpen={true}
                     onClose={() => setAddMemberProjectId(null)}
                 />
-            )}
+            )} */}
 
-            {editableMember?.userToBeEdited.user && (
+            {/* {editableMember?.userToBeEdited.user && (
                 <EditMemberModal
                     editMemberInfo={editableMember}
                     memberRoleToEdit={editableMember.memberRoleToEdit!}
                     isOpen={isEditMemberOpen}
                     onClose={() => setEditMemberOpen(false)}
                 />
-            )}
+            )} */}
 
-            {editableMember?.userToBeEdited.user && (
+            {/* {editableMember?.userToBeEdited.user && (
                 <DeleteMemberModal
                     deleteMemberInfo={editableMember}
                     isOpen={isRemoveMemberOpen}
                     onClose={() => setRemoveMemberOpen(false)}
                 />
-            )}
+            )} */}
         </GlobalModalsContext.Provider>
     );
 }

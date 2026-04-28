@@ -1,6 +1,6 @@
-import { useGlobalModals } from "@/hooks/useGlobalModals";
 import type { Project, ProjectRole } from "@/lib/apiTypes";
 import { formatDate } from "@/lib/utils";
+import { useModalStore } from "@/store/useModalStore";
 import { MoreVertical, Plus } from "lucide-react";
 import { useMemo } from "react";
 import Button from "../common/Button";
@@ -21,7 +21,7 @@ type MembersTabTableProps = {
 const membersTableHeaders = ["name", "joined", "role", ""];
 
 function MembersTabTable({ project, projectRole }: MembersTabTableProps) {
-    const { openAddMember, handleProjectMember } = useGlobalModals();
+    const openModal = useModalStore(state => state.openModal);
 
     const sortedMembersByOwner = useMemo(
         () =>
@@ -43,7 +43,9 @@ function MembersTabTable({ project, projectRole }: MembersTabTableProps) {
                     <Button
                         variant={"primary"}
                         className={`flex items-center gap-2`}
-                        onClick={() => openAddMember(project.id)}>
+                        onClick={() =>
+                            openModal("addMember", { projectId: project.id })
+                        }>
                         <Plus size={30} />
 
                         <span>Add Member</span>
@@ -130,17 +132,16 @@ function MembersTabTable({ project, projectRole }: MembersTabTableProps) {
                                                         <DropdownMenuItem
                                                             className='cursor-pointer'
                                                             onClick={() =>
-                                                                handleProjectMember(
+                                                                openModal(
+                                                                    "editProjectMember",
                                                                     {
-                                                                        userToBeEdited:
+                                                                        projectId:
+                                                                            project.id,
+                                                                        projectName:
+                                                                            project.name,
+                                                                        memberInfo:
                                                                             member,
-                                                                        project:
-                                                                            {
-                                                                                id: project.id,
-                                                                                name: project.name,
-                                                                            },
-                                                                        action: "EDIT",
-                                                                        memberRoleToEdit:
+                                                                        projectRole:
                                                                             "OWNER",
                                                                     }
                                                                 )
@@ -156,20 +157,19 @@ function MembersTabTable({ project, projectRole }: MembersTabTableProps) {
                                                         <DropdownMenuItem
                                                             className='cursor-pointer text-red-500
                                                  hover:text-red-700'
-                                                            onClick={() => {
-                                                                handleProjectMember(
+                                                            onClick={() =>
+                                                                openModal(
+                                                                    "removeProjectMember",
                                                                     {
-                                                                        userToBeEdited:
+                                                                        projectId:
+                                                                            project.id,
+                                                                        projectName:
+                                                                            project.name,
+                                                                        memberInfo:
                                                                             member,
-                                                                        project:
-                                                                            {
-                                                                                id: project.id,
-                                                                                name: project.name,
-                                                                            },
-                                                                        action: "REMOVE",
                                                                     }
-                                                                );
-                                                            }}>
+                                                                )
+                                                            }>
                                                             <span>
                                                                 Remove Member
                                                             </span>

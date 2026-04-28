@@ -1,6 +1,7 @@
 import AppProviders from "@/providers/AppProviders";
 import { Toaster } from "react-hot-toast";
 import { Outlet } from "react-router";
+import ModalRegistry from "../modal/ModalRegistry";
 
 export function ProvidersLayout() {
     return (
@@ -25,6 +26,8 @@ export function ProvidersLayout() {
                     },
                 }}
             />
+
+            <ModalRegistry />
 
             <Outlet />
         </AppProviders>

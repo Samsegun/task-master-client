@@ -1,5 +1,6 @@
 import { useAddProjectMember } from "@/hooks/useProjects";
 import { addProjectMember } from "@/lib/formValidations";
+import { useModalStore } from "@/store/useModalStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleAlert } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
@@ -30,16 +31,11 @@ import {
     SelectValue,
 } from "../ui/select";
 
-type AddMemberProps = {
-    projectId: string | undefined;
-    isOpen: boolean;
-    onClose: () => void;
-};
-
 type AddMemberFormData = z.input<typeof addProjectMember>;
 
-function AddMemberModal({ projectId, isOpen, onClose }: AddMemberProps) {
-    const addMemberMutation = useAddProjectMember(projectId!);
+function AddMemberModal() {
+    const { modalData, closeModal } = useModalStore();
+    const addMemberMutation = useAddProjectMember(modalData?.projectId!);
     const form = useForm<AddMemberFormData>({
         resolver: zodResolver(addProjectMember),
         defaultValues: {
@@ -54,13 +50,13 @@ function AddMemberModal({ projectId, isOpen, onClose }: AddMemberProps) {
         addMemberMutation.mutate(data, {
             onSuccess: () => {
                 form.reset();
-                onClose();
+                closeModal();
             },
         });
     }
 
     return (
-        <Dialog open={isOpen} onOpenChange={onClose}>
+        <Dialog open={true} onOpenChange={closeModal}>
             {/* form */}
             <form
                 id='add-member'

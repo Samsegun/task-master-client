@@ -1,5 +1,5 @@
 import { useUpdateProject } from "@/hooks/useProjects";
-import type { ProjectStatus } from "@/lib/types";
+import { useModalStore } from "@/store/useModalStore";
 import Button from "../common/Button";
 import {
     Dialog,
@@ -11,35 +11,26 @@ import {
     DialogTitle,
 } from "../ui/dialog";
 
-type MarkProjectProps = {
-    project: {
-        projectId: string;
-        projectName: string;
-        projectStatus: ProjectStatus;
-    };
-    isOpen: boolean;
-    onClose: () => void;
-};
-
-function MarkProject({ project, isOpen, onClose }: MarkProjectProps) {
+function MarkProject() {
     const updateProjectMutation = useUpdateProject();
+    const { modalData, closeModal } = useModalStore();
 
-    const { projectStatus, projectId, projectName } = project;
+    const { projectStatus, projectId, projectName } = modalData;
 
     function onMarkProject() {
         updateProjectMutation.mutate(
             {
-                projectId: projectId,
+                projectId: projectId!,
                 payLoad: { status: projectStatus },
             },
             {
-                onSuccess: () => onClose(),
+                onSuccess: () => closeModal(),
             }
         );
     }
 
     return (
-        <Dialog open={isOpen} onOpenChange={onClose}>
+        <Dialog open={true} onOpenChange={closeModal}>
             <DialogContent className='bg-brand-modal rounded-lg border border-nav-border space-y-4'>
                 <DialogHeader className='border-b border-brand-primary/10'>
                     <DialogTitle className="text-xl font-bold text-brand-primary'">
