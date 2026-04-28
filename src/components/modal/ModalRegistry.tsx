@@ -1,5 +1,6 @@
 import { useModalStore } from "@/store/useModalStore";
 import AddMemberModal from "./AddMemberModal";
+import CreateProjectModal from "./CreateProjectModal";
 import CreateTaskModal from "./CreateTaskModal";
 import DeleteMemberModal from "./DeleteMemberModal";
 import DeleteProjectModal from "./DeleteProjectModal";
@@ -15,13 +16,16 @@ function ModalRegistry() {
 
     return (
         <>
-            {type === "createTask" && <CreateTaskModal />}
+            {type === "createProject" && <CreateProjectModal />}
             {type === "editProject" && <EditProjectModal />}
             {type === "leaveProject" && <LeaveProjectModal />}
-            {type === "editTask" && <EditTaskModal />}
-            {type === "deleteTask" && <DeleteTaskModal />}
             {type === "deleteProject" && <DeleteProjectModal />}
             {type === "markProject" && <MarkProject />}
+
+            {type === "createTask" && <CreateTaskModal />}
+            {type === "editTask" && <EditTaskModal />}
+            {type === "deleteTask" && <DeleteTaskModal />}
+
             {type === "addMember" && <AddMemberModal />}
             {type === "editProjectMember" && <EditMemberModal />}
             {type === "removeProjectMember" && <DeleteMemberModal />}

@@ -1,5 +1,5 @@
-import { useCreateProjectModal } from "@/hooks/useProjectModals";
 import { navLinks, navLinksBaseClasses } from "@/lib/navLinks";
+import { useModalStore } from "@/store/useModalStore";
 import { PanelLeft, PanelRight, Plus } from "lucide-react";
 import { Link, NavLink } from "react-router";
 import Button from "../common/Button";
@@ -11,7 +11,7 @@ interface SidebarProps {
 }
 
 function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
-    const { openCreateProject } = useCreateProjectModal();
+    const openModal = useModalStore(state => state.openModal);
 
     return (
         <aside
@@ -91,7 +91,7 @@ function Sidebar({ isCollapsed, setIsCollapsed }: SidebarProps) {
                     className={`flex items-center gap-2 ${
                         isCollapsed ? "" : "justify-center"
                     }`}
-                    onClick={() => openCreateProject()}>
+                    onClick={() => openModal("createProject")}>
                     <Plus size={30} />
 
                     {!isCollapsed && <span>New Project</span>}

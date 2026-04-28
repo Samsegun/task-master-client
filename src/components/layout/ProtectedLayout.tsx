@@ -5,7 +5,7 @@ import DesktopHeaderMenu from "../common/DesktopHeaderMenu";
 import LoadingIcon from "../common/LoadingIcon";
 import Navbar from "./Navbar";
 
-function RootLayout() {
+function ProtectedLayout() {
     const [isCollapsed, setIsCollapsed] = useState(false);
     const { isLoading, isAuthenticated, isError, logout, user } =
         useAuthStatus();
@@ -57,4 +57,4 @@ function RootLayout() {
     );
 }
 
-export default RootLayout;
+export default ProtectedLayout;

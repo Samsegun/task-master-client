@@ -1,6 +1,6 @@
+import AppLayout from "@/components/layout/AppLayout";
 import AuthRoutes from "@/components/layout/AuthRoutes";
-import { ProvidersLayout } from "@/components/layout/ProvidersLayout";
-import RootLayout from "@/components/layout/RootLayout";
+import ProtectedLayout from "@/components/layout/ProtectedLayout";
 import ForgotPassword from "@/pages/auth/ForgotPassword";
 import Login from "@/pages/auth/Login";
 import Register from "@/pages/auth/Register";
@@ -17,8 +17,8 @@ import { createRoutesFromElements, Navigate, Route } from "react-router";
 import RouterErrorFallback from "./RouterErrorFallback";
 
 const AppRoutes = createRoutesFromElements(
-    <Route element={<ProvidersLayout />} errorElement={<RouterErrorFallback />}>
-        <Route element={<RootLayout />}>
+    <Route element={<AppLayout />} errorElement={<RouterErrorFallback />}>
+        <Route element={<ProtectedLayout />}>
             <Route index element={<Navigate to='dashboard' />} />
 
             <Route path='dashboard' element={<Dashboard />} />

@@ -3,9 +3,9 @@ import PageTitle from "@/components/common/PageTitle";
 import ProjectCard from "@/components/common/ProjectCard";
 import Tabs from "@/components/common/Tabs";
 import { ProjectsSkeleton } from "@/components/LoadingSkeletons/AppSkeletons";
-import { useCreateProjectModal } from "@/hooks/useProjectModals";
 import { useGetProjects } from "@/hooks/useProjects";
 import type { Statuses } from "@/lib/types";
+import { useModalStore } from "@/store/useModalStore";
 import { FolderKanban, Plus } from "lucide-react";
 import { useState } from "react";
 
@@ -16,7 +16,7 @@ function Projects() {
         limit: 5,
     });
     const [activeTab, setActiveTab] = useState<Statuses>("all");
-    const { openCreateProject } = useCreateProjectModal();
+    const openModal = useModalStore(state => state.openModal);
 
     if (isError) {
         return <div>Something went wrong :( {error?.message}</div>;
@@ -40,7 +40,7 @@ function Projects() {
                     variant={"primary"}
                     disabled={isLoading}
                     className={`flex items-center gap-2`}
-                    onClick={() => openCreateProject()}>
+                    onClick={() => openModal("createProject")}>
                     <Plus size={30} />
                     <span>New Project</span>
                 </Button>

@@ -1,7 +1,7 @@
 import { Table, TableBody, TableHeader, TableRow } from "@/components/ui/table";
-import { useCreateProjectModal } from "@/hooks/useProjectModals";
 import { useGetProjects } from "@/hooks/useProjects";
 import { formatDate } from "@/lib/utils";
+import { useModalStore } from "@/store/useModalStore";
 import { FolderKanban } from "lucide-react";
 import { useNavigate } from "react-router";
 import StatusBadge from "../common/StatusBadge";
@@ -14,7 +14,7 @@ const headers = ["project", "status", "due date", "progress"];
 function DashboardProjectsTable() {
     const { userProjects, isLoading, isError, customErr } = useGetProjects();
     const navigate = useNavigate();
-    const { openCreateProject } = useCreateProjectModal();
+    const openModal = useModalStore(state => state.openModal);
 
     if (isError) return <div>Something went wrong :( {customErr?.message}</div>;
 
@@ -56,7 +56,9 @@ function DashboardProjectsTable() {
                                     Create your{" "}
                                     <button
                                         className='text-white cursor-pointer'
-                                        onClick={openCreateProject}>
+                                        onClick={() =>
+                                            openModal("createProject")
+                                        }>
                                         first project
                                     </button>{" "}
                                     to get started

@@ -1,5 +1,6 @@
 import { useCreateProject } from "@/hooks/useProjects";
 import { createProject } from "@/lib/formValidations";
+import { useModalStore } from "@/store/useModalStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CircleAlert } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
@@ -17,18 +18,12 @@ import {
 import { Field, FieldError, FieldGroup, FieldLabel } from "../ui/field";
 import { Input } from "../ui/input";
 
-type CreateProjectProps = {
-    openNewProject: boolean;
-    setOpenNewProject: (open: boolean) => void;
-};
-
 type CreateProjectFormData = z.input<typeof createProject>;
 
-function CreateProjectModal({
-    openNewProject,
-    setOpenNewProject,
-}: CreateProjectProps) {
+function CreateProjectModal() {
     const createProjectMutation = useCreateProject();
+    const closeModal = useModalStore(state => state.closeModal);
+
     const form = useForm<CreateProjectFormData>({
         resolver: zodResolver(createProject),
         defaultValues: {
@@ -41,13 +36,13 @@ function CreateProjectModal({
         createProjectMutation.mutate(data, {
             onSuccess: () => {
                 form.reset();
-                setOpenNewProject(false);
+                closeModal();
             },
         });
     }
 
     return (
-        <Dialog open={openNewProject} onOpenChange={setOpenNewProject}>
+        <Dialog open={true} onOpenChange={closeModal}>
             {/* form */}
             <form
                 id='create-project'

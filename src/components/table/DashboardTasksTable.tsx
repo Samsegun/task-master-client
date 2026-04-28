@@ -1,7 +1,7 @@
 import { Table, TableBody, TableHeader, TableRow } from "@/components/ui/table";
-import { useGlobalModals } from "@/hooks/useGlobalModals";
 import { useGetMyTasks } from "@/hooks/useTasks";
 import { formatDate } from "@/lib/utils";
+import { useModalStore } from "@/store/useModalStore";
 import { CheckCircle } from "lucide-react";
 import { Fragment, useState } from "react";
 import Button from "../common/Button";
@@ -14,7 +14,7 @@ const headers = ["task", "project", "due date", "status"];
 function DashboardTasksTable() {
     const { myTasks, isLoading, isError, customErr } = useGetMyTasks();
     const [expandedTaskId, setExpandedTaskId] = useState<string | null>(null);
-    const { openEdit } = useGlobalModals();
+    const openModal = useModalStore(state => state.openModal);
 
     if (isError) return <div>Something went wrong :( {customErr?.message}</div>;
 
@@ -163,7 +163,16 @@ function DashboardTasksTable() {
                                                         variant={"primary"}
                                                         onClick={e => {
                                                             e.stopPropagation();
-                                                            openEdit({ task });
+                                                            openModal(
+                                                                "editTask",
+                                                                {
+                                                                    task,
+                                                                    projectMembers:
+                                                                        task
+                                                                            .project
+                                                                            .members,
+                                                                }
+                                                            );
                                                         }}
                                                         className='bg-blue-600 hover:bg-blue-700'>
                                                         Edit Task

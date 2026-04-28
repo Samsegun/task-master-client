@@ -1,6 +1,6 @@
-import { useGlobalModals } from "@/hooks/useGlobalModals";
 import type { TaskPriority, Tasks, TaskStatus } from "@/lib/apiTypes";
 import { formatDate, isOverdue } from "@/lib/utils";
+import { useModalStore } from "@/store/useModalStore";
 import { Calendar, CheckCircle, FolderKanban } from "lucide-react";
 import { useState } from "react";
 import { Fragment } from "react/jsx-runtime";
@@ -26,7 +26,8 @@ function MyTasksTable({
     filterPriority,
     isLoading,
 }: MyTasksTableProps) {
-    const { openEdit } = useGlobalModals();
+    const openModal = useModalStore(state => state.openModal);
+
     const [expandedTaskId, setExpandedTaskId] = useState<string | null>(null);
 
     return (
@@ -223,7 +224,16 @@ function MyTasksTable({
                                                         variant={"primary"}
                                                         onClick={e => {
                                                             e.stopPropagation();
-                                                            openEdit({ task });
+                                                            openModal(
+                                                                "editTask",
+                                                                {
+                                                                    task,
+                                                                    projectMembers:
+                                                                        task
+                                                                            .project
+                                                                            .members,
+                                                                }
+                                                            );
                                                         }}
                                                         className='bg-blue-600 hover:bg-blue-700'>
                                                         Edit Task

@@ -1,11 +1,11 @@
-import AppProviders from "@/providers/AppProviders";
+// import AppProviders from "@/providers/AppProviders";
 import { Toaster } from "react-hot-toast";
 import { Outlet } from "react-router";
 import ModalRegistry from "../modal/ModalRegistry";
 
-export function ProvidersLayout() {
+function AppLayout() {
     return (
-        <AppProviders>
+        <>
             <Toaster
                 position='top-center'
                 gutter={12}
@@ -30,6 +30,8 @@ export function ProvidersLayout() {
             <ModalRegistry />
 
             <Outlet />
-        </AppProviders>
+        </>
     );
 }
+
+export default AppLayout;
