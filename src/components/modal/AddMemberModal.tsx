@@ -61,7 +61,7 @@ function AddMemberModal() {
             <form
                 id='add-member'
                 onSubmit={form.handleSubmit(onSubmit)}
-                className='space-y-6 p-6'>
+                className='space-y-6'>
                 <FormContentWrapper>
                     <DialogHeader className='border-b border-brand-primary/10'>
                         <DialogTitle className="text-xl font-bold text-brand-primary'">

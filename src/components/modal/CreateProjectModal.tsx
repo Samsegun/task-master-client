@@ -47,7 +47,7 @@ function CreateProjectModal() {
             <form
                 id='create-project'
                 onSubmit={form.handleSubmit(onSubmit)}
-                className='space-y-6 p-6'>
+                className='space-y-6'>
                 <FormContentWrapper>
                     <DialogHeader className='border-b border-brand-primary/10'>
                         <DialogTitle className="text-xl font-bold text-brand-primary'">
@@ -56,9 +56,10 @@ function CreateProjectModal() {
 
                         {/* accessible description referenced by DialogContent */}
                         <DialogDescription className='sr-only'>
-                            Creak task for members on this project
+                            Create a new project
                         </DialogDescription>
                     </DialogHeader>
+
                     <FieldGroup>
                         {/* project name */}
                         <Controller
