@@ -1,20 +1,28 @@
+import { lazy } from "react";
+import { createRoutesFromElements, Navigate, Route } from "react-router";
+
+// eager components
 import AppLayout from "@/components/layout/AppLayout";
 import AuthRoutes from "@/components/layout/AuthRoutes";
 import ProtectedLayout from "@/components/layout/ProtectedLayout";
-import ForgotPassword from "@/pages/auth/ForgotPassword";
-import Login from "@/pages/auth/Login";
-import Register from "@/pages/auth/Register";
-import ResetPassword from "@/pages/auth/ResetPassword";
-import VerificationEmailSent from "@/pages/auth/VerificationEmailSent";
-import VerifyEmail from "@/pages/auth/VerifyEmail";
-import Dashboard from "@/pages/dashboard/Dashboard";
-import NotFound from "@/pages/NotFound";
-import Profile from "@/pages/profile/Profile";
-import ProjectDetails from "@/pages/projects/ProjectDetails";
-import Projects from "@/pages/projects/Projects";
-import Tasks from "@/pages/tasks/Tasks";
-import { createRoutesFromElements, Navigate, Route } from "react-router";
 import RouterErrorFallback from "./RouterErrorFallback";
+
+const ForgotPassword = lazy(() => import("@/pages/auth/ForgotPassword"));
+const Login = lazy(() => import("@/pages/auth/Login"));
+const Register = lazy(() => import("@/pages/auth/Register"));
+const ResetPassword = lazy(() => import("@/pages/auth/ResetPassword"));
+const VerificationEmailSent = lazy(
+    () => import("@/pages/auth/VerificationEmailSent")
+);
+const VerifyEmail = lazy(() => import("@/pages/auth/VerifyEmail"));
+
+// lazy components
+const Dashboard = lazy(() => import("@/pages/dashboard/Dashboard"));
+const NotFound = lazy(() => import("@/pages/NotFound"));
+const Profile = lazy(() => import("@/pages/profile/Profile"));
+const ProjectDetails = lazy(() => import("@/pages/projects/ProjectDetails"));
+const Projects = lazy(() => import("@/pages/projects/Projects"));
+const Tasks = lazy(() => import("@/pages/tasks/Tasks"));
 
 const AppRoutes = createRoutesFromElements(
     <Route element={<AppLayout />} errorElement={<RouterErrorFallback />}>

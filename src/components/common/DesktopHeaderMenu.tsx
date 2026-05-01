@@ -45,7 +45,9 @@ function DesktopHeaderMenu({
         <div className='flex justify-between items-center px-6 xl:px-3 max-w-5xl mx-auto'>
             <PageTitle>
                 Good {getGreeting()},{" "}
-                <span className='capitalize'>{user?.username}</span>
+                <span className='capitalize'>
+                    {user?.username || user?.firstName}
+                </span>
             </PageTitle>
 
             <div className='hidden md:block'>

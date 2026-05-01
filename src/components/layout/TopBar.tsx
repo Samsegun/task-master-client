@@ -40,12 +40,6 @@ function TopBar() {
                                 className='flex-1 overflow-y-hidden p-4 md:pt-6 
              flex flex-col justify-between'>
                                 <div className='space-y-10'>
-                                    {/* <Avatar
-                                        name='Sophia willson'
-                                        occupation='product manager'
-                                        src='xxxxx'
-                                    /> */}
-
                                     <nav className='space-y-7'>
                                         {navLinks.map(({ Icon, label, to }) => (
                                             <NavLink

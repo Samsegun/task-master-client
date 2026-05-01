@@ -1,6 +1,7 @@
-// import AppProviders from "@/providers/AppProviders";
+import { Suspense } from "react";
 import { Toaster } from "react-hot-toast";
 import { Outlet } from "react-router";
+import LoadingIcon from "../common/LoadingIcon";
 import ModalRegistry from "../modal/ModalRegistry";
 
 function AppLayout() {
@@ -29,7 +30,9 @@ function AppLayout() {
 
             <ModalRegistry />
 
-            <Outlet />
+            <Suspense fallback={<LoadingIcon />}>
+                <Outlet />
+            </Suspense>
         </>
     );
 }
