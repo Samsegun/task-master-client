@@ -41,6 +41,7 @@ export type VerifyEmail = {
         isVerified: boolean;
         verificationToken: string;
     };
+    // invitationToken: string | null;
 };
 
 export type ForgotPassword = Omit<RegisterUser, "user">;
@@ -50,7 +51,8 @@ export type ResetPassword = Omit<RegisterUser, "user">;
 export type RegisterUserCredentials = {
     email: string;
     password: string;
-    username: string;
+    invitationToken?: string;
+    // username: string;
 };
 
 export type LoginUserCredentials = {
@@ -190,6 +192,20 @@ export type CreateProject = {
         id: string;
         name: string;
     };
+};
+
+export type AcceptInvitation = {
+    success: boolean;
+    message: string;
+    data: {
+        id: string;
+        name: string;
+    };
+};
+
+export type DeclineInvitation = {
+    success: boolean;
+    message: string;
 };
 
 export type UpdateProject = {

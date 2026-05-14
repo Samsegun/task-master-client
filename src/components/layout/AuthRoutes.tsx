@@ -8,13 +8,6 @@ function AuthRoutes() {
     const { isLoading, isAuthenticated } = useAuthStatus();
     const location = useLocation();
 
-    // useEffect(() => {
-    //     if (isError) {
-    //         console.log(error);
-    //         toast.error(customErr?.message || "Authentication failed");
-    //     }
-    // }, [isError, error, customErr]);
-
     const from = location.state?.from?.pathname || "/";
 
     if (isLoading) {
@@ -28,17 +21,18 @@ function AuthRoutes() {
     return (
         <div>
             <Header>
-                <div className='flex items-center'>
+                <div className="flex items-center">
                     <Logo />
 
-                    <span className='text-xl font-bold'>TaskMaster</span>
+                    <span className="text-xl font-bold">TaskMaster</span>
                 </div>
             </Header>
 
             <main
-                className='min-h-screen flex items-center
-                 justify-center'>
-                <section className='min-w-72 xl:min-w-sm'>
+                className="min-h-screen flex items-center
+                 justify-center"
+            >
+                <section className="min-w-72 xl:min-w-sm">
                     <Outlet />
                 </section>
             </main>

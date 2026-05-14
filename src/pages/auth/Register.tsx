@@ -13,41 +13,43 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff, Info } from "lucide-react";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { Link } from "react-router";
+import { Link, useSearchParams } from "react-router";
 import * as z from "zod";
 
 function Register() {
     const [showPassword, setShowPassword] = useState(false);
     const [showPasswordReqs, setShowPasswordReqs] = useState(false);
+
     const signupMutation = useRegisterUser();
+
+    const [searchParams] = useSearchParams();
+    const invitationToken = searchParams.get("invitationToken") || undefined;
 
     const form = useForm<z.infer<typeof registerUserForm>>({
         resolver: zodResolver(registerUserForm),
         defaultValues: {
             email: "",
             password: "",
-            username: "",
         },
     });
 
     function onSubmit(data: z.infer<typeof registerUserForm>) {
-        const { email, password, username } = data;
+        const { email, password } = data;
 
-        // console.log({ email, password, username });
-
-        signupMutation.mutate({ email, password, username });
+        signupMutation.mutate({ email, password, invitationToken });
     }
 
     return (
         <>
-            <div className='text-center'>
-                <h1 className='text-3xl font-extrabold'>Create your account</h1>
+            <div className="text-center">
+                <h1 className="text-3xl font-extrabold">Create your account</h1>
 
                 <p>
                     or{" "}
                     <span
-                        className='font-medium text-brand-link text-sm
-                         hover:text-brand-link/90'>
+                        className="font-medium text-brand-link text-sm
+                         hover:text-brand-link/90"
+                    >
                         <Link to={"/login"}>
                             Log in if you already have an account{" "}
                         </Link>
@@ -56,25 +58,26 @@ function Register() {
             </div>
 
             <form
-                id='register-user'
+                id="register-user"
                 onSubmit={form.handleSubmit(onSubmit)}
-                className='mt-8 space-y-6'>
+                className="mt-8 space-y-6"
+            >
                 <FieldGroup>
                     {" "}
                     <Controller
-                        name='email'
+                        name="email"
                         control={form.control}
                         render={({ field, fieldState }) => (
                             <Field data-invalid={fieldState.invalid}>
-                                <FieldLabel htmlFor='register-user-email'>
+                                <FieldLabel htmlFor="register-user-email">
                                     Email
                                 </FieldLabel>
                                 <Input
                                     {...field}
-                                    id='register-user-email'
+                                    id="register-user-email"
                                     aria-invalid={fieldState.invalid}
-                                    placeholder='user@mail.com'
-                                    autoComplete='off'
+                                    placeholder="user@mail.com"
+                                    autoComplete="off"
                                 />
                                 {fieldState.invalid && (
                                     <FieldError errors={[fieldState.error]} />
@@ -82,7 +85,7 @@ function Register() {
                             </Field>
                         )}
                     />
-                    <Controller
+                    {/* <Controller
                         name='username'
                         control={form.control}
                         render={({ field, fieldState }) => (
@@ -103,35 +106,36 @@ function Register() {
                                 )}
                             </Field>
                         )}
-                    />
+                    /> */}
                     <Controller
-                        name='password'
+                        name="password"
                         control={form.control}
                         render={({ field, fieldState }) => (
                             <Field data-invalid={fieldState.invalid}>
-                                <FieldLabel htmlFor='register-user-password'>
+                                <FieldLabel htmlFor="register-user-password">
                                     Password
                                 </FieldLabel>
 
-                                <div className='relative'>
+                                <div className="relative">
                                     <Input
                                         {...field}
-                                        id='register-user-password'
+                                        id="register-user-password"
                                         aria-invalid={fieldState.invalid}
-                                        placeholder='password'
+                                        placeholder="password"
                                         type={
                                             showPassword ? "text" : "password"
                                         }
-                                        autoComplete='off'
+                                        autoComplete="off"
                                     />
 
                                     <button
-                                        type='button'
+                                        type="button"
                                         onClick={() =>
                                             setShowPassword(!showPassword)
                                         }
-                                        className='absolute inset-y-0 right-3 flex items-center text-sm
-                                         text-brand-gray hover:cursor-pointer hover:text-brand-gray/80 '>
+                                        className="absolute inset-y-0 right-3 flex items-center text-sm
+                                         text-brand-gray hover:cursor-pointer hover:text-brand-gray/80 "
+                                    >
                                         {showPassword ? <EyeOff /> : <Eye />}
                                     </button>
                                 </div>
@@ -144,10 +148,11 @@ function Register() {
                     />
                     <div>
                         <button
-                            type='button'
-                            aria-label='Show password requirements'
-                            className='flex gap-2 hover:cursor-pointer'
-                            onClick={() => setShowPasswordReqs(req => !req)}>
+                            type="button"
+                            aria-label="Show password requirements"
+                            className="flex gap-2 hover:cursor-pointer"
+                            onClick={() => setShowPasswordReqs((req) => !req)}
+                        >
                             <Info />
                             <span>Password requirements:</span>
                         </button>
@@ -161,11 +166,12 @@ function Register() {
                 </FieldGroup>
 
                 <Button
-                    type='submit'
+                    type="submit"
                     disabled={signupMutation.isPending}
-                    form='register-user'
+                    form="register-user"
                     variant={"primary"}
-                    className='w-full mt-4'>
+                    className="w-full mt-4"
+                >
                     {signupMutation.isPending
                         ? "Creating account..."
                         : "Create account"}

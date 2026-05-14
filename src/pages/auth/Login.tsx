@@ -40,14 +40,15 @@ function Login() {
 
     return (
         <>
-            <div className='text-center'>
-                <h1 className='text-3xl font-extrabold'>Login</h1>
+            <div className="text-center">
+                <h1 className="text-3xl font-extrabold">Login</h1>
 
                 <p>
                     or{" "}
                     <span
-                        className='font-medium text-brand-link text-sm
-                         hover:text-brand-link/90'>
+                        className="font-medium text-brand-link text-sm
+                         hover:text-brand-link/90"
+                    >
                         <Link to={"/register"}>
                             create an account if you don't have one
                         </Link>
@@ -56,24 +57,25 @@ function Login() {
             </div>
 
             <form
-                id='login-user'
+                id="login-user"
                 onSubmit={form.handleSubmit(onSubmit)}
-                className='mt-8 space-y-6'>
+                className="mt-8 space-y-6"
+            >
                 <FieldGroup>
                     <Controller
-                        name='emailOrusername'
+                        name="emailOrusername"
                         control={form.control}
                         render={({ field, fieldState }) => (
                             <Field data-invalid={fieldState.invalid}>
-                                <FieldLabel htmlFor='login-user-email'>
+                                <FieldLabel htmlFor="login-user-email">
                                     Email or Username
                                 </FieldLabel>
                                 <Input
                                     {...field}
-                                    id='login-user-email'
+                                    id="login-user-email"
                                     aria-invalid={fieldState.invalid}
-                                    placeholder='user@mail.com'
-                                    autoComplete='off'
+                                    placeholder="user@mail.com"
+                                    autoComplete="off"
                                     disabled={!!emailFromParams}
                                 />
                                 {fieldState.invalid && (
@@ -84,34 +86,35 @@ function Login() {
                     />
 
                     <Controller
-                        name='password'
+                        name="password"
                         control={form.control}
                         render={({ field, fieldState }) => (
                             <Field data-invalid={fieldState.invalid}>
-                                <FieldLabel htmlFor='login-user-password'>
+                                <FieldLabel htmlFor="login-user-password">
                                     Password
                                 </FieldLabel>
 
-                                <div className='relative'>
+                                <div className="relative">
                                     <Input
                                         {...field}
-                                        id='login-user-password'
+                                        id="login-user-password"
                                         aria-invalid={fieldState.invalid}
-                                        placeholder='password'
+                                        placeholder="password"
                                         type={
                                             showPassword ? "text" : "password"
                                         }
-                                        autoComplete='off'
-                                        className=''
+                                        autoComplete="off"
+                                        className=""
                                     />
 
                                     <button
-                                        type='button'
+                                        type="button"
                                         onClick={() =>
                                             setShowPassword(!showPassword)
                                         }
-                                        className='absolute inset-y-0 right-3 flex items-center text-sm
-                                                                     text-brand-gray hover:cursor-pointer hover:text-brand-gray/80 '>
+                                        className="absolute inset-y-0 right-3 flex items-center text-sm
+                                                                     text-brand-gray hover:cursor-pointer hover:text-brand-gray/80 "
+                                    >
                                         {showPassword ? <EyeOff /> : <Eye />}
                                     </button>
                                 </div>
@@ -123,18 +126,19 @@ function Login() {
                     />
                 </FieldGroup>
 
-                <p className='-mt-2 text-sm'>
-                    <Link to='/forgot-password'>Forgot password?</Link>
+                <p className="-mt-2 text-sm">
+                    <Link to="/forgot-password">Forgot password?</Link>
                 </p>
 
                 <Button
-                    type='submit'
+                    type="submit"
                     disabled={signinMutation.isPending}
-                    form='login-user'
+                    form="login-user"
                     variant={"primary"}
                     className={`w-full mt-2 ${
                         signinMutation.isPending && "cursor-not-allowed"
-                    }`}>
+                    }`}
+                >
                     {signinMutation.isPending ? "Signing in..." : "Sign In"}
                 </Button>
             </form>

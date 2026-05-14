@@ -10,7 +10,7 @@ import { queryClient } from "./lib/QueryClient.ts";
 const container = document.getElementById("root");
 if (!container)
     throw new Error(
-        "Root container not found. Ensure there is a div with id 'root' in index.html."
+        "Root container not found. Ensure there is a div with id 'root' in index.html.",
     );
 
 const root = createRoot(container);
@@ -19,16 +19,17 @@ root.render(
     <StrictMode>
         <ErrorBoundary
             fallbackRender={({ error, resetErrorBoundary }) => (
-                <div role='alert'>
+                <div role="alert">
                     <ErrorFallback
                         error={error}
                         resetErrorBoundary={resetErrorBoundary}
                     />
                 </div>
-            )}>
+            )}
+        >
             <QueryClientProvider client={queryClient}>
                 <App />
             </QueryClientProvider>
         </ErrorBoundary>
-    </StrictMode>
+    </StrictMode>,
 );

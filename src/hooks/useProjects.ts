@@ -10,12 +10,15 @@ import type {
     ProjectUpdateDetails,
 } from "@/lib/types";
 import {
-    addProjectMember,
+    acceptInvitation,
+    // addProjectMember,
     createProject,
+    declineInvitation,
     deleteProject,
     getProject,
     getProjectMembers,
     getProjects,
+    inviteProjectMember,
     leaveProject,
     removeProjectMember,
     updateMemberRole,
@@ -133,7 +136,41 @@ export const useCreateProject = () => {
         },
         onError: (err: any) => {
             toast.error(
-                err.response.data.error.message || "Failed to create project"
+                err.response.data.error.message || "Failed to create project",
+            );
+        },
+    });
+};
+
+export const useAcceptInvitation = () => {
+    return useMutation({
+        mutationFn: (token: string) => acceptInvitation(token),
+        // onSuccess: (_data) => {
+        onSuccess: () => {
+            toast.success("Invitation accepted!");
+            // navigate(`/projects/${data.project.id}`);
+        },
+        onError: (err: any) => {
+            toast.error(
+                err.response.data.error.message ||
+                    "Failed to process invitation",
+            );
+        },
+    });
+};
+
+export const useDeclineInvitation = () => {
+    return useMutation({
+        mutationFn: (token: string) => declineInvitation(token),
+        // onSuccess: (_data) => {
+        onSuccess: () => {
+            toast.success("Invitation declined!");
+            // navigate(`/projects/${data.project.id}`);
+        },
+        onError: (err: any) => {
+            toast.error(
+                err.response.data.error.message ||
+                    "Failed to process invitation",
             );
         },
     });
@@ -165,7 +202,7 @@ export const useUpdateProject = () => {
         },
         onError: (err: any) => {
             toast.error(
-                err.response.data.error.message || "Failed to update project"
+                err.response.data.error.message || "Failed to update project",
             );
         },
     });
@@ -189,7 +226,7 @@ export const useDeleteProject = () => {
         },
         onError: (err: any) => {
             toast.error(
-                err.response.data.error.message || "Failed to delete project"
+                err.response.data.error.message || "Failed to delete project",
             );
         },
     });
@@ -215,44 +252,46 @@ export const useLeaveProject = () => {
         },
         onError: (err: any) => {
             toast.error(
-                err.response.data.error.message || "Failed to delete project"
+                err.response.data.error.message || "Failed to delete project",
             );
         },
     });
 };
 
 export const useAddProjectMember = (projectId: string) => {
-    const queryClient = useQueryClient();
+    // const queryClient = useQueryClient();
 
     return useMutation({
         mutationFn: (payLoad: AddMemberDetails) =>
-            addProjectMember(projectId, payLoad),
+            // addProjectMember(projectId, payLoad),
+            inviteProjectMember(projectId, payLoad),
         onSuccess: async () => {
-            await queryClient.invalidateQueries({
-                queryKey: ["projectMembers", projectId, "members"],
-            });
+            // await queryClient.invalidateQueries({
+            //     queryKey: ["projectMembers", projectId, "members"],
+            // });
 
-            await queryClient.invalidateQueries({
-                queryKey: ["project", projectId],
-            });
+            // await queryClient.invalidateQueries({
+            //     queryKey: ["project", projectId],
+            // });
 
-            await queryClient.invalidateQueries({
-                queryKey: ["projects"],
-            });
+            // await queryClient.invalidateQueries({
+            //     queryKey: ["projects"],
+            // });
 
-            await queryClient.invalidateQueries({
-                queryKey: ["tasks"],
-            });
+            // await queryClient.invalidateQueries({
+            //     queryKey: ["tasks"],
+            // });
 
-            await queryClient.invalidateQueries({
-                queryKey: ["myTasks"],
-            });
+            // await queryClient.invalidateQueries({
+            //     queryKey: ["myTasks"],
+            // });
 
-            toast.success("Project member added");
+            // toast.success("Project member added");
+            toast.success("An invitation mail has been sent to user");
         },
         onError: (err: any) => {
             toast.error(
-                err.response.data.error.message || "Failed to add Member"
+                err.response.data.error.message || "Failed to invite Member",
             );
         },
     });
@@ -295,7 +334,7 @@ export const useRemoveProjectMember = () => {
         },
         onError: (err: any) => {
             toast.error(
-                err.response.data.error.message || "Failed to remove Member"
+                err.response.data.error.message || "Failed to remove Member",
             );
         },
     });
@@ -342,7 +381,7 @@ export const useUpdateMemberRole = () => {
         onError: (err: any) => {
             toast.error(
                 err.response.data.error.message ||
-                    "Failed to update member role"
+                    "Failed to update member role",
             );
         },
     });

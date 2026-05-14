@@ -38,7 +38,7 @@ function TasksTabTable({
     const { isLoading, isError, customErr, tasks, userId } =
         useGetTasks(projectId);
     const [filterStatus, setFilterStatus] = useState<Statuses>("all");
-    const openModal = useModalStore(state => state.openModal);
+    const openModal = useModalStore((state) => state.openModal);
 
     if (isError) return <div>Something went wrong :( {customErr?.message}</div>;
 
@@ -49,12 +49,12 @@ function TasksTabTable({
         filteredTasks =
             filterStatus === "all"
                 ? filteredTasks
-                : filteredTasks.filter(t => t.status === filterStatus);
+                : filteredTasks.filter((t) => t.status === filterStatus);
     }
 
     return (
         <section>
-            <div className='flex justify-between items-start'>
+            <div className="flex justify-between items-start">
                 <Tabs
                     activeTab={filterStatus}
                     setActiveTab={setFilterStatus}
@@ -67,7 +67,8 @@ function TasksTabTable({
                     disabled={isLoading}
                     onClick={() =>
                         openModal("createTask", { projectId, projectMembers })
-                    }>
+                    }
+                >
                     <Plus size={30} />
                     <span>New Task</span>
                 </Button>
@@ -79,16 +80,19 @@ function TasksTabTable({
                 ${
                     filteredTasks.length !== 0 &&
                     "border border-brand-primary/10"
-                }`}>
+                }`}
+            >
                 <Table>
                     <TableHeader>
                         <TableRow
-                            className='bg-brand-table-header border-b 
-         border-brand-primary/10 hover:bg-brand-table-header'>
-                            {taskTableHeaders.map(header => (
+                            className="bg-brand-table-header border-b 
+         border-brand-primary/10 hover:bg-brand-table-header"
+                        >
+                            {taskTableHeaders.map((header) => (
                                 <TableHead
                                     key={header}
-                                    className='lg:first:rounded-tl-xl lg:last:rounded-tr-xl'>
+                                    className="lg:first:rounded-tl-xl lg:last:rounded-tr-xl"
+                                >
                                     {header}
                                 </TableHead>
                             ))}
@@ -100,19 +104,21 @@ function TasksTabTable({
                             <ProjectTasksTableSkeletons />
                         ) : filteredTasks.length === 0 ? (
                             <TableRow
-                                className='rounded-lg 
-                            border border-brand-gray/50 hover:bg-transparent'>
+                                className="rounded-lg 
+                            border border-brand-gray/50 hover:bg-transparent"
+                            >
                                 <TableCell
                                     colSpan={6}
-                                    className='py-16 text-center'>
+                                    className="py-16 text-center"
+                                >
                                     <CheckCircle
-                                        className='mx-auto text-brand-gray mb-4'
+                                        className="mx-auto text-brand-gray mb-4"
                                         size={64}
                                     />
-                                    <h3 className='text-xl font-semibold text-brand-gray mb-2'>
+                                    <h3 className="text-xl font-semibold text-brand-gray mb-2">
                                         No tasks found
                                     </h3>
-                                    <p className='text-brand-gray'>
+                                    <p className="text-brand-gray">
                                         {filterStatus === "all"
                                             ? "Create your first task to get started"
                                             : `No ${filterStatus
@@ -122,15 +128,16 @@ function TasksTabTable({
                                 </TableCell>
                             </TableRow>
                         ) : (
-                            filteredTasks.map(task => (
+                            filteredTasks.map((task) => (
                                 <TableRow
                                     key={task.id}
-                                    className='border-b border-brand-primary/10 hover:bg-[#2d3f54]'>
+                                    className="border-b border-brand-primary/10 hover:bg-[#2d3f54]"
+                                >
                                     <TableCell>
-                                        <div className='flex items-center gap-3'>
+                                        <div className="flex items-center gap-3">
                                             {StatusIcon(task.status)}
 
-                                            <span className='font-medium capitalize'>
+                                            <span className="font-medium capitalize">
                                                 {task.title}
                                             </span>
                                         </div>
@@ -138,21 +145,22 @@ function TasksTabTable({
 
                                     <TableCell>
                                         {task.assignee?.id ? (
-                                            <div className='flex items-center gap-2'>
+                                            <div className="flex items-center gap-2">
                                                 <div
-                                                    className='w-8 h-8 rounded-full bg-brand-button flex items-center 
-                                        justify-center text-sm'>
+                                                    className="w-8 h-8 rounded-full bg-brand-button flex items-center 
+                                        justify-center text-sm"
+                                                >
                                                     {(
                                                         task.assignee?.username?.charAt(
-                                                            0
+                                                            0,
                                                         ) ??
                                                         task.assignee?.firstName?.charAt(
-                                                            0
+                                                            0,
                                                         ) ??
                                                         "?"
                                                     ).toUpperCase()}
                                                 </div>
-                                                <span className='text-brand-primary/70 capitalize'>
+                                                <span className="text-brand-primary/70 capitalize">
                                                     {task.assignee?.username ??
                                                         task.assignee
                                                             ?.firstName ??
@@ -160,7 +168,7 @@ function TasksTabTable({
                                                 </span>
                                             </div>
                                         ) : (
-                                            <span className='text-brand-gray'>
+                                            <span className="text-brand-gray">
                                                 Unassigned
                                             </span>
                                         )}
@@ -170,7 +178,7 @@ function TasksTabTable({
                                         <StatusBadge status={task.priority} />
                                     </TableCell>
 
-                                    <TableCell className='text-brand-primary/70'>
+                                    <TableCell className="text-brand-primary/70">
                                         {formatDate(task.dueDate)}
                                     </TableCell>
 

@@ -18,7 +18,7 @@ export default defineConfig({
         rollupOptions: {
             output: {
                 manualChunks: {
-                    // Vendor chunks
+                    // vendor chunks
                     "react-vendor": ["react", "react-dom", "react-router"],
                     "query-vendor": ["@tanstack/react-query"],
                     "form-vendor": [

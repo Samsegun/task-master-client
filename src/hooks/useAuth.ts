@@ -14,22 +14,42 @@ import {
 } from "@/services/ApiRequests";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { useLocation, useNavigate } from "react-router";
+import { useLocation, useNavigate, useSearchParams } from "react-router";
 
 export const AUTH_STATUS_QUERY_KEY = ["authStatus"] as const;
 
 export const useRegisterUser = () => {
     const navigate = useNavigate();
+    // const location = useLocation();
 
     return useMutation({
-        mutationFn: ({ email, password, username }: RegisterUserCredentials) =>
-            registerUser(email, password, username),
+        mutationFn: ({
+            email,
+            password,
+            invitationToken,
+        }: RegisterUserCredentials) =>
+            registerUser(email, password, invitationToken),
         onSuccess: () => {
-            navigate("/email-verification-sent");
+            navigate(`/email-verification-sent`);
+            // const params = new URLSearchParams(location.search);
+            // const invitation = params.get("invitationToken");
+            // if (invitation) {
+            //     navigate(
+            //         `/email-verification-sent?invitation=${encodeURIComponent(invitation)}`,
+            //     );
+            //     return;
+            // }
+
+            // const returnUrl = params.get("returnUrl");
+            // const suffix =
+            //     returnUrl && returnUrl.startsWith("/")
+            //         ? `?returnUrl=${encodeURIComponent(returnUrl)}`
+            //         : "";
+            // navigate(`/email-verification-sent${suffix}`);
         },
         onError: (err: any) => {
             toast.error(
-                err.response.data.error.message || "Something went wrong"
+                err.response.data.error.message || "Something went wrong",
             );
         },
     });
@@ -44,6 +64,14 @@ export const useSignin = () => {
         mutationFn: ({ emailOrusername, password }: LoginUserCredentials) =>
             loginUser(emailOrusername, password),
         onSuccess: async () => {
+            const params = new URLSearchParams(location.search);
+            const returnUrl = params.get("returnUrl");
+
+            if (returnUrl && returnUrl.startsWith("/")) {
+                navigate(returnUrl, { replace: true });
+                return;
+            }
+
             await queryClient.invalidateQueries({
                 queryKey: AUTH_STATUS_QUERY_KEY,
             });
@@ -53,18 +81,37 @@ export const useSignin = () => {
         },
         onError: (err: any) => {
             toast.error(
-                err.response.data.error.message || "Something went wrong"
+                err.response.data.error.message || "Something went wrong",
             );
         },
     });
 };
 
 export const useVerifyEmail = () => {
+    const [searchParams] = useSearchParams();
     const queryClient = useQueryClient();
 
     return useMutation({
-        mutationFn: ({ token }: { token: string }) => verifyEmail(token),
-        onSuccess: async response => {
+        mutationFn: ({
+            token,
+            invitationToken,
+        }: {
+            token: string;
+            invitationToken?: string | null;
+        }) => verifyEmail(token, invitationToken),
+        onSuccess: async (response) => {
+            const params = new URLSearchParams(searchParams);
+            const invitationToken = params.get("invitationToken");
+            if (invitationToken) {
+                // send user back to the invite-processing page (backend expects `token` param there)
+                window.location.href = `/process-invitation?token=${encodeURIComponent(invitationToken)}`;
+                toast.success(`${response.data.message} Redirecting...`, {
+                    duration: 8000,
+                });
+
+                return;
+            }
+
             toast.success(response.data.message);
 
             await queryClient.invalidateQueries({
@@ -73,7 +120,7 @@ export const useVerifyEmail = () => {
         },
         onError: (err: any) => {
             toast.error(
-                err.response.data.error.message || "Something went wrong"
+                err.response.data.error.message || "Something went wrong",
             );
         },
     });
@@ -85,12 +132,12 @@ export const useForgotPassword = () => {
             email,
         }: Omit<RegisterUserCredentials, "password" | "username">) =>
             forgotPassword(email),
-        onSuccess: response => {
+        onSuccess: (response) => {
             toast.success(response.data.message, { duration: 8000 });
         },
         onError: (err: any) => {
             toast.error(
-                err.response.data.error.message || "Something went wrong"
+                err.response.data.error.message || "Something went wrong",
             );
         },
     });
@@ -109,7 +156,7 @@ export const useResetPassword = () => {
         },
         onError: (err: any) => {
             toast.error(
-                err.response.data.error.message || "Something went wrong"
+                err.response.data.error.message || "Something went wrong",
             );
         },
     });

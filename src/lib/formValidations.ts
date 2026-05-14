@@ -18,16 +18,7 @@ const registerUserForm = z.object({
         .regex(/[0-9]/, "Password must contain at least one number")
         .regex(
             /[@$!%*?&]/,
-            "Password must contain at least one special character"
-        ),
-    username: z
-        .string()
-        .trim()
-        .min(3, "Username must be at least 3 characters")
-        .max(30, "Username must be at most 30 characters")
-        .regex(
-            /^[a-zA-Z0-9_]+$/,
-            "Username may contain letters, numbers and underscores only"
+            "Password must contain at least one special character",
         ),
 });
 
@@ -37,7 +28,7 @@ const loginUserForm = z.object({
         .string()
         .trim()
         .refine(
-            value => {
+            (value) => {
                 const isEmail = z.email().safeParse(value).success;
                 const isUsername = /^[a-zA-Z0-9_]+$/.test(value);
 
@@ -45,14 +36,13 @@ const loginUserForm = z.object({
             },
             {
                 message: "Enter a valid email or username",
-            }
+            },
         ),
     password: z.string().trim().min(1, "Password is required"),
 });
 
 const forgotPasswordForm = registerUserForm.omit({
     password: true,
-    username: true,
 });
 
 const resetPasswordForm = z.object({
@@ -107,7 +97,7 @@ const updateProfile = z.object({
         .max(30)
         .regex(
             /^[a-zA-Z0-9_]+$/,
-            "Username must consist of alphanumeric characters and underscores"
+            "Username must consist of alphanumeric characters and underscores",
         ),
 });
 

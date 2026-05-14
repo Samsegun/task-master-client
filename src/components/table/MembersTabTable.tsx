@@ -21,7 +21,7 @@ type MembersTabTableProps = {
 const membersTableHeaders = ["name", "joined", "role", ""];
 
 function MembersTabTable({ project, projectRole }: MembersTabTableProps) {
-    const openModal = useModalStore(state => state.openModal);
+    const openModal = useModalStore((state) => state.openModal);
 
     const sortedMembersByOwner = useMemo(
         () =>
@@ -31,13 +31,13 @@ function MembersTabTable({ project, projectRole }: MembersTabTableProps) {
                 return 0;
             }),
 
-        [project.members]
+        [project.members],
     );
 
     return (
         <section>
-            <div className='flex justify-between items-center mb-4'>
-                <h2 className='text-xl font-semibold'>Team Members</h2>
+            <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-semibold">Team Members</h2>
 
                 {projectRole === "OWNER" && (
                     <Button
@@ -45,27 +45,32 @@ function MembersTabTable({ project, projectRole }: MembersTabTableProps) {
                         className={`flex items-center gap-2`}
                         onClick={() =>
                             openModal("addMember", { projectId: project.id })
-                        }>
+                        }
+                    >
                         <Plus size={30} />
 
-                        <span>Add Member</span>
+                        {/* <span>Add Member</span> */}
+                        <span>Invite Member</span>
                     </Button>
                 )}
             </div>
 
             {/* members table */}
             <div
-                className='mt-6 md:mt-4 rounded-xl rounded-t-none lg:rounded-t-xl bg-brand-card
-                 border border-brand-primary/10'>
+                className="mt-6 md:mt-4 rounded-xl rounded-t-none lg:rounded-t-xl bg-brand-card
+                 border border-brand-primary/10"
+            >
                 <Table>
                     <TableHeader>
                         <TableRow
-                            className='bg-brand-table-header border-b 
-         border-brand-primary/10 hover:bg-brand-table-header'>
-                            {membersTableHeaders.map(header => (
+                            className="bg-brand-table-header border-b 
+         border-brand-primary/10 hover:bg-brand-table-header"
+                        >
+                            {membersTableHeaders.map((header) => (
                                 <TableHead
                                     key={header}
-                                    className='lg:first:rounded-tl-xl lg:last:rounded-tr-xl'>
+                                    className="lg:first:rounded-tl-xl lg:last:rounded-tr-xl"
+                                >
                                     {header}
                                 </TableHead>
                             ))}
@@ -73,24 +78,25 @@ function MembersTabTable({ project, projectRole }: MembersTabTableProps) {
                     </TableHeader>
 
                     <TableBody>
-                        {sortedMembersByOwner.map(member => (
+                        {sortedMembersByOwner.map((member) => (
                             <TableRow
                                 key={member.user.id}
-                                className='border-b border-brand-primary/10 hover:bg-[#2d3f54]'>
-                                <TableCell className='p-4'>
-                                    <div className='flex items-center gap-3'>
-                                        <div className='w-10 h-10 rounded-full bg-brand-button flex items-center justify-center'>
+                                className="border-b border-brand-primary/10 hover:bg-[#2d3f54]"
+                            >
+                                <TableCell className="p-4">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-10 h-10 rounded-full bg-brand-button flex items-center justify-center">
                                             {(
                                                 member.user.username?.charAt(
-                                                    0
+                                                    0,
                                                 ) ??
                                                 member.user?.firstName?.charAt(
-                                                    0
+                                                    0,
                                                 ) ??
                                                 "?"
                                             ).toUpperCase()}
                                         </div>
-                                        <span className='font-medium capitalize'>
+                                        <span className="font-medium capitalize">
                                             {member.user?.username ??
                                                 member.user?.firstName ??
                                                 "Unknown"}
@@ -98,39 +104,41 @@ function MembersTabTable({ project, projectRole }: MembersTabTableProps) {
                                     </div>
                                 </TableCell>
 
-                                <TableCell className='p-4 text-gray-300'>
+                                <TableCell className="p-4 text-gray-300">
                                     {formatDate(member.joinedAt)}
                                 </TableCell>
 
-                                <TableCell className='p-4'>
+                                <TableCell className="p-4">
                                     <span
                                         className={`px-3 py-1 rounded-full text-xs font-medium ${
                                             member.role === "OWNER"
                                                 ? "bg-purple-500/10 text-purple-500"
                                                 : "bg-gray-500/10 text-gray-400"
-                                        }`}>
+                                        }`}
+                                    >
                                         {member.role}
                                     </span>
                                 </TableCell>
 
-                                <TableCell className='p-4'>
+                                <TableCell className="p-4">
                                     {projectRole === "OWNER" &&
                                         member.role !== "OWNER" && (
                                             <DropdownMenu>
                                                 <DropdownMenuTrigger
-                                                    className='p-1 hover:bg-brand-gray/50 rounded
-                                                 transition-colors cursor-pointer'>
+                                                    className="p-1 hover:bg-brand-gray/50 rounded
+                                                 transition-colors cursor-pointer"
+                                                >
                                                     <MoreVertical
                                                         size={20}
-                                                        className='text-brand-gray'
+                                                        className="text-brand-gray"
                                                     />
                                                 </DropdownMenuTrigger>
 
-                                                <DropdownMenuContent className='bg-brand-sidebar border-nav-border text-brand-primary'>
+                                                <DropdownMenuContent className="bg-brand-sidebar border-nav-border text-brand-primary">
                                                     {member.role ===
                                                         "MEMBER" && (
                                                         <DropdownMenuItem
-                                                            className='cursor-pointer'
+                                                            className="cursor-pointer"
                                                             onClick={() =>
                                                                 openModal(
                                                                     "editProjectMember",
@@ -143,9 +151,10 @@ function MembersTabTable({ project, projectRole }: MembersTabTableProps) {
                                                                             member,
                                                                         projectRole:
                                                                             "OWNER",
-                                                                    }
+                                                                    },
                                                                 )
-                                                            }>
+                                                            }
+                                                        >
                                                             <span>
                                                                 Promote to Owner
                                                             </span>
@@ -155,8 +164,8 @@ function MembersTabTable({ project, projectRole }: MembersTabTableProps) {
                                                     {member.role ===
                                                         "MEMBER" && (
                                                         <DropdownMenuItem
-                                                            className='cursor-pointer text-red-500
-                                                 hover:text-red-700'
+                                                            className="cursor-pointer text-red-500
+                                                 hover:text-red-700"
                                                             onClick={() =>
                                                                 openModal(
                                                                     "removeProjectMember",
@@ -167,9 +176,10 @@ function MembersTabTable({ project, projectRole }: MembersTabTableProps) {
                                                                             project.name,
                                                                         memberInfo:
                                                                             member,
-                                                                    }
+                                                                    },
                                                                 )
-                                                            }>
+                                                            }
+                                                        >
                                                             <span>
                                                                 Remove Member
                                                             </span>

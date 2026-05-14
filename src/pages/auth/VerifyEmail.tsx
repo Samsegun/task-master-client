@@ -7,27 +7,32 @@ function VerifyEmail() {
     const [searchParams] = useSearchParams();
     const verifyEmailMutation = useVerifyEmail();
 
-    const token = searchParams.get("token");
+    const verificationToken = searchParams.get("token");
+    const invitationToken = searchParams.get("invitationToken");
 
-    function verifyEmail() {
-        if (!token) {
+    function verifyMail() {
+        if (!verificationToken) {
             toast.error("Invalid or missing verification details parameters");
             return;
         }
 
-        verifyEmailMutation.mutate({ token });
+        verifyEmailMutation.mutate({
+            token: verificationToken,
+            invitationToken,
+        });
     }
 
     return (
-        <div className='text-center'>
-            <h1 className='text-3xl font-extrabold'>Verify your Email</h1>
+        <div className="text-center">
+            <h1 className="text-3xl font-extrabold">Verify your Email</h1>
 
-            <section className='flex justify-center mt-5'>
+            <section className="flex justify-center mt-5">
                 <Button
-                    className=''
+                    className=""
                     disabled={verifyEmailMutation.isPending}
                     variant={"primary"}
-                    onClick={verifyEmail}>
+                    onClick={verifyMail}
+                >
                     {verifyEmailMutation.isPending
                         ? "Verifying Email..."
                         : "Click here to verify your Email"}

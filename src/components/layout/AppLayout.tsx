@@ -8,7 +8,7 @@ function AppLayout() {
     return (
         <>
             <Toaster
-                position='top-center'
+                position="top-center"
                 gutter={12}
                 containerStyle={{ margin: "8px" }}
                 toastOptions={{
@@ -24,6 +24,7 @@ function AppLayout() {
                         padding: "16px 24px",
                         backgroundColor: "#1a1a1a",
                         color: "#fff",
+                        zIndex: 9999,
                     },
                 }}
             />

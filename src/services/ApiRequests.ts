@@ -6,10 +6,12 @@ import type {
     TaskDetails,
 } from "@/lib/types";
 import type {
+    AcceptInvitation,
     AddProjectMember,
     AuthStatus,
     CreateProject,
     CreateTask,
+    DeclineInvitation,
     DeleteOrLeaveProject,
     DeleteTask,
     ForgotPassword,
@@ -38,12 +40,12 @@ const V1 = "/v1";
 export const registerUser = (
     email: string,
     password: string,
-    username: string
+    invitationToken?: string,
 ) => {
     return axiosInstance.post<RegisterUser>(`${AUTH}/register`, {
         email,
         password,
-        username,
+        invitationToken,
     });
 };
 
@@ -71,10 +73,15 @@ export const resetPassword = (token: string, password: string) => {
     });
 };
 
-export const verifyEmail = (token: string) => {
-    return axiosInstance.get<VerifyEmail>(
-        `${AUTH}/verify-email?token=${token}`
-    );
+export const verifyEmail = (token: string, invitationToken?: string | null) => {
+    const verifyEmailUrl = invitationToken
+        ? `${AUTH}/verify-email?token=${token}&invitationToken=${invitationToken}`
+        : `${AUTH}/verify-email?token=${token}`;
+
+    // return axiosInstance.get<VerifyEmail>(
+    //     `${AUTH}/verify-email?token=${token}`,
+    // );
+    return axiosInstance.get<VerifyEmail>(verifyEmailUrl);
 };
 
 export const checkAuthStatus = () => {
@@ -128,23 +135,23 @@ export const createProject = (payLoad: ProjectDetails) => {
 
 export const updateProject = (
     projectId: string,
-    payLoad: ProjectUpdateDetails
+    payLoad: ProjectUpdateDetails,
 ) => {
     return axiosInstance.patch<UpdateProject>(
         `${V1}/projects/${projectId}`,
-        payLoad
+        payLoad,
     );
 };
 
 export const leaveProject = (projectId: string) => {
     return axiosInstance.delete<DeleteOrLeaveProject>(
-        `${V1}/projects/${projectId}/leave`
+        `${V1}/projects/${projectId}/leave`,
     );
 };
 
 export const deleteProject = (projectId: string) => {
     return axiosInstance.delete<DeleteOrLeaveProject>(
-        `${V1}/projects/${projectId}`
+        `${V1}/projects/${projectId}`,
     );
 };
 
@@ -184,24 +191,24 @@ export const getTasks = (projectId: string, params?: GetDataParams) => {
 export const createTask = (projectId: string, payLoad: TaskDetails) => {
     return axiosInstance.post<CreateTask>(
         `${V1}/projects/${projectId}/tasks`,
-        payLoad
+        payLoad,
     );
 };
 
 export const updateTask = (
     projectId: string,
     taskId: string,
-    payLoad: TaskDetails
+    payLoad: TaskDetails,
 ) => {
     return axiosInstance.patch<UpdateTask>(
         `${V1}/projects/${projectId}/tasks/${taskId}`,
-        payLoad
+        payLoad,
     );
 };
 
 export const deleteTask = (projectId: string, taskId: string) => {
     return axiosInstance.delete<DeleteTask>(
-        `${V1}/projects/${projectId}/tasks/${taskId}`
+        `${V1}/projects/${projectId}/tasks/${taskId}`,
     );
 };
 /* end of task requests */
@@ -209,37 +216,61 @@ export const deleteTask = (projectId: string, taskId: string) => {
 /* start of project member requests */
 export const getProjectMembers = (projectId: string) => {
     return axiosInstance.get<ProjectMembers>(
-        `${V1}/projects/${projectId}/members`
+        `${V1}/projects/${projectId}/members`,
+    );
+};
+
+export const inviteProjectMember = (
+    projectId: string,
+    payLoad: AddMemberDetails,
+) => {
+    return axiosInstance.post<AddProjectMember>(
+        `${V1}/projects/${projectId}/members/invite`,
+        payLoad,
+    );
+};
+
+export const acceptInvitation = (token: string) => {
+    return axiosInstance.post<AcceptInvitation>(
+        `${V1}/projects/invitations/accept`,
+        { token },
+    );
+};
+
+export const declineInvitation = (token: string) => {
+    return axiosInstance.post<DeclineInvitation>(
+        `${V1}/projects/invitations/decline`,
+        { token },
     );
 };
 
 export const addProjectMember = (
     projectId: string,
-    payLoad: AddMemberDetails
+    payLoad: AddMemberDetails,
 ) => {
     return axiosInstance.post<AddProjectMember>(
         `${V1}/projects/${projectId}/members`,
-        payLoad
+        payLoad,
     );
 };
 
 export const removeProjectMember = (
     projectId: string,
-    userIdToRemove: string
+    userIdToRemove: string,
 ) => {
     return axiosInstance.delete<AddProjectMember>(
-        `${V1}/projects/${projectId}/members/${userIdToRemove}`
+        `${V1}/projects/${projectId}/members/${userIdToRemove}`,
     );
 };
 
 export const updateMemberRole = (
     projectId: string,
     userIdToUpdate: string,
-    role: ProjectRole
+    role: ProjectRole,
 ) => {
     return axiosInstance.patch<AddProjectMember>(
         `${V1}/projects/${projectId}/members/${userIdToUpdate}`,
-        { role }
+        { role },
     );
 };
 
