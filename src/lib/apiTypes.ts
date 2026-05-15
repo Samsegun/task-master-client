@@ -1,4 +1,4 @@
-type Role = "USER" | "MODERATOR" | "ADMIN" | "SUPER_ADMIN";
+export type Role = "USER" | "MODERATOR" | "ADMIN" | "SUPER_ADMIN";
 
 export type ProjectStatus = "ACTIVE" | "COMPLETED" | "ARCHIVED";
 
@@ -294,4 +294,24 @@ export type UpdateUserProfile = {
 export type UpdateUserPassword = {
     success: boolean;
     message: string;
+};
+
+export type User = {
+    success: boolean;
+    data: {
+        id: string;
+        email: string;
+        username: string;
+        role: Role;
+        isVerified: boolean;
+        firstName: string | null;
+        lastName: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+    };
+};
+
+export type AllUsers = {
+    success: boolean;
+    data: User["data"][];
 };

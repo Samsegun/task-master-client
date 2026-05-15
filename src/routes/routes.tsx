@@ -23,6 +23,8 @@ const Profile = lazy(() => import("@/pages/profile/Profile"));
 const ProjectDetails = lazy(() => import("@/pages/projects/ProjectDetails"));
 const Projects = lazy(() => import("@/pages/projects/Projects"));
 const Tasks = lazy(() => import("@/pages/tasks/Tasks"));
+const AdminUsers = lazy(() => import("@/pages/admin/AdminUsers"));
+const AdminUserDetails = lazy(() => import("@/pages/admin/AdminUserDetails"));
 const ProcessInvitation = lazy(
     () => import("@/pages/projects/ProcessInvitaion"),
 );
@@ -36,6 +38,8 @@ const AppRoutes = createRoutesFromElements(
             <Route path="projects" element={<Projects />} />
             <Route path="projects/:projectId" element={<ProjectDetails />} />
             <Route path="tasks" element={<Tasks />} />
+            <Route path="admin/users" element={<AdminUsers />} />
+            <Route path="admin/users/:userId" element={<AdminUserDetails />} />
             <Route path="profile" element={<Profile />} />
         </Route>
 

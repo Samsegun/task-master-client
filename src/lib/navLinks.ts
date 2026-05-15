@@ -4,6 +4,7 @@ import {
     CircleUserRound,
     FolderKanban,
     LayoutDashboard,
+    Shield,
 } from "lucide-react";
 
 interface NavLinkConfig {
@@ -27,6 +28,11 @@ export const navLinks: NavLinkConfig[] = [
         to: "/projects",
         label: "Projects",
         Icon: FolderKanban,
+    },
+    {
+        to: "/admin/users",
+        label: "Admin",
+        Icon: Shield,
     },
     {
         to: "/profile",

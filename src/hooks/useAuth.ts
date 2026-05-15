@@ -31,21 +31,6 @@ export const useRegisterUser = () => {
             registerUser(email, password, invitationToken),
         onSuccess: () => {
             navigate(`/email-verification-sent`);
-            // const params = new URLSearchParams(location.search);
-            // const invitation = params.get("invitationToken");
-            // if (invitation) {
-            //     navigate(
-            //         `/email-verification-sent?invitation=${encodeURIComponent(invitation)}`,
-            //     );
-            //     return;
-            // }
-
-            // const returnUrl = params.get("returnUrl");
-            // const suffix =
-            //     returnUrl && returnUrl.startsWith("/")
-            //         ? `?returnUrl=${encodeURIComponent(returnUrl)}`
-            //         : "";
-            // navigate(`/email-verification-sent${suffix}`);
         },
         onError: (err: any) => {
             toast.error(

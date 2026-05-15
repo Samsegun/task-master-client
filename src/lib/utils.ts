@@ -1,6 +1,7 @@
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { z } from "zod";
+import type { Role } from "./apiTypes";
 import type { TaskStatus } from "./types";
 
 export function cn(...inputs: ClassValue[]) {
@@ -10,7 +11,7 @@ export function cn(...inputs: ClassValue[]) {
 // check if task is overdue
 export const isOverdue = (
     dueDate: Date | string | null,
-    status: TaskStatus
+    status: TaskStatus,
 ) => {
     if (!dueDate) return false;
     if (status === "DONE") return false;
@@ -41,7 +42,7 @@ export const formatDate = (dateString: Date | string | null) => {
 };
 
 export const validateEmailFromSearchParams = (
-    searchParams: URLSearchParams
+    searchParams: URLSearchParams,
 ) => {
     const rawEmailFromParams = searchParams.get("email");
     const emailSchema = z.email();
@@ -59,3 +60,8 @@ export const getGreeting = () => {
 
     return "Evening";
 };
+
+export const nonUserRoles = ["MODERATOR", "ADMIN", "SUPER_ADMIN"];
+
+export const canAccessAdmin = (role?: Role) =>
+    role && nonUserRoles.includes(role);

@@ -8,6 +8,7 @@ import type {
 import type {
     AcceptInvitation,
     AddProjectMember,
+    AllUsers,
     AuthStatus,
     CreateProject,
     CreateTask,
@@ -29,6 +30,7 @@ import type {
     UpdateTask,
     UpdateUserPassword,
     UpdateUserProfile,
+    User,
     VerifyEmail,
 } from "../lib/apiTypes";
 import axiosInstance from "./AxiosConfig";
@@ -275,3 +277,14 @@ export const updateMemberRole = (
 };
 
 /* end of project member requests */
+
+/* start of super-users(admin etc.) requests */
+export const getAllUsers = () => {
+    return axiosInstance.get<AllUsers>(`${V1}/admin/users`);
+};
+
+export const getUser = (userId: string) => {
+    return axiosInstance.get<User>(`${V1}/admin/users/${userId}`);
+};
+
+/* end of super-users(admin etc.) requests */

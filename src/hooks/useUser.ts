@@ -12,7 +12,7 @@ export const useUpdateUserProfile = () => {
             lastName?: string;
             username: string;
         }) => updateUserProfile({ ...profileDetails }),
-        onSuccess: async (_data, _variables) => {
+        onSuccess: async () => {
             await queryClient.invalidateQueries({
                 queryKey: AUTH_STATUS_QUERY_KEY,
             });
@@ -34,7 +34,7 @@ export const useUpdateUserProfile = () => {
         onError: (err: any) => {
             toast.error(
                 err.response.data.error.message ||
-                    "Failed to update user profile"
+                    "Failed to update user profile",
             );
         },
     });
@@ -48,7 +48,7 @@ export const useUpdateUserPassword = () => {
             currentPassword: string;
             newPassword: string;
         }) => updateUserPassword({ ...userPasswords }),
-        onSuccess: async (_data, _variables) => {
+        onSuccess: async () => {
             await queryClient.invalidateQueries({
                 queryKey: AUTH_STATUS_QUERY_KEY,
             });
@@ -58,7 +58,7 @@ export const useUpdateUserPassword = () => {
         onError: (err: any) => {
             toast.error(
                 err.response.data.error.message ||
-                    "Failed to update user password"
+                    "Failed to update user password",
             );
         },
     });
