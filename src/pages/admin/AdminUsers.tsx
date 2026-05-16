@@ -9,6 +9,8 @@ import type { User } from "@/lib/apiTypes";
 import { canAccessAdmin } from "@/lib/utils";
 import { Link, Navigate } from "react-router";
 
+const UsersTableHeaders = ["Name", "Email", "Role", "Verified", ""];
+
 function AdminUsers() {
     const { user: authUser } = useAuthStatus();
     const {
@@ -32,7 +34,7 @@ function AdminUsers() {
         <section className="space-y-5">
             <div className="flex items-center justify-between">
                 <PageTitle>Admin · Users</PageTitle>
-                <Badge variant="outline">Read-only tools</Badge>
+                <Badge variant="secondary">Read-only tools</Badge>
             </div>
 
             <p className="text-sm text-gray-300">
@@ -41,8 +43,8 @@ function AdminUsers() {
                 backend endpoints.
             </p>
 
-            <div className="rounded-xl border border-nav-border p-3 md:p-4">
-                <div className="flex flex-wrap gap-2 mb-4">
+            <div className="mt-6 md:mt-4 rounded-xl rounded-t-none lg:rounded-t-xl bg-brand-card">
+                {/* <div className="flex flex-wrap gap-2 mb-4">
                     {[
                         "Update role",
                         "Suspend account",
@@ -57,36 +59,50 @@ function AdminUsers() {
                             {action} (coming soon)
                         </button>
                     ))}
-                </div>
+                </div> */}
 
                 {users && (
                     <Table>
                         <TableHeader>
-                            <TableRow>
-                                <TableHead>Name</TableHead>
-                                <TableHead>Email</TableHead>
-                                <TableHead>Role</TableHead>
-                                <TableHead>Verified</TableHead>
-                                <TableHead>{""}</TableHead>
+                            <TableRow
+                                className="bg-brand-table-header border-b 
+         border-brand-primary/10 hover:bg-brand-table-header"
+                            >
+                                {UsersTableHeaders.map((header) => (
+                                    <TableHead
+                                        key={header}
+                                        className="lg:first:rounded-tl-xl lg:last:rounded-tr-xl"
+                                    >
+                                        {header}
+                                    </TableHead>
+                                ))}
                             </TableRow>
                         </TableHeader>
+
                         <TableBody>
                             {users.map((u: User["data"]) => (
-                                <TableRow key={u.id}>
-                                    <TableCell>
+                                <TableRow
+                                    key={u.id}
+                                    className="border-b border-brand-primary/10 hover:bg-[#2d3f54]"
+                                >
+                                    <TableCell className="capitalize">
                                         {u.firstName || u.lastName
                                             ? `${u.firstName ?? ""} ${u.lastName ?? ""}`.trim()
                                             : u.username}
                                     </TableCell>
+
                                     <TableCell>{u.email}</TableCell>
+
                                     <TableCell>
                                         <Badge variant="secondary">
                                             {u.role}
                                         </Badge>
                                     </TableCell>
+
                                     <TableCell>
                                         {u.isVerified ? "Yes" : "No"}
                                     </TableCell>
+
                                     <TableCell>
                                         <Link
                                             className="underline text-brand-primary"

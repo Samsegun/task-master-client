@@ -8,7 +8,7 @@ export const useGetAllUsers = () => {
     const { data, isLoading, isError, error } = useQuery({
         queryKey: ADMIN_USERS_QUERY_KEY,
         queryFn: () => getAllUsers(),
-        staleTime: 5 * 60 * 1000,
+        staleTime: 60 * 1000, // stale time should be short as users can be updated frequently
     });
 
     let users: AllUsers | undefined;

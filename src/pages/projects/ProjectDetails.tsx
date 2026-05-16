@@ -36,17 +36,18 @@ function ProjectDetails() {
 
     return (
         <div>
-            <div className='mb-8'>
+            <div className="mb-8">
                 <Button
-                    type='button'
-                    variant={"details"}
+                    type="button"
+                    variant={"primary"}
                     onClick={() => navigate("/projects")}
-                    className='flex items-center gap-2 hover:text-brand-gray mb-4 transition-colors'>
+                    className="flex items-center gap-2 hover:text-white/80 mb-4 transition-colors"
+                >
                     <ArrowLeft size={20} />
                     Back to Projects
                 </Button>
 
-                <div className='mt-6 flex justify-between items-start'>
+                <div className="mt-6 flex justify-between items-start">
                     <ProjectDetailsTitles
                         isLoading={isLoading}
                         name={name}
@@ -54,7 +55,7 @@ function ProjectDetails() {
                     />
 
                     {isLoading ? (
-                        <Skeleton className='h-8 w-2 bg-brand-table-header' />
+                        <Skeleton className="h-8 w-2 bg-brand-table-header" />
                     ) : (
                         <ProjectOptions
                             userProjectDetails={{
@@ -70,14 +71,14 @@ function ProjectDetails() {
             </div>
 
             {/* stats */}
-            <section className='grid grid-cols-1 md:grid-cols-4 gap-4 mb-6 md:mb-8'>
+            <section className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6 md:mb-8">
                 <Stats>
                     <StatsTitle>Status</StatsTitle>
 
                     {isLoading ? (
                         <StatSkeleton />
                     ) : (
-                        <p className='text-lg font-semibold'>
+                        <p className="text-lg font-semibold">
                             <StatusBadge status={status} />
                         </p>
                     )}
@@ -90,11 +91,11 @@ function ProjectDetails() {
                         <StatSkeleton />
                     ) : (
                         <>
-                            <p className='text-lg font-semibold'>{progress}%</p>
+                            <p className="text-lg font-semibold">{progress}%</p>
 
                             <Progress
                                 value={progress}
-                                className='bg-brand-button/30 [&>div]:bg-brand-button'
+                                className="bg-brand-button/30 [&>div]:bg-brand-button"
                             />
                         </>
                     )}
@@ -105,7 +106,7 @@ function ProjectDetails() {
                     {isLoading ? (
                         <StatSkeleton />
                     ) : (
-                        <p className='text-lg font-semibold'>
+                        <p className="text-lg font-semibold">
                             {formatDate(dueDate)}
                         </p>
                     )}
@@ -116,12 +117,12 @@ function ProjectDetails() {
                     {isLoading ? (
                         <StatSkeleton />
                     ) : (
-                        <p className='text-lg font-semibold'>{totalMembers}</p>
+                        <p className="text-lg font-semibold">{totalMembers}</p>
                     )}
                 </Stats>
             </section>
 
-            <section className='flex gap-4 mb-6 text-brand-gray border-b border-brand-gray'>
+            <section className="flex gap-4 mb-6 text-brand-gray border-b border-brand-gray">
                 <button
                     onClick={() => setActiveTab("tasks")}
                     disabled={isLoading}
@@ -129,7 +130,8 @@ function ProjectDetails() {
                         activeTab === "tasks"
                             ? "text-brand-button border-b-2 border-brand-button"
                             : "hover:text-brand-primary"
-                    }`}>
+                    }`}
+                >
                     Tasks
                 </button>
 
@@ -140,7 +142,8 @@ function ProjectDetails() {
                         activeTab === "members"
                             ? "text-brand-button border-b-2 border-brand-button"
                             : "hover:text-brand-primary"
-                    }`}>
+                    }`}
+                >
                     Members
                 </button>
             </section>
