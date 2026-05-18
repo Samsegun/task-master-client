@@ -6,7 +6,7 @@ import { Table, TableBody, TableHeader, TableRow } from "@/components/ui/table";
 import { useGetAllUsers } from "@/hooks/useAdminUsers";
 import { useAuthStatus } from "@/hooks/useAuth";
 import type { User } from "@/lib/apiTypes";
-import { canAccessAdmin } from "@/lib/utils";
+import { canAccessAdmin, nonUserRoles } from "@/lib/utils";
 import { Link, Navigate } from "react-router";
 
 const UsersTableHeaders = ["Name", "Email", "Role", "Verified", ""];
@@ -94,7 +94,14 @@ function AdminUsers() {
                                     <TableCell>{u.email}</TableCell>
 
                                     <TableCell>
-                                        <Badge variant="secondary">
+                                        <Badge
+                                            variant="secondary"
+                                            className={
+                                                nonUserRoles.includes(u.role)
+                                                    ? "bg-brand-button text-white"
+                                                    : ""
+                                            }
+                                        >
                                             {u.role}
                                         </Badge>
                                     </TableCell>

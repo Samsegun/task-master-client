@@ -308,6 +308,7 @@ export type User = {
         lastName: string | null;
         createdAt: Date;
         updatedAt: Date;
+        isSuspended: boolean;
     };
 };
 
@@ -315,3 +316,15 @@ export type AllUsers = {
     success: boolean;
     data: User["data"][];
 };
+
+export type UpdateUserRole = {
+    id: string;
+    email: string;
+    username: string;
+    role: string;
+    isVerified: boolean;
+    isSuspended: boolean;
+    updatedAt: Date;
+};
+
+export type UpdateUserSuspension = Omit<UpdateUserRole, "updatedAt">;

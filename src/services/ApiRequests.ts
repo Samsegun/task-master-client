@@ -25,11 +25,14 @@ import type {
     Projects,
     RegisterUser,
     ResetPassword,
+    Role,
     Tasks,
     UpdateProject,
     UpdateTask,
     UpdateUserPassword,
     UpdateUserProfile,
+    UpdateUserRole,
+    UpdateUserSuspension,
     User,
     VerifyEmail,
 } from "../lib/apiTypes";
@@ -287,4 +290,18 @@ export const getUser = (userId: string) => {
     return axiosInstance.get<User>(`${V1}/admin/users/${userId}`);
 };
 
-/* end of super-users(admin etc.) requests */
+export const updateUserRole = (userId: string, role: Role) => {
+    return axiosInstance.patch<UpdateUserRole>(
+        `${V1}/admin/users/${userId}/role`,
+        { role },
+    );
+};
+
+export const updateUserSuspension = (userId: string, isSuspended: boolean) => {
+    return axiosInstance.patch<UpdateUserSuspension>(
+        `${V1}/admin/users/${userId}/suspension`,
+        { isSuspended },
+    );
+};
+
+/* end of super-users requests */

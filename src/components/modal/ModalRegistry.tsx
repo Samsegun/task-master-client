@@ -10,6 +10,8 @@ import EditProjectModal from "./EditProjectModal";
 import EditTaskModal from "./EditTaskModal";
 import LeaveProjectModal from "./LeaveProjectModal";
 import MarkProject from "./MarkProject";
+import UpdateUserRoleModal from "./UpdateUserRoleModal";
+import SuspendUserModal from "./UpdateUserSuspension";
 
 function ModalRegistry() {
     const { type } = useModalStore();
@@ -29,6 +31,10 @@ function ModalRegistry() {
             {type === "addMember" && <AddMemberModal />}
             {type === "editProjectMember" && <EditMemberModal />}
             {type === "removeProjectMember" && <DeleteMemberModal />}
+
+            {/* admin modals */}
+            {type === "updateUserRole" && <UpdateUserRoleModal />}
+            {type === "updateUserSuspension" && <SuspendUserModal />}
         </>
     );
 }

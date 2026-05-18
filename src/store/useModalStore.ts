@@ -1,4 +1,4 @@
-import type { ProjectRole, Task } from "@/lib/apiTypes";
+import type { ProjectRole, Role, Task } from "@/lib/apiTypes";
 import type { MemberShape, ProjectStatus } from "@/lib/types";
 import { create } from "zustand";
 
@@ -13,7 +13,9 @@ type ModalType =
     | "markProject"
     | "addMember"
     | "editProjectMember"
-    | "removeProjectMember";
+    | "removeProjectMember"
+    | "updateUserRole"
+    | "updateUserSuspension";
 
 interface ModalData {
     // task modals
@@ -29,6 +31,12 @@ interface ModalData {
 
     // member modals
     memberInfo?: MemberShape;
+
+    // user modals
+    userId?: string;
+    currentUserRole?: Role;
+    isSuspended?: boolean;
+    username?: string;
 }
 
 interface ModalStore {
@@ -40,7 +48,7 @@ interface ModalStore {
     closeModal: () => void;
 }
 
-export const useModalStore = create<ModalStore>(set => {
+export const useModalStore = create<ModalStore>((set) => {
     return {
         type: null,
         isOpen: false,

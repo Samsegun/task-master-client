@@ -5,6 +5,12 @@ const TaskPrioritySchema = z.enum(["LOW", "MEDIUM", "HIGH"]);
 const TaskStatusSchema = z.enum(["TODO", "IN_PROGRESS", "DONE"]);
 const AddMemberSchema = z.enum(["OWNER", "MEMBER"]);
 const ProjectStatusSchema = z.enum(["ACTIVE", "COMPLETED", "ARCHIVED"]);
+export const UserRoleSchema = z.enum([
+    "USER",
+    "MODERATOR",
+    "ADMIN",
+    "SUPER_ADMIN",
+]);
 
 // auth
 const registerUserForm = z.object({
@@ -106,6 +112,14 @@ const updatePassword = z.object({
     newPassword: registerUserForm.shape.password,
 });
 
+// admins
+const updateUserRoleForm = z.object({
+    role: UserRoleSchema.default("USER"),
+});
+const updateUserSuspension = z.object({
+    isSuspended: z.boolean(),
+});
+
 export {
     addProjectMember,
     createProject,
@@ -118,4 +132,6 @@ export {
     updatePassword,
     updateProfile,
     updateProjectForm,
+    updateUserRoleForm,
+    updateUserSuspension,
 };

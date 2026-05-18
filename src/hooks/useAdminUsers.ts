@@ -1,6 +1,12 @@
-import type { AllUsers, User } from "@/lib/apiTypes";
-import { getAllUsers, getUser } from "@/services/ApiRequests";
-import { useQuery } from "@tanstack/react-query";
+import type { AllUsers, Role, User } from "@/lib/apiTypes";
+import {
+    getAllUsers,
+    getUser,
+    updateUserRole,
+    updateUserSuspension,
+} from "@/services/ApiRequests";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 export const ADMIN_USERS_QUERY_KEY = ["adminUsers"] as const;
 
@@ -36,6 +42,7 @@ export const useGetUser = (userId: string) => {
         queryKey: [...ADMIN_USERS_QUERY_KEY, userId],
         queryFn: () => getUser(userId),
         enabled: !!userId,
+        staleTime: 60 * 1000,
     });
 
     let user: User | undefined;
@@ -56,4 +63,59 @@ export const useGetUser = (userId: string) => {
         error,
         customErr,
     };
+};
+
+export const useUpdateUserRole = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: ({ userId, role }: { userId: string; role: Role }) =>
+            updateUserRole(userId, role),
+        onSuccess: async (_response, variables) => {
+            toast.success("User role updated successfully");
+
+            await queryClient.invalidateQueries({
+                queryKey: ADMIN_USERS_QUERY_KEY,
+            });
+
+            await queryClient.invalidateQueries({
+                queryKey: [...ADMIN_USERS_QUERY_KEY, variables.userId],
+            });
+        },
+        onError: (err: any) => {
+            toast.error(
+                err.response.data.error.message || "Something went wrong",
+            );
+        },
+    });
+};
+
+export const useUpdateUserSuspension = () => {
+    const queryClient = useQueryClient();
+
+    return useMutation({
+        mutationFn: ({
+            userId,
+            isSuspended,
+        }: {
+            userId: string;
+            isSuspended: boolean;
+        }) => updateUserSuspension(userId, isSuspended),
+        onSuccess: async (_response, variables) => {
+            toast.success("User updated successfully");
+
+            await queryClient.invalidateQueries({
+                queryKey: ADMIN_USERS_QUERY_KEY,
+            });
+
+            await queryClient.invalidateQueries({
+                queryKey: [...ADMIN_USERS_QUERY_KEY, variables.userId],
+            });
+        },
+        onError: (err: any) => {
+            toast.error(
+                err.response.data.error.message || "Something went wrong",
+            );
+        },
+    });
 };
