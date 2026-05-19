@@ -3,6 +3,7 @@ import type {
     RegisterUserCredentials,
     ResetPasswordCredentials,
 } from "@/lib/apiTypes";
+import { getErrorMessage, isAuthenticationError } from "@/lib/errorUtils";
 import {
     checkAuthStatus,
     forgotPassword,
@@ -33,9 +34,7 @@ export const useRegisterUser = () => {
             navigate(`/email-verification-sent`);
         },
         onError: (err: any) => {
-            toast.error(
-                err.response.data.error.message || "Something went wrong",
-            );
+            toast.error(getErrorMessage(err));
         },
     });
 };
@@ -65,9 +64,7 @@ export const useSignin = () => {
             navigate(from, { replace: true });
         },
         onError: (err: any) => {
-            toast.error(
-                err.response.data.error.message || "Something went wrong",
-            );
+            toast.error(getErrorMessage(err));
         },
     });
 };
@@ -104,9 +101,7 @@ export const useVerifyEmail = () => {
             });
         },
         onError: (err: any) => {
-            toast.error(
-                err.response.data.error.message || "Something went wrong",
-            );
+            toast.error(getErrorMessage(err));
         },
     });
 };
@@ -121,9 +116,7 @@ export const useForgotPassword = () => {
             toast.success(response.data.message, { duration: 8000 });
         },
         onError: (err: any) => {
-            toast.error(
-                err.response.data.error.message || "Something went wrong",
-            );
+            toast.error(getErrorMessage(err));
         },
     });
 };
@@ -140,9 +133,7 @@ export const useResetPassword = () => {
             navigate(`/login?email=${encodeURIComponent(variables.email)}`);
         },
         onError: (err: any) => {
-            toast.error(
-                err.response.data.error.message || "Something went wrong",
-            );
+            toast.error(getErrorMessage(err));
         },
     });
 };
@@ -172,13 +163,18 @@ export const useAuthStatus = () => {
     let customErr: { message: string; code: string } | null = null;
 
     if (isError) {
-        customErr = (error as any).response.data.error;
+        customErr = (error as any).response?.data?.error;
     }
+
+    // only treat as authentication failure if it's a specific auth error
+    // network errors, timeouts, and server errors should NOT trigger logout
+    const isAuthError = isError && isAuthenticationError(error);
 
     return {
         user: user?.data,
         isLoading,
         isAuthenticated: !!user,
+        isAuthError,
         isError,
         error,
         customErr,

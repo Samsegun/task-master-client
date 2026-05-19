@@ -76,42 +76,46 @@ function AdminUserDetails() {
                         {user.isSuspended ? "Yes" : "No"}
                     </p>
 
-                    <div className="pt-3 border-t border-nav-border flex flex-wrap gap-4">
-                        <Button
-                            variant={"primary"}
-                            className="flex gap-1"
-                            onClick={() =>
-                                openModal("updateUserRole", {
-                                    userId: user.id,
-                                    currentUserRole: user.role,
-                                })
-                            }
-                        >
-                            <ShieldCheck size={20} />
-                            <span>Update role</span>
-                        </Button>
+                    {authUser?.id !== user.id && (
+                        <div className="pt-3 border-t border-nav-border flex flex-wrap gap-4">
+                            <Button
+                                variant={"primary"}
+                                className="flex gap-1"
+                                onClick={() =>
+                                    openModal("updateUserRole", {
+                                        userId: user.id,
+                                        currentUserRole: user.role,
+                                    })
+                                }
+                            >
+                                <ShieldCheck size={20} />
+                                <span>Update role</span>
+                            </Button>
 
-                        <Button
-                            className={`flex gap-1 ${user.isSuspended ? " bg-brand-button" : "border-red-500 text-red-500 hover:bg-red-500/10"} `}
-                            onClick={() =>
-                                openModal("updateUserSuspension", {
-                                    userId: user.id,
-                                    isSuspended: user.isSuspended,
-                                    username: user.username,
-                                })
-                            }
-                        >
-                            {user.isSuspended ? (
-                                <Unlock size={20} />
-                            ) : (
-                                <Ban size={20} />
-                            )}
-                            <span>
-                                {user.isSuspended ? "Reactivate" : "Suspend"}{" "}
-                                User
-                            </span>
-                        </Button>
-                    </div>
+                            <Button
+                                className={`flex gap-1 ${user.isSuspended ? " bg-brand-button" : "border-red-500 text-red-500 hover:bg-red-500/10"} `}
+                                onClick={() =>
+                                    openModal("updateUserSuspension", {
+                                        userId: user.id,
+                                        isSuspended: user.isSuspended,
+                                        username: user.username,
+                                    })
+                                }
+                            >
+                                {user.isSuspended ? (
+                                    <Unlock size={20} />
+                                ) : (
+                                    <Ban size={20} />
+                                )}
+                                <span>
+                                    {user.isSuspended
+                                        ? "Reactivate"
+                                        : "Suspend"}{" "}
+                                    User
+                                </span>
+                            </Button>
+                        </div>
+                    )}
 
                     {/* <div className="pt-3 border-t border-nav-border">
                         <p className="text-sm text-gray-300">

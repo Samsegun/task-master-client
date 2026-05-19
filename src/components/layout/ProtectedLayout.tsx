@@ -7,7 +7,7 @@ import Navbar from "./Navbar";
 
 function ProtectedLayout() {
     const [isCollapsed, setIsCollapsed] = useState(false);
-    const { isLoading, isAuthenticated, isError, logout, user } =
+    const { isLoading, isAuthenticated, isAuthError, logout, user } =
         useAuthStatus();
     const location = useLocation();
 
@@ -15,7 +15,7 @@ function ProtectedLayout() {
         return <LoadingIcon />;
     }
 
-    if (!isAuthenticated || isError) {
+    if (!isAuthenticated || isAuthError) {
         return <Navigate to={"/login"} state={{ from: location }} replace />;
     }
 
