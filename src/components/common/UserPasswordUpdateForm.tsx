@@ -38,34 +38,36 @@ function UserPasswordUpdateForm() {
     return (
         <FormWrapper>
             <form
-                id='update-user-password'
+                id="update-user-password"
                 onSubmit={form.handleSubmit(onSubmit)}
-                className='relative'>
+                className="relative"
+            >
                 <FieldGroup>
                     <Controller
-                        name='currentPassword'
+                        name="currentPassword"
                         control={form.control}
                         render={({ field, fieldState }) => (
                             <Field data-invalid={fieldState.invalid}>
                                 <LabelInputWrapper>
                                     <FieldLabel
-                                        htmlFor='current-user-password'
-                                        className='basis-[20%]'>
+                                        htmlFor="current-user-password"
+                                        className="basis-[20%]"
+                                    >
                                         Current Password
                                     </FieldLabel>
 
                                     <InputWrapper>
                                         <Input
                                             {...field}
-                                            id='current-user-password'
+                                            id="current-user-password"
                                             aria-invalid={fieldState.invalid}
-                                            placeholder='Current password'
+                                            placeholder="Current password"
                                             type={
                                                 showPassword
                                                     ? "text"
                                                     : "password"
                                             }
-                                            autoComplete='off'
+                                            autoComplete="off"
                                         />
                                     </InputWrapper>
                                 </LabelInputWrapper>
@@ -77,29 +79,30 @@ function UserPasswordUpdateForm() {
                     />
 
                     <Controller
-                        name='newPassword'
+                        name="newPassword"
                         control={form.control}
                         render={({ field, fieldState }) => (
                             <Field data-invalid={fieldState.invalid}>
                                 <LabelInputWrapper>
                                     <FieldLabel
-                                        htmlFor='new-user-password'
-                                        className='basis-[20%]'>
+                                        htmlFor="new-user-password"
+                                        className="basis-[20%]"
+                                    >
                                         New Password
                                     </FieldLabel>
 
                                     <InputWrapper>
                                         <Input
                                             {...field}
-                                            id='new-user-password'
+                                            id="new-user-password"
                                             aria-invalid={fieldState.invalid}
-                                            placeholder='New password'
+                                            placeholder="New password"
                                             type={
                                                 showPassword
                                                     ? "text"
                                                     : "password"
                                             }
-                                            autoComplete='off'
+                                            autoComplete="off"
                                         />
                                     </InputWrapper>
                                 </LabelInputWrapper>
@@ -113,21 +116,23 @@ function UserPasswordUpdateForm() {
 
                 {/* show passwords icon */}
                 <button
-                    type='button'
+                    type="button"
                     title={`${showPassword ? "Hide" : "Show"} paswwords`}
                     onClick={() => setShowPassword(!showPassword)}
-                    className='absolute top-0 right-0 flex items-center text-sm
-                                         text-brand-gray hover:cursor-pointer hover:text-brand-gray/80 '>
+                    className="absolute top-0 right-0 flex items-center text-sm
+                                         text-brand-gray hover:cursor-pointer hover:text-brand-gray/80 "
+                >
                     {showPassword ? <EyeOff /> : <Eye />}
                 </button>
 
-                <div className='flex justify-center mt-5 md:mt-8 md:w-4/5'>
+                <div className="flex justify-center mt-5 md:mt-8 md:w-4/5">
                     <Button
-                        type='submit'
+                        type="submit"
                         disabled={updateUserPasswordMutation.isPending}
-                        form='update-user-password'
+                        form="update-user-password"
                         variant={"primary"}
-                        className='basis-full md:basis-6/12'>
+                        className="basis-full md:basis-6/12"
+                    >
                         {updateUserPasswordMutation.isPending
                             ? "Updating password..."
                             : "Update password"}

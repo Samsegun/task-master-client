@@ -1,3 +1,4 @@
+import ErrorUi from "@/components/common/ErrorUi";
 import LoadingIcon from "@/components/common/LoadingIcon";
 import PageTitle from "@/components/common/PageTitle";
 import { TableCell, TableHead } from "@/components/table/TableUI";
@@ -22,7 +23,7 @@ function AdminUsers() {
 
     if (isLoading) return <LoadingIcon />;
 
-    if (isError) return <div>Something went wrong :( {customErr?.message}</div>;
+    if (isError) return <ErrorUi error={customErr} />;
 
     if (!canAccessAdmin(authUser?.role)) {
         return <Navigate to="/dashboard" replace />;

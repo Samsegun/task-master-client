@@ -38,7 +38,12 @@ export const getErrorMessage = (error: unknown): string => {
 
 export const isAuthenticationError = (error: unknown): boolean => {
     // we treat these specific codes as auth failures
-    const authErrorCodes = ["TOKEN_INVALID", "TOKEN_MISSING", "AUTH_FAILED"];
+    const authErrorCodes = [
+        "TOKEN_INVALID",
+        "TOKEN_MISSING",
+        "AUTH_FAILED",
+        "ACCOUNT_SUSPENDED",
+    ];
 
     try {
         const axiosError = error as AxiosErrorType;

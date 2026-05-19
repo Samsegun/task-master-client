@@ -88,21 +88,6 @@ function ProcessInvitation() {
                     </Button>
                 </div>
             ) : (
-                // /* IF NOT AUTHENTICATED: prompt them to log in or sign up */
-                // <div className="flex flex-col gap-4 mt-6">
-                //     <p className="text-gray-600 mb-2">
-                //         You need an account to join this project.
-                //     </p>
-                //     <Button onClick={() => handleAuthRedirect("login")}>
-                //         Log in to Accept
-                //     </Button>
-                //     <Button
-                //         variant="outline"
-                //         onClick={() => handleAuthRedirect("register")}
-                //     >
-                //         Create Account to Accept
-                //     </Button>
-                // </div>
                 /* IF NOT AUTHENTICATED: prompt them to log in or sign up */
                 <div className="flex flex-col gap-4 mt-6">
                     <p className="text-gray-600 mb-2">

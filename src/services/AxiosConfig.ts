@@ -35,7 +35,7 @@ let failedQueue: Array<{
 }> = [];
 
 const processQueue = (error: AxiosError | null) => {
-    failedQueue.forEach(prom => {
+    failedQueue.forEach((prom) => {
         if (error) {
             prom.reject(error);
         } else {
@@ -66,7 +66,7 @@ axiosInstance.interceptors.response.use(
                         failedQueue.push({ resolve, reject });
                     })
                         .then(() => axiosInstance(originalRequest))
-                        .catch(err => Promise.reject(err));
+                        .catch((err) => Promise.reject(err));
                 }
 
                 originalRequest._retry = true;
@@ -110,7 +110,7 @@ axiosInstance.interceptors.response.use(
 
         // all other errors (404, 500 and others)
         return Promise.reject(error);
-    }
+    },
 );
 
 export default axiosInstance;

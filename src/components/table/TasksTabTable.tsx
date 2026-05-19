@@ -6,6 +6,7 @@ import { useModalStore } from "@/store/useModalStore";
 import { CheckCircle, Plus } from "lucide-react";
 import { useState } from "react";
 import Button from "../common/Button";
+import ErrorUi from "../common/ErrorUi";
 import StatusBadge from "../common/StatusBadge";
 import StatusIcon from "../common/StatusIcon";
 import Tabs from "../common/Tabs";
@@ -40,7 +41,7 @@ function TasksTabTable({
     const [filterStatus, setFilterStatus] = useState<Statuses>("all");
     const openModal = useModalStore((state) => state.openModal);
 
-    if (isError) return <div>Something went wrong :( {customErr?.message}</div>;
+    if (isError) return <ErrorUi error={customErr} />;
 
     // filter tasks
     let filteredTasks = tasks || [];

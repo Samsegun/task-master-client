@@ -1,4 +1,5 @@
 import Button from "@/components/common/Button";
+import ErrorUi from "@/components/common/ErrorUi";
 import LoadingIcon from "@/components/common/LoadingIcon";
 import PageTitle from "@/components/common/PageTitle";
 import { useGetUser } from "@/hooks/useAdminUsers";
@@ -19,7 +20,7 @@ function AdminUserDetails() {
 
     if (isLoading) return <LoadingIcon />;
 
-    if (isError) return <div>Something went wrong :( {customErr?.message}</div>;
+    if (isError) return <ErrorUi error={customErr} />;
 
     if (!canAccessAdmin(authUser?.role)) {
         return <Navigate to="/dashboard" replace />;

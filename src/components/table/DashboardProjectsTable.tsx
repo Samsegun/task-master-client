@@ -4,6 +4,7 @@ import { formatDate } from "@/lib/utils";
 import { useModalStore } from "@/store/useModalStore";
 import { FolderKanban } from "lucide-react";
 import { useNavigate } from "react-router";
+import ErrorUi from "../common/ErrorUi";
 import StatusBadge from "../common/StatusBadge";
 import DashboardTableRowSkeleton from "../LoadingSkeletons/DashboardTableRowSkeleton";
 import { Progress } from "../ui/progress";
@@ -14,23 +15,26 @@ const headers = ["project", "status", "due date", "progress"];
 function DashboardProjectsTable() {
     const { userProjects, isLoading, isError, customErr } = useGetProjects();
     const navigate = useNavigate();
-    const openModal = useModalStore(state => state.openModal);
+    const openModal = useModalStore((state) => state.openModal);
 
-    if (isError) return <div>Something went wrong :( {customErr?.message}</div>;
+    if (isError) return <ErrorUi error={customErr} />;
 
     return (
         <div
-            className='rounded-xl rounded-t-none lg:rounded-t-xl
-         bg-brand-card border border-brand-primary/10'>
+            className="rounded-xl rounded-t-none lg:rounded-t-xl
+         bg-brand-card border border-brand-primary/10"
+        >
             <Table>
                 <TableHeader>
                     <TableRow
-                        className='bg-brand-table-header border-b 
-                    border-brand-primary/10 hover:bg-brand-table-header'>
-                        {headers.map(header => (
+                        className="bg-brand-table-header border-b 
+                    border-brand-primary/10 hover:bg-brand-table-header"
+                    >
+                        {headers.map((header) => (
                             <TableHead
                                 key={header}
-                                className='lg:first:rounded-tl-xl lg:last:rounded-tr-xl'>
+                                className="lg:first:rounded-tl-xl lg:last:rounded-tr-xl"
+                            >
                                 {header}
                             </TableHead>
                         ))}
@@ -41,24 +45,25 @@ function DashboardProjectsTable() {
                     {isLoading ? (
                         <DashboardTableRowSkeleton rows={3} />
                     ) : userProjects!.length === 0 ? (
-                        <TableRow className='hover:bg-brand-bg'>
-                            <TableCell colSpan={5} className='p-16 text-center'>
+                        <TableRow className="hover:bg-brand-bg">
+                            <TableCell colSpan={5} className="p-16 text-center">
                                 <FolderKanban
-                                    className='mx-auto text-brand-gray mb-4'
+                                    className="mx-auto text-brand-gray mb-4"
                                     size={64}
                                 />
 
-                                <h3 className='text-xl font-semibold text-brand-gray mb-2'>
+                                <h3 className="text-xl font-semibold text-brand-gray mb-2">
                                     No projects found
                                 </h3>
 
-                                <p className='text-brand-gray'>
+                                <p className="text-brand-gray">
                                     Create your{" "}
                                     <button
-                                        className='text-white cursor-pointer'
+                                        className="text-white cursor-pointer"
                                         onClick={() =>
                                             openModal("createProject")
-                                        }>
+                                        }
+                                    >
                                         first project
                                     </button>{" "}
                                     to get started
@@ -66,37 +71,38 @@ function DashboardProjectsTable() {
                             </TableCell>
                         </TableRow>
                     ) : (
-                        userProjects!.map(project => (
+                        userProjects!.map((project) => (
                             <TableRow
                                 key={project.id}
                                 onClick={() =>
                                     navigate(`/projects/${project.id}`)
                                 }
-                                role='link'
+                                role="link"
                                 tabIndex={0}
-                                onKeyDown={e => {
+                                onKeyDown={(e) => {
                                     if (e.key === "Enter" || e.key === " ") {
                                         navigate(`/projects/${project.id}`);
                                     }
                                 }}
-                                className='border-b border-brand-primary/10 cursor-pointer hover:bg-[#2d3f54]'>
-                                <TableCell className='font-medium capitalize'>
+                                className="border-b border-brand-primary/10 cursor-pointer hover:bg-[#2d3f54]"
+                            >
+                                <TableCell className="font-medium capitalize">
                                     {project.name}
                                 </TableCell>
 
-                                <TableCell className='text-brand-primary/70 '>
+                                <TableCell className="text-brand-primary/70 ">
                                     <StatusBadge status={project.status} />
                                 </TableCell>
 
-                                <TableCell className='text-brand-primary/70 '>
+                                <TableCell className="text-brand-primary/70 ">
                                     {formatDate(project.dueDate)}
                                 </TableCell>
 
-                                <TableCell className='w-52 flex flex-col lg:flex-row justify-between items-center gap-2'>
+                                <TableCell className="w-52 flex flex-col lg:flex-row justify-between items-center gap-2">
                                     <Progress
                                         value={project.progress}
-                                        className='bg-brand-button/30
-                                         [&>div]:bg-brand-button lg:basis-3/4'
+                                        className="bg-brand-button/30
+                                         [&>div]:bg-brand-button lg:basis-3/4"
                                     />
                                     <span>{project.progress}%</span>
                                 </TableCell>

@@ -1,4 +1,5 @@
 import Button from "@/components/common/Button";
+import ErrorUi from "@/components/common/ErrorUi";
 import ProjectDetailsTitles from "@/components/common/ProjectDetailTitles";
 import ProjectOptions from "@/components/common/ProjectOptions";
 import { Stats, StatsTitle } from "@/components/common/ProjectStats";
@@ -22,7 +23,7 @@ function ProjectDetails() {
     const [activeTab, setActiveTab] = useState<"tasks" | "members">("tasks");
     const navigate = useNavigate();
 
-    if (isError) return <div>Something went wrong :( {customErr?.message}</div>;
+    if (isError) return <ErrorUi error={customErr} />;
 
     const id = userProject?.id || "";
     const name = userProject?.name || "Loading...";

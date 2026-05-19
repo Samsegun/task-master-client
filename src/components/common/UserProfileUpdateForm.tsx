@@ -7,6 +7,7 @@ import * as z from "zod";
 import { Field, FieldError, FieldGroup, FieldLabel } from "../ui/field";
 import { Input } from "../ui/input";
 import Button from "./Button";
+import ErrorUi from "./ErrorUi";
 import {
     FormWrapper,
     InputWrapper,
@@ -16,7 +17,7 @@ import {
 type UpdateProfileFormData = z.input<typeof updateProfile>;
 
 function UserProfileUpdateForm() {
-    const { user } = useAuthStatus();
+    const { user, customErr, isError } = useAuthStatus();
     const form = useForm<UpdateProfileFormData>({
         resolver: zodResolver(updateProfile),
         defaultValues: {
@@ -29,6 +30,8 @@ function UserProfileUpdateForm() {
 
     const updateUserProfileMutation = useUpdateUserProfile();
 
+    if (isError) return <ErrorUi error={customErr} />;
+
     function onSubmit(data: UpdateProfileFormData) {
         const { username, firstName, lastName } = data;
 
@@ -38,31 +41,33 @@ function UserProfileUpdateForm() {
     return (
         <FormWrapper>
             <form
-                id='update-user-profile'
-                onSubmit={form.handleSubmit(onSubmit)}>
+                id="update-user-profile"
+                onSubmit={form.handleSubmit(onSubmit)}
+            >
                 <FieldGroup>
                     <Controller
-                        name='email'
+                        name="email"
                         control={form.control}
                         render={({ field, fieldState }) => (
                             <Field data-invalid={fieldState.invalid}>
                                 <LabelInputWrapper>
                                     <FieldLabel
-                                        htmlFor='user-email'
-                                        className='basis-[20%]'>
+                                        htmlFor="user-email"
+                                        className="basis-[20%]"
+                                    >
                                         Email
                                     </FieldLabel>
 
                                     <InputWrapper>
                                         <Input
                                             {...field}
-                                            id='user-email'
+                                            id="user-email"
                                             aria-invalid={fieldState.invalid}
-                                            placeholder='user@mail.com'
+                                            placeholder="user@mail.com"
                                             value={user?.email}
                                             disabled
-                                            autoComplete='off'
-                                            className='py-4 px-3 cursor-not-allowed'
+                                            autoComplete="off"
+                                            className="py-4 px-3 cursor-not-allowed"
                                         />
                                     </InputWrapper>
                                 </LabelInputWrapper>
@@ -74,16 +79,17 @@ function UserProfileUpdateForm() {
                     />
 
                     <Controller
-                        name='username'
+                        name="username"
                         control={form.control}
                         render={({ field, fieldState }) => (
                             <Field data-invalid={fieldState.invalid}>
                                 <LabelInputWrapper>
                                     <FieldLabel
-                                        htmlFor='update-username'
-                                        className='basis-[20%]'>
+                                        htmlFor="update-username"
+                                        className="basis-[20%]"
+                                    >
                                         Username
-                                        <span className='text-red-500 pr-2'>
+                                        <span className="text-red-500 pr-2">
                                             *
                                         </span>
                                     </FieldLabel>
@@ -91,11 +97,11 @@ function UserProfileUpdateForm() {
                                     <InputWrapper>
                                         <Input
                                             {...field}
-                                            id='update-username'
+                                            id="update-username"
                                             aria-invalid={fieldState.invalid}
-                                            placeholder='user123'
-                                            autoComplete='off'
-                                            className='py-4 px-3'
+                                            placeholder="user123"
+                                            autoComplete="off"
+                                            className="py-4 px-3"
                                         />
                                     </InputWrapper>
                                 </LabelInputWrapper>
@@ -107,25 +113,26 @@ function UserProfileUpdateForm() {
                     />
 
                     <Controller
-                        name='firstName'
+                        name="firstName"
                         control={form.control}
                         render={({ field, fieldState }) => (
                             <Field data-invalid={fieldState.invalid}>
                                 <LabelInputWrapper>
                                     <FieldLabel
-                                        htmlFor='update-firstName'
-                                        className='basis-[20%]'>
+                                        htmlFor="update-firstName"
+                                        className="basis-[20%]"
+                                    >
                                         First Name
                                     </FieldLabel>
 
                                     <InputWrapper>
                                         <Input
                                             {...field}
-                                            id='update-firstName'
+                                            id="update-firstName"
                                             aria-invalid={fieldState.invalid}
-                                            placeholder='First name'
-                                            autoComplete='off'
-                                            className='py-4 px-3'
+                                            placeholder="First name"
+                                            autoComplete="off"
+                                            className="py-4 px-3"
                                         />
                                     </InputWrapper>
                                 </LabelInputWrapper>
@@ -137,25 +144,26 @@ function UserProfileUpdateForm() {
                     />
 
                     <Controller
-                        name='lastName'
+                        name="lastName"
                         control={form.control}
                         render={({ field, fieldState }) => (
                             <Field data-invalid={fieldState.invalid}>
                                 <LabelInputWrapper>
                                     <FieldLabel
-                                        htmlFor='update-lastName'
-                                        className='basis-[20%]'>
+                                        htmlFor="update-lastName"
+                                        className="basis-[20%]"
+                                    >
                                         Last Name
                                     </FieldLabel>
 
                                     <InputWrapper>
                                         <Input
                                             {...field}
-                                            id='update-lastName'
+                                            id="update-lastName"
                                             aria-invalid={fieldState.invalid}
-                                            placeholder='Last name'
-                                            autoComplete='off'
-                                            className='py-4 px-3'
+                                            placeholder="Last name"
+                                            autoComplete="off"
+                                            className="py-4 px-3"
                                         />
                                     </InputWrapper>
                                 </LabelInputWrapper>
@@ -167,13 +175,14 @@ function UserProfileUpdateForm() {
                     />
                 </FieldGroup>
 
-                <div className='flex justify-center mt-5 md:mt-8 md:w-4/5'>
+                <div className="flex justify-center mt-5 md:mt-8 md:w-4/5">
                     <Button
-                        type='submit'
+                        type="submit"
                         disabled={updateUserProfileMutation.isPending}
-                        form='update-user-profile'
+                        form="update-user-profile"
                         variant={"primary"}
-                        className='basis-full md:basis-6/12'>
+                        className="basis-full md:basis-6/12"
+                    >
                         {updateUserProfileMutation.isPending
                             ? "Updating profile..."
                             : "Update profile"}
