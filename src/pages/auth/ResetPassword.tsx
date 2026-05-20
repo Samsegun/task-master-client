@@ -36,7 +36,6 @@ function ResetPassword() {
     async function onSubmit(values: z.infer<typeof resetPasswordForm>) {
         const { password } = values;
 
-        console.log(token, password, emailFromParams);
 
         if (!token || !emailFromParams) {
             toast.error("Invalid or missing reset link parameters");

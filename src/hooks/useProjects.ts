@@ -29,7 +29,7 @@ import toast from "react-hot-toast";
 import { useNavigate } from "react-router";
 
 export const useGetProjects = (opts?: { limit?: number }) => {
-    const limit = opts?.limit ?? 3;
+    const limit = opts?.limit ?? 5;
 
     const { data, isLoading, isError, error } = useQuery({
         queryKey: ["projects", limit],
