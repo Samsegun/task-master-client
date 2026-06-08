@@ -42,41 +42,39 @@ function DesktopHeaderMenu({
     }
 
     return (
-        <div className='flex justify-between items-center px-6 xl:px-3 max-w-5xl mx-auto'>
+        <div className="flex justify-between items-center px-6 xl:px-3 max-w-5xl mx-auto">
             <PageTitle>
                 Good {getGreeting()},{" "}
-                <span className='capitalize'>
+                <span className="capitalize">
                     {user?.username || user?.firstName}
                 </span>
             </PageTitle>
 
-            <div className='hidden md:block'>
+            <div className="hidden md:block">
                 <DropdownMenu>
-                    <DropdownMenuTrigger className='cursor-pointer'>
+                    <DropdownMenuTrigger className="cursor-pointer">
                         <div>
-                            <Avatar
-                                name={user?.username || "User"}
-                                occupation='product manager'
-                                src='xxxxx'
-                            />
+                            <Avatar name={user?.username || "User"} />
                         </div>
                     </DropdownMenuTrigger>
 
-                    <DropdownMenuContent className='bg-brand-sidebar border-nav-border text-brand-primary'>
+                    <DropdownMenuContent className="bg-brand-sidebar border-nav-border text-brand-primary">
                         <DropdownMenuLabel>My Account</DropdownMenuLabel>
 
-                        <DropdownMenuSeparator className='bg-nav-border' />
+                        <DropdownMenuSeparator className="bg-nav-border" />
 
-                        <div className='mt-2 space-y-2'>
+                        <div className="mt-2 space-y-2">
                             <DropdownMenuItem
-                                className='cursor-pointer'
-                                onSelect={handleNav}>
+                                className="cursor-pointer"
+                                onSelect={handleNav}
+                            >
                                 Profile
                             </DropdownMenuItem>
 
                             <DropdownMenuItem
-                                className='cursor-pointer text-destructive'
-                                onSelect={logout}>
+                                className="cursor-pointer text-destructive"
+                                onSelect={logout}
+                            >
                                 <span>Logout</span> <LogOutIcon />
                             </DropdownMenuItem>
                         </div>
