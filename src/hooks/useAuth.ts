@@ -21,7 +21,6 @@ export const AUTH_STATUS_QUERY_KEY = ["authStatus"] as const;
 
 export const useRegisterUser = () => {
     const navigate = useNavigate();
-    // const location = useLocation();
 
     return useMutation({
         mutationFn: ({
