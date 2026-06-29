@@ -4,111 +4,103 @@ import axios, {
     type AxiosResponse,
 } from "axios";
 import { queryClient } from "../lib/QueryClient";
+import { AUTH_STATUS_QUERY_KEY } from "../lib/authConstants";
 
 interface CustomAxiosRequestConfig extends AxiosRequestConfig {
     _retry?: boolean;
 }
 
 interface ApiErrorResponse {
-    error: {
-        code: string;
-        message: string;
+    error?: {
+        code?: string;
+        message?: string;
     };
 }
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-const axiosInstance = axios.create({
-    baseURL: API_BASE_URL,
-    timeout: 10000,
-    headers: {
-        "Content-Type": "application/json",
-    },
-    withCredentials: true,
-});
-
-// concurrency management
-let isRefreshing = false;
-let failedQueue: Array<{
-    resolve: (value?: unknown) => void;
-    reject: (reason?: any) => void;
-}> = [];
-
-const processQueue = (error: AxiosError | null) => {
-    failedQueue.forEach((prom) => {
-        if (error) {
-            prom.reject(error);
-        } else {
-            prom.resolve();
-        }
+const createApiClient = () =>
+    axios.create({
+        baseURL: API_BASE_URL,
+        timeout: 10000,
+        headers: {
+            "Content-Type": "application/json",
+        },
+        withCredentials: true,
     });
-    failedQueue = [];
+
+const axiosInstance = createApiClient();
+const refreshTokenClient = createApiClient();
+
+let refreshTokenPromise: Promise<void> | null = null;
+
+const getErrorCode = (error: AxiosError) => {
+    const data = error.response?.data as ApiErrorResponse | undefined;
+    return data?.error?.code;
+};
+
+const isRefreshTokenAuthError = (error: unknown) => {
+    if (!axios.isAxiosError(error)) return false;
+
+    return [
+        "REFRESH_TOKEN_EXPIRED",
+        "REFRESH_TOKEN_INVALID",
+        "REFRESH_TOKEN_MISSING",
+    ].includes(getErrorCode(error) ?? "");
+};
+
+const redirectToLogin = () => {
+    queryClient.removeQueries({ queryKey: AUTH_STATUS_QUERY_KEY });
+    queryClient.clear();
+
+    if (window.location.pathname !== "/login") {
+        window.location.assign("/login");
+    }
+};
+
+const refreshAccessToken = async () => {
+    if (!refreshTokenPromise) {
+        refreshTokenPromise = refreshTokenClient
+            .post("/auth/refresh-token")
+            .then(() => undefined)
+            .finally(() => {
+                refreshTokenPromise = null;
+            });
+    }
+
+    return refreshTokenPromise;
 };
 
 axiosInstance.interceptors.response.use(
-    (response: AxiosResponse) => {
-        return response;
-    },
+    (response: AxiosResponse) => response,
     async (error: AxiosError) => {
-        const originalRequest = error.config as CustomAxiosRequestConfig;
+        const originalRequest = error.config as
+            | CustomAxiosRequestConfig
+            | undefined;
 
         if (!error.response || !originalRequest) {
             return Promise.reject(error);
         }
 
-        const data = error.response?.data as ApiErrorResponse;
-        const errorCode = data?.error?.code;
+        if (
+            error.response.status === 401 &&
+            getErrorCode(error) === "TOKEN_EXPIRED" &&
+            !originalRequest._retry
+        ) {
+            originalRequest._retry = true;
 
-        if (error.response.status === 401) {
-            if (errorCode === "TOKEN_EXPIRED" && !originalRequest._retry) {
-                if (isRefreshing) {
-                    return new Promise((resolve, reject) => {
-                        failedQueue.push({ resolve, reject });
-                    })
-                        .then(() => axiosInstance(originalRequest))
-                        .catch((err) => Promise.reject(err));
+            try {
+                await refreshAccessToken();
+                return axiosInstance(originalRequest);
+            } catch (refreshError) {
+                if (isRefreshTokenAuthError(refreshError)) {
+                    redirectToLogin();
                 }
 
-                originalRequest._retry = true;
-                isRefreshing = true;
-
-                try {
-                    await axiosInstance.post("/auth/refresh-token");
-
-                    processQueue(null);
-                    isRefreshing = false;
-
-                    return axiosInstance(originalRequest);
-                } catch (refreshError: any) {
-                    isRefreshing = false;
-                    processQueue(refreshError);
-
-                    const refreshErrorCode =
-                        refreshError?.response?.data?.error?.code;
-
-                    if (
-                        refreshErrorCode === "REFRESH_TOKEN_EXPIRED" ||
-                        refreshErrorCode === "REFRESH_TOKEN_INVALID" ||
-                        refreshErrorCode === "REFRESH_TOKEN_MISSING"
-                    ) {
-                        queryClient.clear();
-                        window.location.href = "/login";
-                    }
-
-                    return Promise.reject(refreshError);
-                }
-            }
-
-            if (
-                errorCode === "TOKEN_INVALID" ||
-                errorCode === "TOKEN_MISSING" ||
-                errorCode === "AUTH_FAILED"
-            ) {
-                return Promise.reject(error);
+                return Promise.reject(refreshError);
             }
         }
 
-        // all other errors (404, 500 and others)
         return Promise.reject(error);
     },
 );

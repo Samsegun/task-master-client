@@ -3,6 +3,7 @@ import type {
     RegisterUserCredentials,
     ResetPasswordCredentials,
 } from "@/lib/apiTypes";
+import { AUTH_STATUS_QUERY_KEY } from "@/lib/authConstants";
 import { getErrorMessage, isAuthenticationError } from "@/lib/errorUtils";
 import {
     checkAuthStatus,
@@ -14,10 +15,9 @@ import {
     verifyEmail,
 } from "@/services/ApiRequests";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMemo } from "react";
 import toast from "react-hot-toast";
 import { useLocation, useNavigate, useSearchParams } from "react-router";
-
-export const AUTH_STATUS_QUERY_KEY = ["authStatus"] as const;
 
 export const useRegisterUser = () => {
     const navigate = useNavigate();
@@ -47,6 +47,10 @@ export const useSignin = () => {
         mutationFn: ({ emailOrusername, password }: LoginUserCredentials) =>
             loginUser(emailOrusername, password),
         onSuccess: async () => {
+            await queryClient.invalidateQueries({
+                queryKey: AUTH_STATUS_QUERY_KEY,
+            });
+
             const params = new URLSearchParams(location.search);
             const returnUrl = params.get("returnUrl");
 
@@ -54,10 +58,6 @@ export const useSignin = () => {
                 navigate(returnUrl, { replace: true });
                 return;
             }
-
-            await queryClient.invalidateQueries({
-                queryKey: AUTH_STATUS_QUERY_KEY,
-            });
 
             const from = location.state?.from?.pathname || "/";
             navigate(from, { replace: true });
@@ -137,46 +137,52 @@ export const useResetPassword = () => {
     });
 };
 
-export const useAuthStatus = () => {
+export const useLogout = () => {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
 
+    return useMutation({
+        mutationFn: logoutUser,
+        onSettled: () => {
+            queryClient.clear();
+            navigate("/login", { replace: true });
+        },
+    });
+};
+
+export const useAuthStatus = () => {
     const { data, isLoading, isError, error } = useQuery({
         queryKey: AUTH_STATUS_QUERY_KEY,
         queryFn: checkAuthStatus,
         refetchOnWindowFocus: false,
         retry: false,
         staleTime: 15 * 60 * 1000, // 15 mins
+        gcTime: 30 * 60 * 1000,
+        select: (response) => response.data,
     });
 
-    const logoutMutation = useMutation({
-        mutationFn: logoutUser,
-        onSuccess: () => {
-            // clear the user from cache and redirect to login
-            queryClient.clear();
-            navigate("/login");
-        },
-    });
-
-    const user = data?.data.success ? data.data : null;
-    let customErr: { message: string; code: string } | null = null;
-
-    if (isError) {
-        customErr = (error as any).response?.data?.error;
-    }
+    const user = data?.success ? data.data : null;
+    const customErr = isError
+        ? ((error as any).response?.data?.error as {
+              message: string;
+              code: string;
+          } | null)
+        : null;
 
     // only treat as authentication failure if it's a specific auth error
     // network errors, timeouts, and server errors should NOT trigger logout
     const isAuthError = isError && isAuthenticationError(error);
 
-    return {
-        user: user?.data,
-        isLoading,
-        isAuthenticated: !!user,
-        isAuthError,
-        isError,
-        error,
-        customErr,
-        logout: logoutMutation,
-    };
+    return useMemo(
+        () => ({
+            user,
+            isLoading,
+            isAuthenticated: !!user,
+            isAuthError,
+            isError,
+            error,
+            customErr,
+        }),
+        [customErr, error, isAuthError, isError, isLoading, user],
+    );
 };

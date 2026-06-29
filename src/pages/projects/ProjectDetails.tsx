@@ -138,7 +138,7 @@ function ProjectDetails() {
 
                 <button
                     onClick={() => setActiveTab("members")}
-                    disabled={isLoading}
+                    disabled={!userProject?.members || isLoading}
                     className={`px-4 py-2 transition-colors hover:cursor-pointer ${
                         activeTab === "members"
                             ? "text-brand-button border-b-2 border-brand-button"

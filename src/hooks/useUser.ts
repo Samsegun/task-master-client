@@ -1,7 +1,7 @@
+import { AUTH_STATUS_QUERY_KEY } from "@/lib/authConstants";
 import { updateUserPassword, updateUserProfile } from "@/services/ApiRequests";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
-import { AUTH_STATUS_QUERY_KEY } from "./useAuth";
 
 export const useUpdateUserProfile = () => {
     const queryClient = useQueryClient();
@@ -28,7 +28,6 @@ export const useUpdateUserProfile = () => {
             await queryClient.invalidateQueries({
                 queryKey: ["myTasks"],
             });
-
             toast.success("User Profile updated");
         },
         onError: (err: any) => {
